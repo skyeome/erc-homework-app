@@ -37,7 +37,11 @@ function Navigation({ pathname }: NavigationProps) {
         {NAV_ITEMS.map((item) => (
           <Styled.NavigationItem
             key={item.label}
-            active={`${pathname.startsWith(item.to.slice(1), 1)}`}
+            active={`${
+              item.to === "/"
+                ? pathname === item.to
+                : pathname.startsWith(item.to)
+            }`}
           >
             <Link to={item.to}>
               <Typography variant="body1">{item.icon}</Typography>
