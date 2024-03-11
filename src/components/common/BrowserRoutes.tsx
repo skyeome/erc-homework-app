@@ -5,6 +5,7 @@ import ErrorPage from "@/pages/error-page";
 import Login from "@/pages/auth/Login";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
+import Record from "@/pages/record";
 
 function BrowserRoutes() {
   return (
@@ -14,7 +15,7 @@ function BrowserRoutes() {
       </Route>
       <Route element={<PageLayout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
-        <Route path="record" element={<Home />} />
+        <Route path="record" element={<Record />} />
         <Route path="reading" element={<Home />} />
         <Route path="workbook" element={<Home />} />
       </Route>

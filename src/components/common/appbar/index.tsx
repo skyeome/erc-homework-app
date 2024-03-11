@@ -4,8 +4,15 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import coin from "@/assets/coin_icon.svg";
 import { AppBarProps } from "./index.types";
 import * as Styled from "./index.styles";
+import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 function AppBar({ title, disableBack }: AppBarProps) {
+  const navigate = useNavigate();
+  const goBack = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+
   return (
     <Styled.AppBarWrap>
       <div className="inner">
@@ -14,6 +21,7 @@ function AppBar({ title, disableBack }: AppBarProps) {
             <Button
               size="small"
               startIcon={<ChevronLeftIcon fontSize="large" />}
+              onClick={goBack}
             >
               Back
             </Button>

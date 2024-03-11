@@ -47,7 +47,12 @@ function Navigation({ pathname }: NavigationProps) {
             >
               <Link to={item.to}>
                 <Typography variant="body1">{item.icon}</Typography>
-                <Typography variant="body2">{item.label}</Typography>
+                <Typography
+                  variant="caption"
+                  sx={{ display: "block", marginTop: "-0.25em" }}
+                >
+                  {item.label}
+                </Typography>
               </Link>
             </Styled.NavigationItem>
           ))}

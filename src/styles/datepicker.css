@@ -1,0 +1,17 @@
+.MuiModal-root .react-datepicker {
+  width: 100%;
+  border-radius: 0;
+  border: 0;
+}
+
+.MuiModal-root .react-datepicker__month-container {
+  float: none;
+}
+
+.MuiModal-root .react-datepicker__day-name,
+.MuiModal-root .react-datepicker__day,
+.MuiModal-root .react-datepicker__time-name {
+  width: 2.25rem;
+  line-height: 2.25rem;
+  margin: 0.125rem;
+}
