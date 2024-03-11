@@ -5,14 +5,19 @@ import coin from "@/assets/coin_icon.svg";
 import { AppBarProps } from "./index.types";
 import * as Styled from "./index.styles";
 
-function AppBar({ title }: AppBarProps) {
+function AppBar({ title, disableBack }: AppBarProps) {
   return (
     <Styled.AppBarWrap>
       <div className="inner">
         <Styled.AppBarBackBtn>
-          <Button size="small" startIcon={<ChevronLeftIcon fontSize="large" />}>
-            Back
-          </Button>
+          {!disableBack && (
+            <Button
+              size="small"
+              startIcon={<ChevronLeftIcon fontSize="large" />}
+            >
+              Back
+            </Button>
+          )}
         </Styled.AppBarBackBtn>
         <Styled.AppBarTitle>
           <Typography variant="h4" align="center" fontWeight="medium">
@@ -21,7 +26,7 @@ function AppBar({ title }: AppBarProps) {
         </Styled.AppBarTitle>
         <Styled.AppBarPoint>
           <img src={coin} alt="$" />
-          <Typography>100</Typography>
+          <Typography variant="body2">100</Typography>
         </Styled.AppBarPoint>
       </div>
     </Styled.AppBarWrap>

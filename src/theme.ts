@@ -38,6 +38,9 @@ const customTheme = (darkMode: boolean) =>
         '"Segoe UI Symbol"',
       ].join(","),
       fontSize: 12,
+      h3: {
+        fontSize: 24,
+      },
       h4: {
         fontSize: 16,
       },
