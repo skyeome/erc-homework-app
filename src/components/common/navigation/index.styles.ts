@@ -8,7 +8,7 @@ export const NavigationWrap = styled("nav")(({ theme }) => ({
   zIndex: 10,
 
   width: "100%",
-  height: "5rem",
+  height: "4rem",
 
   "& .inner": {
     display: "flex",
@@ -26,11 +26,15 @@ export const NavigationWrap = styled("nav")(({ theme }) => ({
   },
 }));
 
+export const NavigationSpacing = styled("div")`
+  padding-top: 4rem;
+`;
+
 export const NavigationItem = styled("li")<NavigationItemProps>(
   ({ theme, active }) => ({
     flex: 1,
     textAlign: "center",
-    paddingTop: ".75rem",
+    paddingTop: "0.375rem",
     borderTop:
       active === "true"
         ? `2px solid ${theme.palette.primary.main}`
