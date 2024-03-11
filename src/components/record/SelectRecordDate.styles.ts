@@ -2,7 +2,6 @@ import { Box, styled } from "@mui/material";
 
 export const SelectDateArea = styled(Box)(({ theme }) => ({
   padding: "0.825em",
-  marginTop: ".5rem",
   borderRadius: ".5rem",
   border: `1px solid ${
     theme.palette.mode === "dark"

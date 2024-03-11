@@ -1,11 +1,12 @@
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import coin from "@/assets/coin_icon.svg";
-import { AppBarProps } from "./index.types";
-import * as Styled from "./index.styles";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import Typography from "@mui/material/Typography";
+import { Chip } from "@mui/material";
+import Button from "@mui/material/Button";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import { AppBarProps } from "./index.types";
+import * as Styled from "./index.styles";
 
 function AppBar({ title, disableBack }: AppBarProps) {
   const navigate = useNavigate();
@@ -33,9 +34,17 @@ function AppBar({ title, disableBack }: AppBarProps) {
           </Typography>
         </Styled.AppBarTitle>
         <Styled.AppBarPoint>
+          <Chip
+            variant="outlined"
+            color="primary"
+            icon={<MonetizationOnIcon />}
+            label="100"
+          />
+        </Styled.AppBarPoint>
+        {/* <Styled.AppBarPoint>
           <img src={coin} alt="$" />
           <Typography variant="body2">100</Typography>
-        </Styled.AppBarPoint>
+        </Styled.AppBarPoint> */}
       </div>
     </Styled.AppBarWrap>
   );
