@@ -1,5 +1,6 @@
 import AppBar from "@/components/common/appbar";
 import RecordNotice from "@/components/record/RecordNotice";
+import Recorder from "@/components/record/Recorder";
 import SelectRecordDate from "@/components/record/SelectRecordDate";
 import Box from "@mui/material/Box";
 
@@ -11,6 +12,7 @@ function Record() {
         <SelectRecordDate />
         <RecordNotice />
       </Box>
+      <Recorder />
     </div>
   );
 }

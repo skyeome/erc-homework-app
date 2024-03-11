@@ -3,12 +3,14 @@ import { createTheme } from "@mui/material";
 declare module "@mui/material/styles" {
   interface Palette {
     lightBg: Palette["primary"];
+    lightGray: Palette["primary"];
     darkGray: Palette["primary"];
     textBlack: Palette["primary"];
   }
 
   interface PaletteOptions {
     lightBg?: PaletteOptions["primary"];
+    lightGray?: PaletteOptions["primary"];
     darkGray?: PaletteOptions["primary"];
     textBlack?: PaletteOptions["primary"];
   }
@@ -21,6 +23,7 @@ const customTheme = (darkMode: boolean) =>
       primary: { main: "#65C3C8", contrastText: "#fff" },
       secondary: { main: "#D82F57", contrastText: "#fff" },
       lightBg: { main: "#F7F7F7", dark: "#171717" },
+      lightGray: { main: "#D9D9D9", dark: "#333" },
       darkGray: { main: "#939393", dark: "#666666" },
       textBlack: { main: "#333", dark: "#939393" },
     },
