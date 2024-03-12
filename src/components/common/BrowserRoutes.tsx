@@ -6,6 +6,7 @@ import Login from "@/pages/auth/Login";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Record from "@/pages/record";
+import Reading from "@/pages/reading";
 
 function BrowserRoutes() {
   return (
@@ -16,7 +17,7 @@ function BrowserRoutes() {
       <Route element={<PageLayout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
         <Route path="record" element={<Record />} />
-        <Route path="reading" element={<Home />} />
+        <Route path="reading" element={<Reading />} />
         <Route path="workbook" element={<Home />} />
       </Route>
       <Route path="*" element={<NotFound />} />

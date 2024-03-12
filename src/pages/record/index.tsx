@@ -5,6 +5,7 @@ import Recorder from "@/components/record/Recorder";
 import SelectRecordDate from "@/components/record/SelectRecordDate";
 import RecordComplete from "@/components/record/RecordComplete";
 import RecordScreen from "@/components/record/index.styles";
+import WeeklyRecord from "@/components/record/WeeklyRecord";
 
 function Record() {
   const [chunks, setChunks] = useState<Blob[]>([]);
@@ -23,6 +24,7 @@ function Record() {
       ) : (
         <RecordComplete chunks={chunks} setChunks={setChunks} />
       )}
+      <WeeklyRecord />
     </div>
   );
 }

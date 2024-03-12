@@ -22,7 +22,7 @@ export const AppBarWrap = styled("header")(({ theme }) => ({
 }));
 
 const AppBarSideWidth = css`
-  width: 3.75rem;
+  width: 4rem;
 `;
 
 export const AppBarBackBtn = styled("div")`

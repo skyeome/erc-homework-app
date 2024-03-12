@@ -73,7 +73,7 @@ function Recorder({ setChunks }: RecorderProps) {
   };
 
   return (
-    <Box mt={4}>
+    <Box mt={8}>
       <Typography textAlign="center">{formatTime(time)}</Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }} mt={1}>
         {recording ? (
