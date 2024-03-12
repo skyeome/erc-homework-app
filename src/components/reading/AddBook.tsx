@@ -10,8 +10,10 @@ import ListItemText from "@mui/material/ListItemText";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
 
 function AddBook() {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,6 +22,10 @@ function AddBook() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleListItemClick = (to: string) => {
+    navigate(to);
   };
 
   const open = Boolean(anchorEl);
@@ -49,7 +55,7 @@ function AddBook() {
       >
         <List dense>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => handleListItemClick("search")}>
               <ListItemIcon sx={ListIconSx}>
                 <SearchIcon />
               </ListItemIcon>
@@ -58,7 +64,7 @@ function AddBook() {
           </ListItem>
           <Divider />
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => handleListItemClick("new")}>
               <ListItemIcon sx={ListIconSx}>
                 <EditIcon />
               </ListItemIcon>

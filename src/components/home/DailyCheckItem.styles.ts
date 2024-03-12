@@ -6,7 +6,7 @@ const DailyCheckItemWrap = styled("div")(({ theme }) => ({
   alignItems: "center",
 
   padding: "0.75rem 0",
-  "&:nth-child(odd)": {
+  "&:nth-of-type(odd)": {
     backgroundColor:
       theme.palette.mode === "dark"
         ? theme.palette.lightBg.dark

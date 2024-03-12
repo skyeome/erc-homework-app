@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Record from "@/pages/record";
 import Reading from "@/pages/reading";
+import BookSearch from "@/pages/reading/search";
 
 function BrowserRoutes() {
   return (
@@ -17,7 +18,10 @@ function BrowserRoutes() {
       <Route element={<PageLayout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
         <Route path="record" element={<Record />} />
-        <Route path="reading" element={<Reading />} />
+        <Route path="reading/*">
+          <Route index element={<Reading />} />
+          <Route path="search" element={<BookSearch />} />
+        </Route>
         <Route path="workbook" element={<Home />} />
       </Route>
       <Route path="*" element={<NotFound />} />
