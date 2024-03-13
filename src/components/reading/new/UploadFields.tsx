@@ -1,43 +1,20 @@
-import { useRef, useState } from "react";
 import { Box, TextField, Typography } from "@mui/material";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
 import CollectionsBookmarkOutlinedIcon from "@mui/icons-material/CollectionsBookmarkOutlined";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import UploadBar from "./UploadBar";
+import useImageUpload from "@/hooks/useImageUpload";
+import { UploadFieldsProps } from "./UploadFields.types";
 import * as Styled from "./UploadFields.styles";
 
-function UploadFields() {
-  const imageUploadRef = useRef<HTMLInputElement>(null);
-  const [imageUrls, setImageUrls] = useState<string[]>();
-
-  // handle Click
-  const handleInputClick = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    if (imageUploadRef.current) imageUploadRef.current.click();
-  };
-
-  // handle file change
-  const handleEditProfile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 업로드한 파일들이 있을 때
-    if (e.target.files) {
-      const urls = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
-
-      setImageUrls((prev) => {
-        if (!prev) return urls;
-        return [...prev, ...urls];
-      });
-    }
-    // 파일 초기화!
-    if (imageUploadRef.current) imageUploadRef.current.value = "";
-  };
+function UploadFields({ onlyPicture }: UploadFieldsProps) {
+  const { input, images, handleUpload, handleChange } = useImageUpload();
 
   return (
     <Styled.UploadFieldForm>
       <Box pt={1} px={2}>
         <TextField label="title" fullWidth />
-        {imageUrls === undefined ? (
+        {images === undefined ? (
           <Box mt={2} p={2} textAlign="center">
             <CollectionsBookmarkOutlinedIcon fontSize="large" />
             <Typography variant="body1" mt={1}>
@@ -56,16 +33,17 @@ function UploadFields() {
           </Box>
         ) : (
           <Box mt={2} sx={{ "& img": { maxWidth: "100%" } }}>
-            {imageUrls.map((src, i) => (
+            {images.map((src, i) => (
               <img key={i} src={src} />
             ))}
           </Box>
         )}
       </Box>
       <UploadBar
-        ref={imageUploadRef}
-        handleUpload={handleInputClick}
-        handleChange={handleEditProfile}
+        ref={input}
+        handleUpload={handleUpload}
+        handleChange={handleChange}
+        onlyPicture={onlyPicture}
       />
     </Styled.UploadFieldForm>
   );

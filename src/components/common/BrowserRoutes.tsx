@@ -9,6 +9,8 @@ import Record from "@/pages/record";
 import Reading from "@/pages/reading";
 import BookSearch from "@/pages/reading/search";
 import NewReadingHomework from "@/pages/reading/new";
+import WorkBook from "@/pages/workbook";
+import NewWorkBook from "@/pages/workbook/new";
 
 function BrowserRoutes() {
   return (
@@ -24,7 +26,10 @@ function BrowserRoutes() {
           <Route path="search" element={<BookSearch />} />
           <Route path="new" element={<NewReadingHomework />} />
         </Route>
-        <Route path="workbook" element={<Home />} />
+        <Route path="workbook/*">
+          <Route index element={<WorkBook />} />
+          <Route path="new" element={<NewWorkBook />} />
+        </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

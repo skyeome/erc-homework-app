@@ -9,7 +9,7 @@ import { UploadBarProps } from "./UploadBar.types";
 import * as Styled from "./UploadBar.styles";
 
 const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
-  ({ handleUpload, handleChange }, ref) => {
+  ({ handleUpload, handleChange, onlyPicture }, ref) => {
     const { open, handleOpen, handleClose } = useModal();
 
     return (
@@ -37,13 +37,15 @@ const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
                 Submit homework
               </Button>
             </Styled.UploadBarBox>
-            <Styled.UploadBtns direction="row" px={1}>
+            <Styled.UploadBtns direction="row" p={1}>
               <IconButton onClick={handleUpload}>
                 <AddPhotoAlternateOutlinedIcon fontSize="large" />
               </IconButton>
-              <IconButton onClick={handleOpen}>
-                <MicNoneOutlinedIcon fontSize="large" />
-              </IconButton>
+              {!onlyPicture && (
+                <IconButton onClick={handleOpen}>
+                  <MicNoneOutlinedIcon fontSize="large" />
+                </IconButton>
+              )}
             </Styled.UploadBtns>
           </Styled.UploadBarFixedInner>
         </Styled.UploadBarFixed>
