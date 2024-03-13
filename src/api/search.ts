@@ -1,4 +1,5 @@
 import axios from "axios";
+import BOOK_SEARCH_URL from "./baseUrl";
 
 export interface SearchResult {
   lastBuildDate: string;
@@ -21,6 +22,7 @@ export interface BookItem {
 }
 
 export const bookSearch = axios.create({
+  baseURL: import.meta.env.PROD ? BOOK_SEARCH_URL : "/api",
   headers: {
     "Content-type": "application/json; charset=UTF-8",
     "X-Naver-Client-Id": import.meta.env.DEV
@@ -34,8 +36,11 @@ export const bookSearch = axios.create({
 
 export const getBooks = async (query?: string) => {
   if (query === undefined || query === "") return;
-  const { data } = await bookSearch.get<SearchResult>(`/api/book.json`, {
-    params: { query },
-  });
+  const { data } = await bookSearch.get<SearchResult>(
+    import.meta.env.PROD ? "myCORS" : "book.json",
+    {
+      params: { query },
+    }
+  );
   return data;
 };
