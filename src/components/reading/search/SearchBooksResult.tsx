@@ -1,15 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import { SearchBooksResultProps } from "./SearchBooksResult.types";
 import { getBooks } from "@/api/search";
-import AppBar from "../common/appbar";
-import * as Styled from "./SearchBooksResult.styles";
 import { Typography } from "@mui/material";
+import AppBar from "../../common/appbar";
+import { SearchBooksResultProps } from "./SearchBooksResult.types";
+import * as Styled from "./SearchBooksResult.styles";
+import { useNavigate } from "react-router-dom";
 
 function SearchBooksResult({ query }: SearchBooksResultProps) {
+  const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: ["books", "search", query],
     queryFn: () => getBooks(query),
+    retry: 1,
   });
+
+  const handleClickAddBook = () => {
+    navigate("/reading/new", { state: { search: true } });
+  };
 
   if (isLoading || data === undefined) return null;
   return (
@@ -32,6 +39,9 @@ function SearchBooksResult({ query }: SearchBooksResultProps) {
             </Typography>
             <Typography variant="body2">{item.pubdate}</Typography>
           </div>
+          <Styled.AddNewBookBtn onClick={handleClickAddBook}>
+            + add
+          </Styled.AddNewBookBtn>
         </Styled.BookSearchResultItem>
       ))}
     </div>

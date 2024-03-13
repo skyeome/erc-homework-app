@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AppBar from "@/components/common/appbar";
-import SearchBooks from "@/components/reading/SearchBooks";
-import SearchBooksResult from "@/components/reading/SearchBooksResult";
+import SearchBooks from "@/components/reading/search/SearchBooks";
+import SearchBooksResult from "@/components/reading/search/SearchBooksResult";
 
 function BookSearch() {
   // input 값 저장

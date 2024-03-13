@@ -7,6 +7,7 @@ export const AppBarWrap = styled("header")(({ theme }) => ({
 
   width: "100%",
   height: "4rem",
+  zIndex: 10,
 
   "& .inner": {
     display: "flex",

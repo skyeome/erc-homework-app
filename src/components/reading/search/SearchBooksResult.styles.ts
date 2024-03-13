@@ -1,6 +1,8 @@
-import { Box, Typography, styled } from "@mui/material";
+import { Box, Button, Typography, styled } from "@mui/material";
 
 export const BookSearchResultItem = styled(Box)(({ theme }) => ({
+  position: "relative",
+
   display: "flex",
   gap: "1rem",
   borderBottom: `1px solid ${
@@ -28,5 +30,11 @@ export const BookTitle = styled(Typography)(() => ({
   WebkitLineClamp: 2,
   WebkitBoxOrient: "vertical",
 }));
+
+export const AddNewBookBtn = styled(Button)`
+  position: absolute;
+  right: 0.625rem;
+  top: calc(50% - 1.25rem);
+`;
 
 // export const BookSearchResultSkeleton = styled(Box)(({ theme }) => ({}));

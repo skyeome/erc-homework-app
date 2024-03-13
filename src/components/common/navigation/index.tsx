@@ -31,6 +31,7 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 function Navigation({ pathname }: NavigationProps) {
+  if (pathname === "/reading/new") return null;
   return (
     <>
       <Styled.NavigationSpacing />
