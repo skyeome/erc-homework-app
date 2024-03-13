@@ -1,5 +1,11 @@
-import { FormEvent } from "react";
-import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
+import { FormEvent, useState } from "react";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import SearchIcon from "@mui/icons-material/Search";
 import { SearchBooksProps } from "./SearchBooks.types";
@@ -8,19 +14,27 @@ import { Link } from "react-router-dom";
 
 function SearchBooks({ value, setValue, setSearchParams }: SearchBooksProps) {
   const recent = localStorage.getItem("recent-search");
-  const recentSearch = JSON.parse(recent ?? "[]");
+  const [recentSearch, setRecentSearch] = useState<string[]>(
+    JSON.parse(recent ?? "[]") as string[]
+  );
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setSearchParams({ query: value });
 
     // 중복 제거하기
-    recentSearch.unshift(value);
-    const setResult = new Set(recentSearch);
+    const setResult = new Set([value, ...recentSearch]);
     const result = Array.from(setResult);
 
+    setRecentSearch(result);
     localStorage.setItem("recent-search", JSON.stringify(result));
   };
+
+  const onClickDelete = () => {
+    setRecentSearch([]);
+    localStorage.setItem("recent-search", "[]");
+  };
+
   return (
     <Box px={2}>
       <form onSubmit={handleSubmit}>
@@ -56,6 +70,11 @@ function SearchBooks({ value, setValue, setSearchParams }: SearchBooksProps) {
           </li>
         ))}
       </RecentSearchItems>
+      {recentSearch.length > 0 && (
+        <Button size="small" onClick={onClickDelete}>
+          최근 검색어 지우기
+        </Button>
+      )}
     </Box>
   );
 }
