@@ -23,8 +23,12 @@ export interface BookItem {
 export const bookSearch = axios.create({
   headers: {
     "Content-type": "application/json; charset=UTF-8",
-    "X-Naver-Client-Id": import.meta.env.VITE_NAVER_CLIENT_ID,
-    "X-Naver-Client-Secret": import.meta.env.VITE_NAVER_CLIENT_SECRET,
+    "X-Naver-Client-Id": import.meta.env.DEV
+      ? import.meta.env.VITE_NAVER_CLIENT_ID
+      : import.meta.env.NAVER_CLIENT_ID,
+    "X-Naver-Client-Secret": import.meta.env.DEV
+      ? import.meta.env.VITE_NAVER_CLIENT_SECRET
+      : import.meta.env.NAVER_CLIENT_SECRET,
   },
 });
 
