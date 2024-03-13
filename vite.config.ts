@@ -8,4 +8,13 @@ export default defineConfig({
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://openapi.naver.com/v1/search",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
 });
