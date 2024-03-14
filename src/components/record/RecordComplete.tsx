@@ -3,7 +3,10 @@ import { RecordCompleteProps } from "./Recorder.types";
 import RecordScreen from "./index.styles";
 
 function RecordComplete({ chunks, setChunks }: RecordCompleteProps) {
-  const blob = new Blob(chunks, { type: "audio/wav" });
+  const isSupport = MediaRecorder.isTypeSupported("audio/webm;codecs=opus");
+  const blob = new Blob(chunks, {
+    type: isSupport ? "audio/webm" : "audio/mp4",
+  });
   const downloadUrl = URL.createObjectURL(blob);
 
   const handleClickAgain = () => {
@@ -14,7 +17,10 @@ function RecordComplete({ chunks, setChunks }: RecordCompleteProps) {
   return (
     <RecordScreen px={4} pt={1}>
       <audio controls>
-        <source src={downloadUrl} type="audio/wav" />
+        <source
+          src={downloadUrl}
+          type={isSupport ? "audio/webm" : "audio/mp4"}
+        />
       </audio>
       <div>
         <Button onClick={handleClickAgain} size="large" fullWidth>
