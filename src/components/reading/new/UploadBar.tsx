@@ -9,7 +9,7 @@ import { UploadBarProps } from "./UploadBar.types";
 import * as Styled from "./UploadBar.styles";
 
 const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
-  ({ handleUpload, handleChange, onlyPicture }, ref) => {
+  ({ isActive, handleUpload, handleChange, handleReset, onlyPicture }, ref) => {
     const { open, handleOpen, handleClose } = useModal();
 
     return (
@@ -24,7 +24,13 @@ const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
           />
           <Styled.UploadBarFixedInner>
             <Styled.UploadBarBox p={2} direction="column" gap={1}>
-              <Button type="reset" variant="outlined" size="large" fullWidth>
+              <Button
+                type="reset"
+                variant="outlined"
+                size="large"
+                fullWidth
+                onClick={handleReset}
+              >
                 Upload again
               </Button>
               <Button
@@ -32,7 +38,7 @@ const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
                 variant="contained"
                 size="large"
                 fullWidth
-                disabled
+                disabled={isActive}
               >
                 Submit homework
               </Button>

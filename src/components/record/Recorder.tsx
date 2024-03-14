@@ -28,8 +28,13 @@ function Recorder({ setChunks }: RecorderProps) {
   // 녹음 버튼을 눌렀을 때 실행
   const handleStartRecording = async () => {
     try {
+      const isSupport = MediaRecorder.isTypeSupported("audio/webm;codecs=opus");
+      console.log(isSupport);
+      const option = {
+        mimeType: isSupport ? "audio/webm;codecs=opus" : "audio/mp4",
+      };
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
+      mediaRecorderRef.current = new MediaRecorder(stream, option);
       mediaRecorderRef.current.ondataavailable = (e) => {
         setChunks((prev) => [...prev, e.data]);
       };

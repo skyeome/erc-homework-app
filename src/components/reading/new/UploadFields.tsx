@@ -8,7 +8,8 @@ import { UploadFieldsProps } from "./UploadFields.types";
 import * as Styled from "./UploadFields.styles";
 
 function UploadFields({ onlyPicture }: UploadFieldsProps) {
-  const { input, images, handleUpload, handleChange } = useImageUpload();
+  const { input, images, handleUpload, handleChange, handleReset } =
+    useImageUpload();
 
   return (
     <Styled.UploadFieldForm>
@@ -41,8 +42,10 @@ function UploadFields({ onlyPicture }: UploadFieldsProps) {
       </Box>
       <UploadBar
         ref={input}
+        isActive={Boolean(!images)}
         handleUpload={handleUpload}
         handleChange={handleChange}
+        handleReset={handleReset}
         onlyPicture={onlyPicture}
       />
     </Styled.UploadFieldForm>

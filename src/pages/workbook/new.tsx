@@ -14,7 +14,7 @@ function NewWorkBook() {
           location.state === "new" ? "Workbook Homework" : "Other Homework"
         }
       />
-      <UploadFields onlyPicture />
+      <UploadFields />
     </div>
   );
 }

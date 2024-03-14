@@ -27,7 +27,14 @@ function useImageUpload() {
     if (input.current) input.current.value = "";
   };
 
-  return { input, images, handleUpload, handleChange };
+  // handle reset
+  const handleReset = () => {
+    setImages(undefined);
+    // 파일 초기화!
+    if (input.current) input.current.value = "";
+  };
+
+  return { input, images, handleUpload, handleChange, handleReset };
 }
 
 export default useImageUpload;
