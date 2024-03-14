@@ -13,7 +13,13 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
-        theme_color: "#ffffff",
+        name: "ERC Homework",
+        short_name: "ERC Homework",
+        start_url: ".",
+        display: "standalone",
+        background_color: "#ffffff",
+        description: "English Reading Club Homework App",
+        theme_color: "#65C3C8",
         icons: [
           {
             src: "/android-icon-36x36.png",
