@@ -11,12 +11,16 @@ import BookSearch from "@/pages/reading/search";
 import NewReadingHomework from "@/pages/reading/new";
 import WorkBook from "@/pages/workbook";
 import NewWorkBook from "@/pages/workbook/new";
+import AddUser from "@/pages/admin/user/AddUser";
 
 function BrowserRoutes() {
   return (
     <Routes>
       <Route element={<AuthLayout />}>
         <Route path="auth/login" element={<Login />} />
+      </Route>
+      <Route path="admin/*">
+        <Route path="user/add" element={<AddUser />} />
       </Route>
       <Route element={<PageLayout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
