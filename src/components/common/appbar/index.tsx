@@ -12,7 +12,7 @@ import { AppBarProps } from "./index.types";
 import * as Styled from "./index.styles";
 import { useAppDispatch } from "@/hooks/useReduxHook";
 import { clearUser } from "@/libs/userSlice";
-import { persistor } from "@/main";
+import { persistor } from "@/libs/store";
 
 function AppBar({ title, disableBack }: AppBarProps) {
   const navigate = useNavigate();
