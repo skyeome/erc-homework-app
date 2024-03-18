@@ -31,21 +31,14 @@ const useLoginForm = () => {
   };
 
   const onSubmit = handleSubmit(async (data: LoginFormType) => {
-    const salt = import.meta.env.DEV
-      ? import.meta.env.VITE_SOME_CODE
-      : process.env.SOME_CODE;
+    const salt = process.env.SOME_CODE;
     const newUsername = data.username + "@email.com";
     const newPassword = `${data.password}${salt}`;
 
     // 로그인 작업
     try {
       if (!keepLogin) await setPersistence(auth, browserSessionPersistence);
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        newUsername,
-        newPassword
-      );
-      console.log(userCredential.user);
+      await signInWithEmailAndPassword(auth, newUsername, newPassword);
       navigate("/");
       reset();
     } catch (error) {

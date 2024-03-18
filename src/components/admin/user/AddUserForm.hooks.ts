@@ -24,9 +24,7 @@ const useAddUserForm = () => {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const salt = import.meta.env.DEV
-      ? import.meta.env.VITE_SOME_CODE
-      : process.env.SOME_CODE;
+    const salt = process.env.SOME_CODE;
     const newUsername = data.username + "@email.com";
     const newPassword = `${data.password}${salt}`;
 
