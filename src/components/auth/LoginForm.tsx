@@ -17,7 +17,7 @@ function LoginForm() {
         <IOSSwitch
           checked={keepLogin}
           onChange={onClickSwitch}
-          defaultChecked
+          // defaultChecked={keepLogin}
         />
       </Styled.PreserveLoginBox>
       <Button

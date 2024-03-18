@@ -8,8 +8,10 @@ import {
 import { LoginFormType } from "./LoginForm.types";
 import { auth } from "@/libs/firebase";
 import { FirebaseError } from "firebase/app";
+import { useNavigate } from "react-router-dom";
 
 const useLoginForm = () => {
+  const navigate = useNavigate();
   const [keepLogin, setKeepLogin] = useState(true);
 
   const {
@@ -35,8 +37,6 @@ const useLoginForm = () => {
     const newUsername = data.username + "@email.com";
     const newPassword = `${data.password}${salt}`;
 
-    console.log(keepLogin);
-
     // 로그인 작업
     try {
       if (!keepLogin) await setPersistence(auth, browserSessionPersistence);
@@ -45,7 +45,8 @@ const useLoginForm = () => {
         newUsername,
         newPassword
       );
-      console.log(userCredential.user, keepLogin);
+      console.log(userCredential.user);
+      navigate("/");
       reset();
     } catch (error) {
       if (error instanceof FirebaseError) {

@@ -1,8 +1,11 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navigation from "../navigation";
 import PageLayoutWrap from "./PageLayout.styles";
+import useAuthChange from "@/hooks/useAuthChange";
+import withAuth from "../hoc/withAuth";
 
-function PageLayout() {
+const PageLayout = withAuth(() => {
+  useAuthChange();
   const { pathname } = useLocation();
   return (
     <PageLayoutWrap>
@@ -10,6 +13,6 @@ function PageLayout() {
       <Navigation pathname={pathname} />
     </PageLayoutWrap>
   );
-}
+});
 
 export default PageLayout;

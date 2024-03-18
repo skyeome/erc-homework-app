@@ -1,40 +1,31 @@
-import { useEffect, useState } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/libs/firebase";
+import { useAppDispatch } from "./useReduxHook";
+import { clearUser, setUser } from "@/libs/userSlice";
 
 export default function useAuthChange() {
-  const userJSON = localStorage.getItem("user");
-  const [user, setUser] = useState(userJSON);
+  const { currentUser } = auth;
+  const dispatch = useAppDispatch();
   useEffect(() => {
+    if (currentUser) {
+      const userCopy = {
+        uid: currentUser.uid,
+      };
+      dispatch(setUser(userCopy));
+    }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user !== null) {
         const userCopy = {
           uid: user.uid,
-          email: user.email,
         };
-        const userStr = JSON.stringify(userCopy);
-        setUser(userStr);
-        localStorage.setItem("user", userStr);
+        dispatch(setUser(userCopy));
       } else {
-        setUser(null);
-        localStorage.removeItem("user");
+        dispatch(clearUser());
       }
     });
     return () => {
       unsubscribe();
     };
-  }, [userJSON]);
-
-  const handleLogout = (): void => {
-    signOut(auth)
-      .then(() => {
-        setUser(null);
-        localStorage.removeItem("user");
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
-
-  return { user, handleLogout };
+  }, [currentUser, dispatch]);
 }
