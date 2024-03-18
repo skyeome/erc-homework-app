@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/hooks/useReduxHook";
-import { ComponentType, useLayoutEffect } from "react";
+import { ComponentType, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const withAuthLogin =
@@ -7,8 +7,8 @@ export const withAuthLogin =
   <P extends object>(props: P) => {
     const navigate = useNavigate();
     const user = useAppSelector((state) => state.user.uid);
-    useLayoutEffect(() => {
-      if (user) navigate("/", { replace: true });
+    useEffect(() => {
+      if (user) navigate(-1);
     }, [navigate, user]);
 
     return <Component {...props} />;
