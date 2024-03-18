@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "@/libs/userSlice";
+import dateReducer from "@/libs/dateSlice";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 const reducers = combineReducers({
   user: userReducer,
+  date: dateReducer,
 });
 
 const persistConfig = {
