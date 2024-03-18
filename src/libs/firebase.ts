@@ -4,18 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.PROD
-    ? import.meta.env.FB_API_KEY
-    : import.meta.env.VITE_FB_API_KEY,
+  apiKey: "AIzaSyDfk_u6IFOwnv0N-AH_2ifGFlwB-wAGQhM",
   authDomain: "erc-homework.firebaseapp.com",
   projectId: "erc-homework",
   storageBucket: "erc-homework.appspot.com",
-  messagingSenderId: import.meta.env.PROD
-    ? import.meta.env.FB_SENDER_ID
-    : import.meta.env.VITE_FB_SENDER_ID,
-  appId: import.meta.env.PROD
-    ? import.meta.env.FB_APP_ID
-    : import.meta.env.VITE_FB_APP_ID,
+  messagingSenderId: "1010524872547",
+  appId: "1:1010524872547:web:2c8e13cdcab0553ccb7d56",
 };
 
 // Initialize Firebase
