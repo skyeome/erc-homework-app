@@ -27,7 +27,7 @@ function AppBar({ title, disableBack }: AppBarProps) {
       await signOut(auth);
       await persistor.purge();
       dispatch(clearUser());
-      navigate("/auth/login");
+      navigate("/auth/login", { replace: true });
     } catch (error) {
       if (error instanceof FirebaseError) {
         console.log(error.code);
