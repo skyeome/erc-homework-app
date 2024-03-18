@@ -68,8 +68,8 @@ export const WeeklyCheckItem = styled("div")(({ theme }) => ({
   },
 }));
 
-export const WeeklyCheckBgItem = styled("div")<{ checked: string }>(
-  ({ theme, checked }) => ({
+export const WeeklyCheckBgItem = styled("div")<{ ischecked: string }>(
+  ({ theme, ischecked }) => ({
     position: "relative",
 
     width: "2rem",
@@ -82,8 +82,8 @@ export const WeeklyCheckBgItem = styled("div")<{ checked: string }>(
       left: "50%",
       transform: "translate(-50%, -50%)",
 
-      width: checked === "true" ? "2rem" : ".625rem",
-      height: checked === "true" ? "2rem" : ".625rem",
+      width: ischecked === "true" ? "1.875rem" : ".625rem",
+      height: ischecked === "true" ? "1.875rem" : ".625rem",
 
       backgroundColor: theme.palette.background.paper,
       borderRadius: "100%",

@@ -36,7 +36,7 @@ function WeeklyRecord() {
             <Styled.WeeklyCheckBgItem
               key={index}
               className="week-bg-item"
-              checked={`${item}`}
+              ischecked={`${item}`}
             />
           ))}
         </div>
