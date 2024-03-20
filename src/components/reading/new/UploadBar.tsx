@@ -9,7 +9,7 @@ import { UploadBarProps } from "./UploadBar.types";
 import * as Styled from "./UploadBar.styles";
 
 const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
-  ({ isActive, handleUpload, handleChange, handleReset, onlyPicture }, ref) => {
+  ({ isActive, setChunks, handleUpload, handleChange, handleReset }, ref) => {
     const { open, handleOpen, handleClose } = useModal();
 
     return (
@@ -47,11 +47,9 @@ const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
               <IconButton onClick={handleUpload}>
                 <AddPhotoAlternateOutlinedIcon fontSize="large" />
               </IconButton>
-              {!onlyPicture && (
-                <IconButton onClick={handleOpen}>
-                  <MicNoneOutlinedIcon fontSize="large" />
-                </IconButton>
-              )}
+              <IconButton onClick={handleOpen}>
+                <MicNoneOutlinedIcon fontSize="large" />
+              </IconButton>
             </Styled.UploadBtns>
           </Styled.UploadBarFixedInner>
         </Styled.UploadBarFixed>
@@ -63,7 +61,7 @@ const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
                   <CloseIcon />
                 </IconButton>
               </Box>
-              <Recorder setChunks={() => {}} />
+              <Recorder setChunks={setChunks} />
             </Styled.RecorderModalContent>
           </Styled.RecorderModal>
         </Modal>

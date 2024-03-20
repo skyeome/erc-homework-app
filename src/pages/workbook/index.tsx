@@ -7,17 +7,17 @@ import WorkBookItem from "@/components/workbook/index.styles";
 
 interface WorkbookLink {
   text: string;
-  state: string;
+  type: string;
 }
 
 const WORKBOOK_LINKS: WorkbookLink[] = [
   {
     text: "Workbook homework",
-    state: "new",
+    type: "workbook",
   },
   {
     text: "Other homework",
-    state: "other",
+    type: "other",
   },
 ];
 
@@ -27,8 +27,8 @@ function WorkBook() {
       <AppBar title="Workbook Homework" />
       <Box p={2}>
         {WORKBOOK_LINKS.map((item) => (
-          <WorkBookItem key={item.state} borderRadius={2} p={1} mb={2}>
-            <Link to="new" state={item.state}>
+          <WorkBookItem key={item.type} borderRadius={2} p={1} mb={2}>
+            <Link to="new" state={{ type: item.type }}>
               <Typography fontWeight={700}>{item.text}</Typography>
               <ChevronRightIcon />
             </Link>

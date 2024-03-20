@@ -5,16 +5,18 @@ import UploadFields from "@/components/reading/new/UploadFields";
 
 function NewWorkBook() {
   const location = useLocation();
-  console.log(location.state);
+  const uploadState = location.state;
 
   return (
     <div>
       <AppBar
         title={
-          location.state === "new" ? "Workbook Homework" : "Other Homework"
+          uploadState.type === "workbook"
+            ? "Workbook Homework"
+            : "Other Homework"
         }
       />
-      <UploadFields />
+      <UploadFields type={uploadState.type} />
     </div>
   );
 }

@@ -1,19 +1,29 @@
 import { db } from "@/libs/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { format } from "date-fns";
+import { collection, doc, setDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 
 interface RecordUploadData {
+  type: string;
   uid: string;
   createdAt: Date;
   fileRef: string;
   fileUrl: string;
 }
 
-export const uploadRecord = async (data: RecordUploadData) => {
-  await setDoc(doc(db, "record", data.uid), {
-    fileRef: data.fileRef,
-    fileUrl: data.fileUrl,
-    createdAt: data.createdAt,
+export const uploadRecord = async ({
+  type,
+  uid,
+  createdAt,
+  fileRef,
+  fileUrl,
+}: RecordUploadData) => {
+  const dataStr = format(createdAt, "yyyy-MM-dd");
+  const docRef = doc(collection(db, type, uid, dataStr));
+  await setDoc(docRef, {
+    fileRef,
+    fileUrl,
+    createdAt,
   });
   toast.success("숙제 제출이 완료되었습니다.");
 };

@@ -1,5 +1,5 @@
-type chunks = Blob[];
-type setChunks = React.Dispatch<React.SetStateAction<Blob[]>>;
+export type chunks = Blob[];
+export type setChunks = React.Dispatch<React.SetStateAction<Blob[]>>;
 
 export interface RecorderProps {
   setChunks: setChunks;

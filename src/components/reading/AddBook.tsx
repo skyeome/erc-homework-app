@@ -24,8 +24,8 @@ function AddBook() {
     setAnchorEl(null);
   };
 
-  const handleListItemClick = (to: string) => {
-    navigate(to);
+  const handleListItemClick = (to: string, type?: string) => {
+    navigate(to, { state: { type } });
   };
 
   const open = Boolean(anchorEl);
@@ -64,7 +64,9 @@ function AddBook() {
           </ListItem>
           <Divider />
           <ListItem disablePadding>
-            <ListItemButton onClick={() => handleListItemClick("new")}>
+            <ListItemButton
+              onClick={() => handleListItemClick("new", "reading")}
+            >
               <ListItemIcon sx={ListIconSx}>
                 <EditIcon />
               </ListItemIcon>
