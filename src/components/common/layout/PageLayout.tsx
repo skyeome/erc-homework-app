@@ -2,10 +2,9 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navigation from "../navigation";
 import PageLayoutWrap from "./PageLayout.styles";
 import useAuthChange from "@/hooks/useAuthChange";
-import withAuth from "../hoc/withAuth";
 import { Toaster } from "react-hot-toast";
 
-const PageLayout = withAuth(() => {
+function PageLayout() {
   useAuthChange();
   const { pathname } = useLocation();
   return (
@@ -15,6 +14,6 @@ const PageLayout = withAuth(() => {
       <Navigation pathname={pathname} />
     </PageLayoutWrap>
   );
-});
+}
 
 export default PageLayout;
