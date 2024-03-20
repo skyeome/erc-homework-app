@@ -1,10 +1,8 @@
-import { FormEvent } from "react";
 import { Box, TextField, Typography } from "@mui/material";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
 import CollectionsBookmarkOutlinedIcon from "@mui/icons-material/CollectionsBookmarkOutlined";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
-import useImageUpload from "@/hooks/useImageUpload";
-import useRecordUpload from "@/hooks/useRecordUpload";
+import useUpload from "@/hooks/useUpload";
 import UploadBar from "./UploadBar";
 import { UploadFieldsProps } from "./UploadFields.types";
 import RecordScreen from "@/components/record/index.styles";
@@ -19,17 +17,10 @@ function UploadFields({ type, title, image }: UploadFieldsProps) {
     handleUpload,
     handleChange,
     handleReset,
-    handleSubmit: handleImageSubmit,
-  } = useImageUpload(type, image);
-  const {
+    handleSubmit,
     isSupport,
     downloadUrl,
-    handleSubmit: handleRecordSubmit,
-  } = useRecordUpload({ type, chunks, setChunks });
-  const handleSubmit = async (e: FormEvent) => {
-    await handleImageSubmit(e);
-    await handleRecordSubmit();
-  };
+  } = useUpload(type, image);
 
   return (
     <Styled.UploadFieldForm onSubmit={handleSubmit}>

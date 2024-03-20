@@ -13,7 +13,7 @@ interface RecordUploadData {
 }
 
 function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
-  let fileUrl: string | undefined;
+  let recordUrl: string | undefined;
   const user = auth.currentUser;
 
   const isSupport = MediaRecorder.isTypeSupported("audio/webm;codecs=opus");
@@ -36,21 +36,21 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
 
     // 사용자가 로그인 되어있고 파일이 있으면 업로드
     if (uid !== undefined && chunks.length > 0) {
-      const recordFileName = `${uid}/${dateStr}-record.${
+      const recordRef = `${uid}/${dateStr}-record.${
         isSupport ? "weba" : "mp4"
       }`;
-      const recordRef = ref(storage, recordFileName);
+      const fileRef = ref(storage, recordRef);
       try {
         // 파일 업로드 및 다운로드 url 생성
-        await uploadBytes(recordRef, blob);
-        fileUrl = await getDownloadURL(recordRef);
+        await uploadBytes(fileRef, blob);
+        recordUrl = await getDownloadURL(fileRef);
         // db에 url과 파일이름 저장
         await uploadRecord({
           type,
           uid,
           createdAt: date === undefined ? new Date() : date,
-          fileRef: recordFileName,
-          fileUrl,
+          recordRef,
+          recordUrl,
         });
         handleClickAgain();
       } catch (error) {

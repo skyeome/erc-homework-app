@@ -1,9 +1,17 @@
 import { FormEvent, useRef, useState } from "react";
+import useRecordUpload from "./useRecordUpload";
 
-function useImageUpload(type: string, image?: string) {
+function useUpload(type: string, image?: string) {
   const input = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<string[]>();
   const [chunks, setChunks] = useState<Blob[]>([]);
+
+  // 녹음 관련
+  const {
+    isSupport,
+    downloadUrl,
+    handleSubmit: handleRecordSubmit,
+  } = useRecordUpload({ type, chunks, setChunks });
 
   // handle Click
   const handleUpload = (e: React.MouseEvent<HTMLElement>) => {
@@ -43,6 +51,7 @@ function useImageUpload(type: string, image?: string) {
       console.log("책검색 통한 업로드...");
     }
     console.log(type);
+    handleRecordSubmit();
   };
 
   return {
@@ -53,8 +62,10 @@ function useImageUpload(type: string, image?: string) {
     handleUpload,
     handleChange,
     handleReset,
-    handleSubmit,
+    handleSubmit, // 이미지 관련
+    isSupport,
+    downloadUrl, // 녹음 관련
   };
 }
 
-export default useImageUpload;
+export default useUpload;

@@ -7,22 +7,22 @@ interface RecordUploadData {
   type: string;
   uid: string;
   createdAt: Date;
-  fileRef: string;
-  fileUrl: string;
+  recordRef: string;
+  recordUrl: string;
 }
 
 export const uploadRecord = async ({
   type,
   uid,
   createdAt,
-  fileRef,
-  fileUrl,
+  recordRef,
+  recordUrl,
 }: RecordUploadData) => {
   const dataStr = format(createdAt, "yyyy-MM-dd");
   const docRef = doc(collection(db, type, uid, dataStr));
   await setDoc(docRef, {
-    fileRef,
-    fileUrl,
+    recordRef,
+    recordUrl,
     createdAt,
   });
   toast.success("숙제 제출이 완료되었습니다.");
