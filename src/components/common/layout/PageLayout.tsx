@@ -3,12 +3,14 @@ import Navigation from "../navigation";
 import PageLayoutWrap from "./PageLayout.styles";
 import useAuthChange from "@/hooks/useAuthChange";
 import withAuth from "../hoc/withAuth";
+import { Toaster } from "react-hot-toast";
 
 const PageLayout = withAuth(() => {
   useAuthChange();
   const { pathname } = useLocation();
   return (
     <PageLayoutWrap>
+      <Toaster />
       <Outlet />
       <Navigation pathname={pathname} />
     </PageLayoutWrap>

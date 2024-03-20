@@ -11,9 +11,6 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      devOptions: {
-        enabled: true,
-      },
       manifest: {
         name: "ERC Homework",
         short_name: "ERC Homework",
