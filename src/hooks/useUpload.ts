@@ -1,17 +1,29 @@
 import { FormEvent, useRef, useState } from "react";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { FirebaseError } from "firebase/app";
+import { auth, storage } from "@/libs/firebase";
+import { format } from "date-fns";
 import useRecordUpload from "./useRecordUpload";
+import toast from "react-hot-toast";
 
-function useUpload(type: string, image?: string) {
+export interface ImagesInfo {
+  imageRef: string;
+  imageUrl: string;
+}
+
+function useUpload(type: string, image?: string, title?: string) {
   const input = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [images, setImages] = useState<string[]>();
+  const [imgFiles, setImgFiles] = useState<Blob[]>([]);
   const [chunks, setChunks] = useState<Blob[]>([]);
 
   // 녹음 관련
-  const {
-    isSupport,
-    downloadUrl,
-    handleSubmit: handleRecordSubmit,
-  } = useRecordUpload({ type, chunks, setChunks });
+  const { isSupport, downloadUrl, handleRecordUpload } = useRecordUpload({
+    type,
+    chunks,
+    setChunks,
+  });
 
   // handle Click
   const handleUpload = (e: React.MouseEvent<HTMLElement>) => {
@@ -23,10 +35,10 @@ function useUpload(type: string, image?: string) {
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     // 업로드한 파일들이 있을 때
     if (e.target.files) {
-      const urls = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
+      const files = Array.from(e.target.files).map((file) => file);
+      const urls = files.map((file) => URL.createObjectURL(file));
 
+      setImgFiles(files);
       setImages((prev) => {
         if (!prev) return urls;
         return [...prev, ...urls];
@@ -34,6 +46,22 @@ function useUpload(type: string, image?: string) {
     }
     // 파일 초기화!
     if (input.current) input.current.value = "";
+  };
+
+  const upload = async (file: Blob, index: number) => {
+    const uid = auth.currentUser?.uid;
+    const dateStr = format(new Date(), "yyyy-MM-dd");
+    const imageRef = `${uid}/${dateStr}-image${index}`;
+    const fileRef = ref(storage, imageRef);
+
+    // 파일 업로드 및 다운로드 url 생성
+    await uploadBytes(fileRef, file);
+    const imageUrl = await getDownloadURL(fileRef);
+
+    return {
+      imageRef,
+      imageUrl,
+    };
   };
 
   // handle reset
@@ -47,14 +75,34 @@ function useUpload(type: string, image?: string) {
   // 업로드 로직
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (image) {
-      console.log("책검색 통한 업로드...");
+    setIsUploading(true);
+    const uploadPromises = imgFiles.map((file, index) => upload(file, index));
+    try {
+      const results = await Promise.all(uploadPromises);
+      const record = await handleRecordUpload();
+
+      // 책 검색시 책 표지 여부 체크
+      if (image) {
+        console.log("책검색 통한 업로드...");
+      } else {
+        //
+        console.log("title: ", title);
+        console.log("images: ", results);
+        console.log("record: ", record);
+      }
+      toast.success("숙제가 정상적으로 업로드 되었습니다.");
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        console.log(error.code, error.message);
+        toast.error("업로드 과정에서 문제가 발생했습니다. 다시 시도해주세요");
+      }
+    } finally {
+      setIsUploading(false);
     }
-    console.log(type);
-    handleRecordSubmit();
   };
 
   return {
+    isUploading,
     input,
     images,
     chunks,

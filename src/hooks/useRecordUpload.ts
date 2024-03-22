@@ -14,7 +14,8 @@ interface RecordUploadData {
 
 function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
   let recordUrl: string | undefined;
-  const user = auth.currentUser;
+  const uid = auth.currentUser?.uid;
+  const dateStr = format(date === undefined ? new Date() : date, "yyyy-MM-dd");
 
   const isSupport = MediaRecorder.isTypeSupported("audio/webm;codecs=opus");
   const blob = new Blob(chunks, {
@@ -27,13 +28,25 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
     URL.revokeObjectURL(downloadUrl);
   };
 
-  const handleSubmit = async () => {
-    const uid = user?.uid;
-    const dateStr = format(
-      date === undefined ? new Date() : date,
-      "yyyy-MM-dd"
-    );
+  const handleRecordUpload = async () => {
+    let recordRef: string | undefined;
 
+    // 사용자가 로그인 되어있고 파일이 있으면 업로드
+    if (uid !== undefined && chunks.length > 0) {
+      recordRef = `${uid}/${dateStr}-record.${isSupport ? "weba" : "mp4"}`;
+      const fileRef = ref(storage, recordRef);
+      await uploadBytes(fileRef, blob);
+      recordUrl = await getDownloadURL(fileRef);
+      handleClickAgain();
+    }
+
+    return {
+      recordRef,
+      recordUrl,
+    };
+  };
+
+  const handleSubmit = async () => {
     // 사용자가 로그인 되어있고 파일이 있으면 업로드
     if (uid !== undefined && chunks.length > 0) {
       const recordRef = `${uid}/${dateStr}-record.${
@@ -65,6 +78,7 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
     downloadUrl,
     handleClickAgain,
     handleSubmit,
+    handleRecordUpload,
   };
 }
 

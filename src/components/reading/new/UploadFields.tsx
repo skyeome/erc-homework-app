@@ -7,9 +7,12 @@ import UploadBar from "./UploadBar";
 import { UploadFieldsProps } from "./UploadFields.types";
 import RecordScreen from "@/components/record/index.styles";
 import * as Styled from "./UploadFields.styles";
+import { useState } from "react";
 
 function UploadFields({ type, title, image }: UploadFieldsProps) {
+  const [titleTxt, setTitleTxt] = useState(title);
   const {
+    isUploading,
     input,
     images,
     chunks,
@@ -20,7 +23,7 @@ function UploadFields({ type, title, image }: UploadFieldsProps) {
     handleSubmit,
     isSupport,
     downloadUrl,
-  } = useUpload(type, image);
+  } = useUpload(type, image, titleTxt);
 
   return (
     <Styled.UploadFieldForm onSubmit={handleSubmit}>
@@ -30,7 +33,12 @@ function UploadFields({ type, title, image }: UploadFieldsProps) {
             <img src={image} />
           </Box>
         )}
-        <TextField label="title" defaultValue={title} fullWidth />
+        <TextField
+          label="title"
+          value={titleTxt}
+          onChange={(e) => setTitleTxt(e.target.value)}
+          fullWidth
+        />
         {images === undefined ? (
           <Box mt={2} p={2} textAlign="center">
             <CollectionsBookmarkOutlinedIcon fontSize="large" />
@@ -68,7 +76,9 @@ function UploadFields({ type, title, image }: UploadFieldsProps) {
       )}
       <UploadBar
         ref={input}
+        isUploading={isUploading}
         isActive={Boolean(!images)}
+        chunks={chunks}
         setChunks={setChunks}
         handleUpload={handleUpload}
         handleChange={handleChange}

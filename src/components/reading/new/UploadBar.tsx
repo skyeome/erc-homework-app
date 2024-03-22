@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Button, IconButton, Modal } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import useModal from "@/hooks/useModal";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,7 +10,19 @@ import { UploadBarProps } from "./UploadBar.types";
 import * as Styled from "./UploadBar.styles";
 
 const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
-  ({ isActive, setChunks, handleUpload, handleChange, handleReset }, ref) => {
+  (
+    {
+      isUploading,
+      isActive,
+      chunks,
+      setChunks,
+      handleUpload,
+      handleChange,
+      handleReset,
+    },
+    ref
+  ) => {
+    const isRecord = chunks.length > 0;
     const { open, handleOpen, handleClose } = useModal();
 
     return (
@@ -33,15 +46,16 @@ const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
               >
                 Upload again
               </Button>
-              <Button
+              <LoadingButton
                 type="submit"
                 variant="contained"
                 size="large"
                 fullWidth
+                loading={isUploading}
                 disabled={isActive}
               >
                 Submit homework
-              </Button>
+              </LoadingButton>
             </Styled.UploadBarBox>
             <Styled.UploadBtns direction="row" p={1}>
               <IconButton onClick={handleUpload}>
@@ -53,7 +67,7 @@ const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
             </Styled.UploadBtns>
           </Styled.UploadBarFixedInner>
         </Styled.UploadBarFixed>
-        <Modal open={open} onClose={handleClose}>
+        <Modal open={open && !isRecord} onClose={handleClose}>
           <Styled.RecorderModal>
             <Styled.RecorderModalContent pb={4}>
               <Box p={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
