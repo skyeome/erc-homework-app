@@ -1,9 +1,11 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { FirebaseError } from "firebase/app";
 import { format } from "date-fns";
-import { auth, storage } from "@/libs/firebase";
+import { storage } from "@/libs/firebase";
 import type { chunks, setChunks } from "@/components/record/Recorder.types";
 import { uploadRecord } from "@/api/record";
+import { useAppSelector } from "./useReduxHook";
+import toast from "react-hot-toast";
 
 interface RecordUploadData {
   type: string;
@@ -14,8 +16,10 @@ interface RecordUploadData {
 
 function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
   let recordUrl: string | undefined;
-  const uid = auth.currentUser?.uid;
-  const dateStr = format(date === undefined ? new Date() : date, "yyyy-MM-dd");
+  const user = useAppSelector((state) => state.user);
+  const selectedDate = date === undefined ? new Date() : date;
+  const dateStr = format(selectedDate, "yyyy-MM-dd");
+  const timeStr = format(selectedDate, "HH:mm:ss");
 
   const isSupport = MediaRecorder.isTypeSupported("audio/webm;codecs=opus");
   const blob = new Blob(chunks, {
@@ -32,26 +36,28 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
     let recordRef: string | undefined;
 
     // 사용자가 로그인 되어있고 파일이 있으면 업로드
-    if (uid !== undefined && chunks.length > 0) {
-      recordRef = `${uid}/${dateStr}-record.${isSupport ? "weba" : "mp4"}`;
+    if (user.uid !== null && user.name !== null && chunks.length > 0) {
+      recordRef = `${type}/${user.uid}/${dateStr}/${
+        user.name + "_" + timeStr
+      }-record.${isSupport ? "weba" : "mp4"}`;
       const fileRef = ref(storage, recordRef);
       await uploadBytes(fileRef, blob);
       recordUrl = await getDownloadURL(fileRef);
       handleClickAgain();
-    }
 
-    return {
-      recordRef,
-      recordUrl,
-    };
+      return {
+        recordRef,
+        recordUrl,
+      };
+    }
   };
 
   const handleSubmit = async () => {
     // 사용자가 로그인 되어있고 파일이 있으면 업로드
-    if (uid !== undefined && chunks.length > 0) {
-      const recordRef = `${uid}/${dateStr}-record.${
-        isSupport ? "weba" : "mp4"
-      }`;
+    if (user.uid !== null && user.name !== null && chunks.length > 0) {
+      const recordRef = `${type}/${user.uid}/${dateStr}/${
+        user.name + "_" + timeStr
+      }-record.${isSupport ? "weba" : "mp4"}`;
       const fileRef = ref(storage, recordRef);
       try {
         // 파일 업로드 및 다운로드 url 생성
@@ -60,16 +66,19 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
         // db에 url과 파일이름 저장
         await uploadRecord({
           type,
-          uid,
+          uid: user.uid,
+          name: user.name,
           createdAt: date === undefined ? new Date() : date,
           recordRef,
           recordUrl,
         });
+        toast.success("숙제 제출이 완료되었습니다.");
         handleClickAgain();
       } catch (error) {
         if (error instanceof FirebaseError) {
           console.log(error.code, error.message);
         }
+        toast.success("숙제 제출중에 문제가 발생했습니다.");
       }
     }
   };

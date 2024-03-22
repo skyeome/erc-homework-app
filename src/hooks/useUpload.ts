@@ -1,10 +1,12 @@
 import { FormEvent, useRef, useState } from "react";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { FirebaseError } from "firebase/app";
-import { auth, storage } from "@/libs/firebase";
+import { storage } from "@/libs/firebase";
 import { format } from "date-fns";
 import useRecordUpload from "./useRecordUpload";
 import toast from "react-hot-toast";
+import { useAppSelector } from "./useReduxHook";
+import { ImageAndRecordProps, uploadImageAndRecord } from "@/api/record";
 
 export interface ImagesInfo {
   imageRef: string;
@@ -12,6 +14,7 @@ export interface ImagesInfo {
 }
 
 function useUpload(type: string, image?: string, title?: string) {
+  const user = useAppSelector((state) => state.user);
   const input = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [images, setImages] = useState<string[]>();
@@ -49,9 +52,12 @@ function useUpload(type: string, image?: string, title?: string) {
   };
 
   const upload = async (file: Blob, index: number) => {
-    const uid = auth.currentUser?.uid;
-    const dateStr = format(new Date(), "yyyy-MM-dd");
-    const imageRef = `${uid}/${dateStr}-image${index}`;
+    const now = new Date();
+    const dateStr = format(now, "yyyy-MM-dd");
+    const timeStr = format(now, "HH:mm:ss");
+    const imageRef = `${type}/${user.uid}/${dateStr}/${
+      user.name + "_" + timeStr
+    }-image${index}`;
     const fileRef = ref(storage, imageRef);
 
     // 파일 업로드 및 다운로드 url 생성
@@ -80,17 +86,26 @@ function useUpload(type: string, image?: string, title?: string) {
     try {
       const results = await Promise.all(uploadPromises);
       const record = await handleRecordUpload();
+      // firestore에 저장할 data
+      const storeData: ImageAndRecordProps = {
+        type,
+        uid: user.uid ?? "",
+        name: user.name ?? "",
+        createdAt: new Date(),
+        title,
+        thumb: image,
+        images: results,
+        record,
+      };
 
-      // 책 검색시 책 표지 여부 체크
-      if (image) {
-        console.log("책검색 통한 업로드...");
-      } else {
-        //
-        console.log("title: ", title);
-        console.log("images: ", results);
-        console.log("record: ", record);
-      }
+      if (image) storeData.thumb = image;
+      if (title) storeData.title = title;
+      if (results.length > 0) storeData.images = results;
+      if (record) storeData.record = record;
+
+      await uploadImageAndRecord(storeData);
       toast.success("숙제가 정상적으로 업로드 되었습니다.");
+      handleReset();
     } catch (error) {
       if (error instanceof FirebaseError) {
         console.log(error.code, error.message);

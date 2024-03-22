@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LoginFormType } from "@/components/auth/LoginForm.types";
+import { AddUserType } from "@/components/admin/user/AddUserForm.types";
 import { TextFieldProps } from "@mui/material";
 import { Control, FieldErrors } from "react-hook-form";
 
@@ -8,7 +8,7 @@ type MuiTextFieldProps = {
 } & Omit<TextFieldProps, "variant">;
 
 export interface UserTextFieldProps extends MuiTextFieldProps {
-  name: "username" | "password";
-  control: Control<LoginFormType, any>;
-  errors: FieldErrors<LoginFormType>;
+  name: "name" | "username" | "password";
+  control: Control<AddUserType, any>;
+  errors: FieldErrors<AddUserType>;
 }

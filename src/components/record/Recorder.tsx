@@ -6,7 +6,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import * as Styled from "./Recorder.styles";
 import { RecorderProps } from "./Recorder.types";
 
-function Recorder({ setChunks }: RecorderProps) {
+function Recorder({ setChunks, onClose }: RecorderProps) {
   const [recording, setRecording] = useState(false); // 현재 녹음 중인지
   const [time, setTime] = useState(0);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null); // 미디어 녹음기
@@ -67,6 +67,7 @@ function Recorder({ setChunks }: RecorderProps) {
       stopTimer();
       setTime(0);
     }
+    if (onClose) onClose();
   };
 
   const formatTime = (seconds: number): string => {

@@ -14,7 +14,8 @@ function UserTextField({ name, control, errors, ...rest }: UserTextFieldProps) {
             message: "erc+숫자 4자리 형식으로 입력해주세요",
           },
         }
-      : {
+      : name === "password"
+      ? {
           required: "비밀번호는 필수 입니다.",
           minLength: {
             value: 4,
@@ -24,6 +25,9 @@ function UserTextField({ name, control, errors, ...rest }: UserTextFieldProps) {
             value: 4,
             message: "숫자 4자리 형식으로 입력해주세요",
           },
+        }
+      : {
+          required: "이름을 입력해주세요",
         };
   return (
     <div>
@@ -33,29 +37,47 @@ function UserTextField({ name, control, errors, ...rest }: UserTextFieldProps) {
         rules={rules}
         render={({ field }) => (
           <TextField
-            type={name === "username" ? "text" : name}
-            autoComplete={name === "username" ? name : "current-password"}
+            type={name === "password" ? "password" : "text"}
+            autoComplete={
+              name === "username"
+                ? name
+                : name === "password"
+                ? "current-password"
+                : "off"
+            }
             placeholder={
               name === "username"
                 ? "아이디를 입력해 주세요"
-                : "비밀번호를 입력해 주세요"
+                : name === "password"
+                ? "비밀번호를 입력해 주세요"
+                : "이름을 입력해주세요"
             }
             margin="dense"
             fullWidth
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  {name === "username" ? <PersonIcon /> : <LockIcon />}
+                  {name === "username" ? (
+                    <PersonIcon />
+                  ) : name === "password" ? (
+                    <LockIcon />
+                  ) : undefined}
                 </InputAdornment>
               ),
             }}
             error={Boolean(
-              name === "username" ? errors.username : errors.password
+              name === "username"
+                ? errors.username
+                : name === "password"
+                ? errors.password
+                : errors.name
             )}
             helperText={
               name === "username"
                 ? errors.username?.message
-                : errors.password?.message
+                : name === "password"
+                ? errors.password?.message
+                : errors.name?.message
             }
             {...rest}
             {...field}

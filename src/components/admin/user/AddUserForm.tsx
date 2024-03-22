@@ -8,6 +8,12 @@ function AddUserForm() {
   return (
     <form onSubmit={onSubmit} autoComplete="off">
       <UserTextField
+        name="name"
+        control={control}
+        errors={errors}
+        autoComplete="off"
+      />
+      <UserTextField
         name="username"
         control={control}
         errors={errors}

@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import { auth } from "@/libs/firebase";
+import { auth, db } from "@/libs/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
-import { LoginFormType } from "@/components/auth/LoginForm.types";
+import { AddUserType } from "./AddUserForm.types";
+import { doc, setDoc } from "firebase/firestore";
 
 // const validateEmail = (email: string): boolean => {
 //   // 이메일 형식을 확인하는 정규식
@@ -16,8 +17,9 @@ const useAddUserForm = () => {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<LoginFormType>({
+  } = useForm<AddUserType>({
     defaultValues: {
+      name: "",
       username: "",
       password: "",
     },
@@ -35,7 +37,9 @@ const useAddUserForm = () => {
         newUsername,
         newPassword
       );
-      console.log(userCredential.user);
+      await setDoc(doc(db, "user", userCredential.user.uid), {
+        name: data.name,
+      });
       reset();
     } catch (error) {
       if (error instanceof FirebaseError) {

@@ -75,7 +75,7 @@ const UploadBar = React.forwardRef<HTMLInputElement, UploadBarProps>(
                   <CloseIcon />
                 </IconButton>
               </Box>
-              <Recorder setChunks={setChunks} />
+              <Recorder setChunks={setChunks} onClose={handleClose} />
             </Styled.RecorderModalContent>
           </Styled.RecorderModal>
         </Modal>

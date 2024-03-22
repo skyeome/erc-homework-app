@@ -5,9 +5,15 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/libs/firebase";
 import { useAppDispatch, useAppSelector } from "./useReduxHook";
 import { setUser } from "@/libs/userSlice";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "@/api/auth";
 
 export default function useAuthChange() {
   const { currentUser } = auth;
+  const { data } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getCurrentUser(currentUser?.uid),
+  });
   const uid = useAppSelector((state) => state.user.uid);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -19,22 +25,16 @@ export default function useAuthChange() {
   }, [currentUser, uid]);
 
   useEffect(() => {
-    if (currentUser) {
-      const userCopy = {
-        uid: currentUser.uid,
-      };
-      dispatch(setUser(userCopy));
+    if (currentUser && data) {
+      dispatch(setUser(data));
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (currentUser == null && user !== null) {
-        const userCopy = {
-          uid: user.uid,
-        };
-        dispatch(setUser(userCopy));
+      if (currentUser == null && user !== null && data) {
+        dispatch(setUser(data));
       }
     });
     return () => {
       unsubscribe();
     };
-  }, [currentUser]);
+  }, [currentUser, data]);
 }
