@@ -5,10 +5,10 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { LoginFormType } from "./LoginForm.types";
 import { auth } from "@/libs/firebase";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
+import { AddUserType } from "../admin/user/AddUserForm.types";
 
 const useLoginForm = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const useLoginForm = () => {
     formState: { errors },
     control,
     reset,
-  } = useForm<LoginFormType>({
+  } = useForm<AddUserType>({
     defaultValues: {
       username: "",
       password: "",
@@ -30,7 +30,7 @@ const useLoginForm = () => {
     setKeepLogin((prev) => !prev);
   };
 
-  const onSubmit = handleSubmit(async (data: LoginFormType) => {
+  const onSubmit = handleSubmit(async (data: AddUserType) => {
     const salt = process.env.SOME_CODE;
     const newUsername = data.username + "@email.com";
     const newPassword = `${data.password}${salt}`;
