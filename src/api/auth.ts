@@ -9,10 +9,12 @@ export interface CurrentUser {
 export const getCurrentUser = async (
   uid?: string
 ): Promise<CurrentUser | undefined> => {
-  if (uid === undefined) return;
+  if (!uid) throw new Error("로그인 해주세요");
   const userSnap = await getDoc(doc(db, "user", uid));
   if (userSnap.exists()) {
     const data = { uid, name: userSnap.data().name };
     return data;
+  } else {
+    throw new Error("존재하지 않는 회원입니다.");
   }
 };

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./libs/store.ts";
@@ -19,6 +20,7 @@ root.render(
           </BrowserRouter>
         </PersistGate>
       </Provider>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   </React.StrictMode>
 );
