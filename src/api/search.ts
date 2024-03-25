@@ -34,12 +34,12 @@ export const bookSearch = axios.create({
   },
 });
 
-export const getBooks = async (query?: string) => {
+export const getBooks = async (query?: string, start?: number) => {
   if (query === undefined || query === "") return;
   const { data } = await bookSearch.get<SearchResult>(
     import.meta.env.PROD ? "myCORS" : "book.json",
     {
-      params: { query },
+      params: { query, display: 10, start: start ?? 1 },
     }
   );
   return data;
