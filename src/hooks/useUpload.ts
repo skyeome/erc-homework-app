@@ -1,10 +1,11 @@
 import { FormEvent, useRef, useState } from "react";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { FirebaseError } from "firebase/app";
 import { storage } from "@/libs/firebase";
+import { FirebaseError } from "firebase/app";
 import { format } from "date-fns";
-import useRecordUpload from "./useRecordUpload";
 import toast from "react-hot-toast";
+import imageCompression from "browser-image-compression";
+import useRecordUpload from "./useRecordUpload";
 import { useAppSelector } from "./useReduxHook";
 import { ImageAndRecordProps, uploadImageAndRecord } from "@/api/record";
 
@@ -12,6 +13,12 @@ export interface ImagesInfo {
   imageRef: string;
   imageUrl: string;
 }
+
+const options = {
+  maxSizeMB: 1, // 허용하는 최대 사이즈 지정
+  maxWidthOrHeight: 1920, // 허용하는 최대 width, height 값 지정
+  initialQuality: 0.6,
+};
 
 function useUpload(type: string, image?: string, title?: string) {
   const user = useAppSelector((state) => state.user);
@@ -38,10 +45,13 @@ function useUpload(type: string, image?: string, title?: string) {
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     // 업로드한 파일들이 있을 때
     if (e.target.files) {
-      const files = Array.from(e.target.files).map((file) => file);
-      const urls = files.map((file) => URL.createObjectURL(file));
+      const files = Array.from(e.target.files).map((file) =>
+        imageCompression(file, options)
+      );
+      const compressedImages = await Promise.all(files);
+      const urls = compressedImages.map((file) => URL.createObjectURL(file));
 
-      setImgFiles(files);
+      setImgFiles(compressedImages);
       setImages((prev) => {
         if (!prev) return urls;
         return [...prev, ...urls];
