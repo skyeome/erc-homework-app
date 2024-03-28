@@ -1,12 +1,11 @@
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import * as Styled from "./WeeklyRecord.styles";
 import { useQuery } from "@tanstack/react-query";
 import { getThisWeekRecord } from "@/api/record";
-import { useEffect } from "react";
 import { useAppSelector } from "@/hooks/useReduxHook";
 import { generateWeekDates } from "@/hooks/getWeekDate";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import * as Styled from "./WeeklyRecord.styles";
 
 const weekItems = ["Mon.", "Tue.", "Wed.", "Thu.", "Fri."];
 // const weekCheck = [true, true, true, false, false];
@@ -29,13 +28,6 @@ function WeeklyRecord() {
     });
     return !!found;
   });
-
-  useEffect(() => {
-    if (data) {
-      // console.log(data);
-      console.log(status);
-    }
-  }, [data, status]);
 
   return (
     <Styled.WeeklyRecordFixed>
