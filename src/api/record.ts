@@ -86,10 +86,8 @@ export const uploadImageAndRecord = async (data: ImageAndRecordProps) => {
 };
 
 export const getThisWeekRecord = async (uid: string | null) => {
-  if (!uid) throw new Error("로그인 해주세요");
   const [startDate, endDate] = getWeekDate();
-  console.log(startDate);
-  console.log(endDate);
+  if (!uid) throw new Error("로그인 해주세요");
 
   const docRef = collection(db, "record");
   const q1 = query(

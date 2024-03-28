@@ -8,7 +8,6 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import * as Styled from "./WeeklyRecord.styles";
 
 const weekItems = ["Mon.", "Tue.", "Wed.", "Thu.", "Fri."];
-// const weekCheck = [true, true, true, false, false];
 
 function WeeklyRecord() {
   const { uid } = useAppSelector((state) => state.user);

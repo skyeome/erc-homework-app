@@ -15,6 +15,9 @@ const DailyCheckItemWrap = styled("div")(({ theme }) => ({
 
   ...tabCols,
 
+  "& img": {
+    verticalAlign: "top",
+  },
   "& .status-success": {
     width: "3rem",
   },

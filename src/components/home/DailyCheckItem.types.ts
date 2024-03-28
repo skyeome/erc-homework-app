@@ -17,4 +17,5 @@ export interface DailyCheck {
   reading?: boolean;
   workbook?: boolean;
   checked: boolean;
+  [key: string]: boolean | undefined;
 }

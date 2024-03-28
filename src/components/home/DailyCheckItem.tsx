@@ -4,9 +4,10 @@ import oMark from "@/assets/o.webp";
 import xMark from "@/assets/x.webp";
 import { DailyCheckItemProps } from "./DailyCheckItem.types";
 import DailyCheckItemWrap from "./DailyCheckItem.styles";
+import { Box } from "@mui/material";
 
 const checkImage = (data?: boolean) => {
-  if (data === undefined) return null;
+  if (data === undefined) return <Box sx={{ height: "3rem" }} />;
   return data ? (
     <img src={oMark} alt="O" className="status-success" />
   ) : (
