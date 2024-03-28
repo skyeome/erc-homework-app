@@ -3,10 +3,11 @@ import { getReadingBooks } from "@/api/reading";
 import { useAppSelector } from "@/hooks/useReduxHook";
 import { Reading } from "@/libs/firestore";
 import * as Styled from "./ReadBooks.styles";
+import ReadBooksNone from "./ReadBooksNone";
 
 function ReadBooks() {
   const { uid } = useAppSelector((state) => state.user);
-  const { data } = useQuery({
+  const { data, isFetched } = useQuery({
     queryKey: ["reading", "list"],
     queryFn: () => getReadingBooks(uid),
   });
@@ -15,6 +16,7 @@ function ReadBooks() {
     (obj, index, self) => index === self.findIndex((t) => t.title === obj.title)
   );
 
+  if (isFetched && data?.length === 0) return <ReadBooksNone />;
   return (
     <Styled.ReadBooksList>
       {uniqueBooks?.map((book) => (

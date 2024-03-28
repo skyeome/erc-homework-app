@@ -3,9 +3,11 @@ import { FirebaseError } from "firebase/app";
 import { format } from "date-fns";
 import { storage } from "@/libs/firebase";
 import type { chunks, setChunks } from "@/components/record/Recorder.types";
-import { uploadRecord } from "@/api/record";
+import { getThisWeekRecord, uploadRecord } from "@/api/record";
 import { useAppSelector } from "./useReduxHook";
 import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 interface RecordUploadData {
   type: string;
@@ -17,6 +19,11 @@ interface RecordUploadData {
 function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
   let recordUrl: string | undefined;
   const user = useAppSelector((state) => state.user);
+  const [isUploading, setIsUploading] = useState(false);
+  const { refetch } = useQuery({
+    queryKey: ["record", "weekly"],
+    queryFn: () => getThisWeekRecord(user.uid),
+  });
   const selectedDate = date === undefined ? new Date() : date;
   const dateStr = format(selectedDate, "yyyy-MM-dd");
   const timeStr = format(selectedDate, "HH:mm:ss");
@@ -53,6 +60,7 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
   };
 
   const handleSubmit = async () => {
+    setIsUploading(true);
     // 사용자가 로그인 되어있고 파일이 있으면 업로드
     if (user.uid !== null && user.name !== null && chunks.length > 0) {
       const recordRef = `${type}/${user.uid}/${dateStr}/${
@@ -74,16 +82,20 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
         });
         toast.success("숙제 제출이 완료되었습니다.");
         handleClickAgain();
+        refetch();
       } catch (error) {
         if (error instanceof FirebaseError) {
           console.log(error.code, error.message);
         }
         toast.success("숙제 제출중에 문제가 발생했습니다.");
+      } finally {
+        setIsUploading(false);
       }
     }
   };
   return {
     isSupport,
+    isUploading,
     downloadUrl,
     handleClickAgain,
     handleSubmit,

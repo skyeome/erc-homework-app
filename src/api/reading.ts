@@ -15,5 +15,5 @@ export const getReadingBooks = async (uid: string | null) => {
     const data = book.data();
     result.push(data);
   });
-  if (result.length > 0) return result;
+  return result;
 };

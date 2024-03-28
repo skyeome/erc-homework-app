@@ -4,16 +4,22 @@ import useRecordUpload from "@/hooks/useRecordUpload";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { RecordCompleteProps } from "./Recorder.types";
 import RecordScreen from "./index.styles";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 function RecordComplete({ chunks, setChunks }: RecordCompleteProps) {
   const createdAt = useAppSelector((state) => state.date.value);
-  const { isSupport, downloadUrl, handleClickAgain, handleSubmit } =
-    useRecordUpload({
-      type: "record",
-      chunks,
-      setChunks,
-      date: createdAt,
-    });
+  const {
+    isSupport,
+    isUploading,
+    downloadUrl,
+    handleClickAgain,
+    handleSubmit,
+  } = useRecordUpload({
+    type: "record",
+    chunks,
+    setChunks,
+    date: createdAt,
+  });
 
   return (
     <RecordScreen px={4} pt={1}>
@@ -33,14 +39,15 @@ function RecordComplete({ chunks, setChunks }: RecordCompleteProps) {
         <Button size="large" fullWidth onClick={handleClickAgain}>
           Record again
         </Button>
-        <Button
+        <LoadingButton
           variant="contained"
           size="large"
           fullWidth
+          loading={isUploading}
           onClick={handleSubmit}
         >
           Submit homework
-        </Button>
+        </LoadingButton>
       </Box>
     </RecordScreen>
   );
