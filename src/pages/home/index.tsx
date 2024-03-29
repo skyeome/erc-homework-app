@@ -5,6 +5,7 @@ import SallyCheck from "@/components/home/SallyCheck";
 import { useQuery } from "@tanstack/react-query";
 import { getWeeklyCheck } from "@/api/home";
 import { useAppSelector } from "@/hooks/useReduxHook";
+import { Box, CircularProgress } from "@mui/material";
 
 function Home() {
   const { uid } = useAppSelector((state) => state.user);
@@ -13,7 +14,17 @@ function Home() {
     queryFn: () => getWeeklyCheck(uid),
   });
 
-  if (data === undefined) return <div>loading...</div>;
+  if (!data)
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ height: "calc(100vh - 8rem)" }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   return (
     <div>
       <AppBar title="Weekly Homework" disableBack />
