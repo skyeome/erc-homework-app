@@ -7,12 +7,14 @@ import { Box, Typography } from "@mui/material";
 import AppBar from "../../common/appbar";
 import { SearchBooksResultProps } from "./SearchBooksResult.types";
 import * as Styled from "./SearchBooksResult.styles";
+import SearchBooksSkeleton from "./SearchBooksSkeleton";
+import SearchBooksNone from "./SearchBooksNone";
 
 function SearchBooksResult({ query }: SearchBooksResultProps) {
   const navigate = useNavigate();
   const { ref, inView } = useInView();
   const { data, isLoading, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["projects"],
+    queryKey: ["search", query],
     queryFn: async ({ pageParam }) => {
       const data = await getBooks(query, pageParam);
       return data;
@@ -34,12 +36,19 @@ function SearchBooksResult({ query }: SearchBooksResultProps) {
     }
   }, [fetchNextPage, inView]);
 
-  if (isLoading || data === undefined) return null;
+  if (isLoading || data === undefined)
+    return (
+      <div>
+        <AppBar title={query} />
+        <SearchBooksSkeleton />
+      </div>
+    );
   return (
     <div>
       <AppBar title={query} />
       {data.pages.map((page) => (
         <Fragment key={page?.start}>
+          {page?.total === 0 && <SearchBooksNone query={query} />}
           {page?.items?.map((item) => (
             <Styled.BookSearchResultItem key={item.link} p={2}>
               <div className="img-area">
