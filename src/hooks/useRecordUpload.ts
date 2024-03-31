@@ -87,7 +87,7 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
         if (error instanceof FirebaseError) {
           console.log(error.code, error.message);
         }
-        toast.success("숙제 제출중에 문제가 발생했습니다.");
+        toast.error("숙제 제출중에 문제가 발생했습니다.");
       } finally {
         setIsUploading(false);
       }

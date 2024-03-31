@@ -41,7 +41,6 @@ export const getWeeklyCheck = async (uid: string | null) => {
   };
   // 이번주 월~토(금요일 12시)를 생성
   const [startDate, endDate] = getWeekDate();
-  console.log(startDate, endDate);
   const thisWeek = generateWeekDates();
   thisWeek.forEach((date) => {
     const today = new Date().getDay();
