@@ -5,13 +5,13 @@ function DailyCheckTitle() {
   return (
     <DailyCheckTitleWrap>
       <Typography className="tab-cols date" variant="body2" fontWeight={700}>
-        Date
+        Day
       </Typography>
       <Typography className="tab-cols" variant="body2" fontWeight={700}>
         RECORD
       </Typography>
       <Typography className="tab-cols long" variant="body2" fontWeight={700}>
-        BOOK READING
+        READING
       </Typography>
       <Typography className="tab-cols" variant="body2" fontWeight={700}>
         WORKBOOK
