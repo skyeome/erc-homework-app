@@ -46,7 +46,9 @@ export const getWeeklyCheck = async (uid: string | null) => {
   thisWeek.forEach((date) => {
     const today = new Date().getDay();
     const day = date.getDay();
-    if (today >= date.getDay()) {
+    if (today === 0) {
+      setWeeklyByDay(day, result, "record", false);
+    } else if (today >= day) {
       setWeeklyByDay(day, result, "record", false);
     }
   });
