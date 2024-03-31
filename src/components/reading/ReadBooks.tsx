@@ -4,6 +4,7 @@ import { useAppSelector } from "@/hooks/useReduxHook";
 import { Reading } from "@/libs/firestore";
 import * as Styled from "./ReadBooks.styles";
 import ReadBooksNone from "./ReadBooksNone";
+import { Link } from "react-router-dom";
 
 function ReadBooks() {
   const { uid } = useAppSelector((state) => state.user);
@@ -21,7 +22,14 @@ function ReadBooks() {
     <Styled.ReadBooksList>
       {uniqueBooks?.map((book) => (
         <Styled.ReadBooksItem key={book.id}>
-          <img src={book.thumb || book.images[0].imageUrl} alt={book.title} />
+          <Link to={book.title}>
+            <div className="thumb-wrap">
+              <img
+                src={book.thumb || book.images[0].imageUrl}
+                alt={book.title}
+              />
+            </div>
+          </Link>
         </Styled.ReadBooksItem>
       ))}
     </Styled.ReadBooksList>

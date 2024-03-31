@@ -27,6 +27,14 @@ export const ReadBooksItem = styled("li")(({ theme }) => ({
   },
 
   "& img": {
-    width: 70,
+    width: "100%",
+    heigth: "100%",
+    objectFit: "cover",
+    verticalAlign: "top",
+  },
+  "& .thumb-wrap": {
+    maxWidth: 70,
+    maxHeight: 110,
+    overflow: "hidden",
   },
 }));
