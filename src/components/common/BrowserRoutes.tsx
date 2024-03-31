@@ -12,6 +12,7 @@ import NewReadingHomework from "@/pages/reading/new";
 import WorkBook from "@/pages/workbook";
 import NewWorkBook from "@/pages/workbook/new";
 import AddUser from "@/pages/admin/user/AddUser";
+import BookReadingDetail from "@/pages/reading/detail";
 
 function BrowserRoutes() {
   return (
@@ -19,18 +20,19 @@ function BrowserRoutes() {
       <Route element={<AuthLayout />}>
         <Route path="auth/login" element={<Login />} />
       </Route>
-      <Route path="admin/*">
+      <Route path="admin">
         <Route path="user/add" element={<AddUser />} />
       </Route>
       <Route element={<PageLayout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
         <Route path="record" element={<Record />} />
-        <Route path="reading/*">
+        <Route path="reading">
           <Route index element={<Reading />} />
           <Route path="search" element={<BookSearch />} />
           <Route path="new" element={<NewReadingHomework />} />
+          <Route path=":title" element={<BookReadingDetail />} />
         </Route>
-        <Route path="workbook/*">
+        <Route path="workbook">
           <Route index element={<WorkBook />} />
           <Route path="new" element={<NewWorkBook />} />
         </Route>
