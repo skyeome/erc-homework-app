@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Box, TextField, Typography } from "@mui/material";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
 import CollectionsBookmarkOutlinedIcon from "@mui/icons-material/CollectionsBookmarkOutlined";
@@ -7,9 +8,9 @@ import UploadBar from "./UploadBar";
 import { UploadFieldsProps } from "./UploadFields.types";
 import RecordScreen from "@/components/record/index.styles";
 import * as Styled from "./UploadFields.styles";
-import { useState } from "react";
 
 function UploadFields({ type, title, image }: UploadFieldsProps) {
+  const [isActive, setIsActive] = useState(true);
   const [titleTxt, setTitleTxt] = useState(title);
   const {
     isUploading,
@@ -24,6 +25,15 @@ function UploadFields({ type, title, image }: UploadFieldsProps) {
     isSupport,
     downloadUrl,
   } = useUpload(type, image, titleTxt);
+
+  useEffect(() => {
+    console.log();
+    if (images === undefined && chunks.length === 0) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }, [images, chunks]);
 
   return (
     <Styled.UploadFieldForm onSubmit={handleSubmit}>
@@ -77,7 +87,7 @@ function UploadFields({ type, title, image }: UploadFieldsProps) {
       <UploadBar
         ref={input}
         isUploading={isUploading}
-        isActive={Boolean(!images)}
+        isActive={isActive}
         chunks={chunks}
         setChunks={setChunks}
         handleUpload={handleUpload}
