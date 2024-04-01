@@ -6,9 +6,13 @@ interface DateState {
   value: Date;
 }
 
+const date = new Date();
+if (date.getDay() === 0) date.setDate(date.getDate() + 1);
+if (date.getDay() === 6) date.setDate(date.getDate() + 2);
+
 // Define the initial state using that type
 const initialState: DateState = {
-  value: new Date(),
+  value: date,
 };
 
 export const dateSlice = createSlice({

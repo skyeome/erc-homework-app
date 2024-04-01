@@ -50,6 +50,10 @@ function SelectRecordDate() {
             maxDate={now} // maxDate 이후 날짜 선택 불가
             selected={date}
             onChange={handleChangeDate}
+            filterDate={(date) => {
+              // Disable weekends (Saturday and Sunday)
+              return date.getDay() !== 0 && date.getDay() !== 6;
+            }}
             inline
           />
         </Styled.SelectDateModalBox>
