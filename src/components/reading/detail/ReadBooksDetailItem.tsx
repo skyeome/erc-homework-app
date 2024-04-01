@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { Box, Checkbox, Typography } from "@mui/material";
 import { ReadBooksDetailItemProps } from "./ReadBooksDetailItem.types";
-import * as Styled from "./ReadBooksDetailItem.styles";
+import ReadBooksDetailItemWrap from "./ReadBooksDetailItem.styles";
 
 function ReadBooksDetailItem({
   book,
@@ -19,7 +19,7 @@ function ReadBooksDetailItem({
   };
 
   return (
-    <Styled.ReadBooksDetailItemWrap py={2}>
+    <ReadBooksDetailItemWrap item xs={6}>
       <Checkbox
         size="large"
         checked={deleteItems.includes(book.id)}
@@ -31,15 +31,12 @@ function ReadBooksDetailItem({
       <div className="thumb-wrap">
         <img src={book.images[0].imageUrl} alt={book.title} />
       </div>
-      <Box className="text-area" px={2}>
+      <Box className="text-area">
         <Typography variant="body2" color="GrayText" my={1}>
           {format(book.date.toDate(), "yyyy-MM-dd HH:mm:ss")}
         </Typography>
-        <Styled.ReadBooksDetailItemTitle variant="body1" fontWeight={700}>
-          {book.title}
-        </Styled.ReadBooksDetailItemTitle>
       </Box>
-    </Styled.ReadBooksDetailItemWrap>
+    </ReadBooksDetailItemWrap>
   );
 }
 

@@ -1,10 +1,10 @@
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getReadingBooks } from "@/api/reading";
 import { useAppSelector } from "@/hooks/useReduxHook";
 import { Reading } from "@/libs/firestore";
-import * as Styled from "./ReadBooks.styles";
 import ReadBooksNone from "./ReadBooksNone";
-import { Link } from "react-router-dom";
+import * as Styled from "./ReadBooks.styles";
 
 function ReadBooks() {
   const { uid } = useAppSelector((state) => state.user);
@@ -22,7 +22,7 @@ function ReadBooks() {
     <Styled.ReadBooksList>
       {uniqueBooks?.map((book) => (
         <Styled.ReadBooksItem key={book.id}>
-          <Link to={book.title}>
+          <Link to={book.title} state={book}>
             <div className="thumb-wrap">
               <img
                 src={book.thumb || book.images[0].imageUrl}

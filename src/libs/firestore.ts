@@ -12,6 +12,7 @@ export class Reading {
     public title: string,
     public thumb: string,
     public images: { imageRef: string; imageUrl: string }[],
+    public record: { recordRef: string; recordUrl: string },
     public date: Timestamp
   ) {}
   toString() {
@@ -46,6 +47,7 @@ export const readingConverter = {
       data.title,
       data.thumb,
       data.images,
+      data.record,
       data.date
     );
   },

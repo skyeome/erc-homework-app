@@ -1,5 +1,4 @@
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,11 +8,13 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { ReadBooksDeleteDialogProps } from "./ReadBooksDeleteDialog.types";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 function ReadBooksDeleteDialog({
   open,
   handleClose,
   handleDelete,
+  isDeleting,
 }: ReadBooksDeleteDialogProps) {
   return (
     <Dialog
@@ -42,9 +43,14 @@ function ReadBooksDeleteDialog({
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus color="secondary" onClick={handleDelete}>
+        <LoadingButton
+          autoFocus
+          color="secondary"
+          onClick={handleDelete}
+          loading={isDeleting}
+        >
           Confirm Delete
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

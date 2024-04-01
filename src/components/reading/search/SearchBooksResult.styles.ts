@@ -16,6 +16,9 @@ export const BookSearchResultItem = styled(Box)(({ theme }) => ({
     maxHeight: 110,
     "& img": {
       width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      verticalAlign: "top",
     },
   },
 }));
