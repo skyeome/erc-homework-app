@@ -1,15 +1,30 @@
 import { useLocation } from "react-router-dom";
-import { Divider, List, Typography } from "@mui/material";
+import { Divider, IconButton, List, Typography, useTheme } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItemLink from "../menuList";
-import * as Styled from "./index.styles";
+import AdminNaviWrap from "./AdminNaviWrap";
+import DrawerHeader from "./index.styles";
+import { AdminNavigationProps } from "./index.types";
 
-function AdminNavigation() {
+function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
+  const theme = useTheme();
   const { pathname } = useLocation();
 
   return (
-    <Styled.AdminNaviWrap>
+    <AdminNaviWrap open={open}>
+      <DrawerHeader>
+        <IconButton onClick={handleClose}>
+          {theme.direction === "ltr" ? (
+            <ChevronLeftIcon />
+          ) : (
+            <ChevronRightIcon />
+          )}
+        </IconButton>
+      </DrawerHeader>
+      <Divider />
       <Typography variant="h4" fontWeight={700} pt={3} pl={2} pb={1}>
         Dashboard
       </Typography>
@@ -46,7 +61,7 @@ function AdminNavigation() {
         />
       </List>
       <Divider />
-    </Styled.AdminNaviWrap>
+    </AdminNaviWrap>
   );
 }
 

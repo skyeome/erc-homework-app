@@ -1,8 +1,12 @@
 import { styled } from "@mui/material";
 
-export const AdminNaviWrap = styled("nav")`
-  width: 200px;
-  & a {
-    color: inherit;
-  }
-`;
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: "flex-end",
+}));
+
+export default DrawerHeader;
