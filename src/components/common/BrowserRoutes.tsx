@@ -13,6 +13,9 @@ import WorkBook from "@/pages/workbook";
 import NewWorkBook from "@/pages/workbook/new";
 import AddUser from "@/pages/admin/user/AddUser";
 import BookReadingDetail from "@/pages/reading/detail";
+import Dashboard from "../admin/dashboard";
+import AdminLayout from "./layout/AdminLayout";
+import AdminHomework from "../admin/homework";
 
 function BrowserRoutes() {
   return (
@@ -20,8 +23,15 @@ function BrowserRoutes() {
       <Route element={<AuthLayout />}>
         <Route path="auth/login" element={<Login />} />
       </Route>
-      <Route path="admin">
-        <Route path="user/add" element={<AddUser />} />
+      <Route path="admin" element={<AdminLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="user">
+          <Route index element={<AddUser />} />
+          <Route path="add" element={<AddUser />} />
+        </Route>
+        <Route path="homework">
+          <Route index element={<AdminHomework />} />
+        </Route>
       </Route>
       <Route element={<PageLayout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
