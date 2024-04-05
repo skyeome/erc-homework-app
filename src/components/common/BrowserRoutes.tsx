@@ -16,6 +16,7 @@ import AddUser from "@/pages/admin/user/AddUser";
 import BookReadingDetail from "@/pages/reading/detail";
 import Dashboard from "@/pages/admin/dashboard";
 import AdminHomework from "@/pages/admin/homework";
+import AdminUser from "@/pages/admin/user";
 
 function BrowserRoutes() {
   return (
@@ -26,7 +27,7 @@ function BrowserRoutes() {
       <Route path="admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="user">
-          <Route index element={<AddUser />} />
+          <Route index element={<AdminUser />} />
           <Route path="add" element={<AddUser />} />
         </Route>
         <Route path="homework">
