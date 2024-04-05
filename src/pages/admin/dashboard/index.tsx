@@ -1,6 +1,7 @@
 import { Stack, Typography } from "@mui/material";
-import DateBox from "./datebox";
-import ShadowBox from "@/components/common/box";
+import DateBox from "@/components/admin/dashboard/datebox";
+import AdminNotification from "@/components/admin/dashboard/notification";
+import AdminProgress from "@/components/admin/dashboard/progress";
 
 function Dashboard() {
   return (
@@ -10,12 +11,8 @@ function Dashboard() {
       </Typography>
       <DateBox />
       <Stack direction={{ xs: "column", sm: "row" }} mt={2} gap={2}>
-        <ShadowBox p={3} flex={1}>
-          asdfsdf
-        </ShadowBox>
-        <ShadowBox p={3} flex={1}>
-          asdfsdf
-        </ShadowBox>
+        <AdminProgress />
+        <AdminNotification />
       </Stack>
     </div>
   );

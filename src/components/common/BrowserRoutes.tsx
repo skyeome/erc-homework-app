@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import PageLayout from "./layout/PageLayout";
 import AuthLayout from "./layout/AuthLayout";
+import AdminLayout from "./layout/AdminLayout";
 import ErrorPage from "@/pages/error-page";
 import Login from "@/pages/auth/Login";
 import NotFound from "@/pages/not-found";
@@ -13,9 +14,8 @@ import WorkBook from "@/pages/workbook";
 import NewWorkBook from "@/pages/workbook/new";
 import AddUser from "@/pages/admin/user/AddUser";
 import BookReadingDetail from "@/pages/reading/detail";
-import Dashboard from "../admin/dashboard";
-import AdminLayout from "./layout/AdminLayout";
-import AdminHomework from "../admin/homework";
+import Dashboard from "@/pages/admin/dashboard";
+import AdminHomework from "@/pages/admin/homework";
 
 function BrowserRoutes() {
   return (
