@@ -48,7 +48,7 @@ function AdminProgress() {
         {PROGRESS.map((item) => (
           <Stack
             key={item.name}
-            direction="row"
+            direction={{ xs: "column", sm: "row" }}
             justifyContent="space-between"
             alignItems="center"
             py={1.5}

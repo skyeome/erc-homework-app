@@ -11,6 +11,7 @@ export const AdminLayoutContent = styled("main", {
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
+  width: "100vw",
   minHeight: "100vh",
   padding: theme.spacing(3),
   backgroundColor:

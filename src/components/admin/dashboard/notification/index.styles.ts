@@ -4,6 +4,7 @@ const iconWrap = css`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 
   width: 26px;
   height: 26px;
