@@ -30,3 +30,14 @@ export const generateWeekDates = () => {
   }
   return weekDates;
 };
+
+export const generateAllWeekDates = () => {
+  const startOfWeek = getStartOfThisWeek();
+  const weekDates = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(startOfWeek);
+    date.setDate(startOfWeek.getDate() + i);
+    weekDates.push(date);
+  }
+  return weekDates;
+};
