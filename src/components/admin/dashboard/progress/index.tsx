@@ -47,6 +47,7 @@ function AdminProgress() {
       <Stack gap={1}>
         {PROGRESS.map((item) => (
           <Stack
+            key={item.name}
             direction="row"
             justifyContent="space-between"
             alignItems="center"

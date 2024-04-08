@@ -12,31 +12,37 @@ import * as Styled from "./index.styles";
 
 const NOTIS: Noti[] = [
   {
+    id: 1,
     name: "김OO",
     type: "record",
     date: new Date("2024-04-01 12:34:56"),
   },
   {
+    id: 2,
     name: "박XX",
     type: "reading",
     date: new Date("2024-04-01 12:23:45"),
   },
   {
+    id: 3,
     name: "길OO",
     type: "workbook",
     date: new Date("2024-04-01 12:12:12"),
   },
   {
+    id: 4,
     name: "최XX",
     type: "reading",
     date: new Date("2024-03-31 23:23:45"),
   },
   {
+    id: 5,
     name: "유OO",
     type: "workbook",
     date: new Date("2024-03-31 23:12:12"),
   },
   {
+    id: 6,
     name: "김OO",
     type: "record",
     date: new Date("2024-03-31 22:34:56"),
@@ -56,7 +62,7 @@ function AdminNotification() {
         </Link>
       </Stack>
       {NOTIS.map((item) => (
-        <NotiItem>
+        <NotiItem key={item.id}>
           <Stack direction="row" alignItems="center" gap={1}>
             {item.type === "record" ? (
               <Styled.RecordIconWrap>
