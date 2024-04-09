@@ -62,7 +62,12 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
   const handleSubmit = async () => {
     setIsUploading(true);
     // 사용자가 로그인 되어있고 파일이 있으면 업로드
-    if (user.uid !== null && user.name !== null && chunks.length > 0) {
+    if (
+      user.uid !== null &&
+      user.name !== null &&
+      user.level !== null &&
+      chunks.length > 0
+    ) {
       const recordRef = `${type}/${user.uid}/${dateStr}/${
         user.name + "_" + timeStr
       }-record.${isSupport ? "weba" : "mp4"}`;
@@ -76,6 +81,7 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
           type,
           uid: user.uid,
           name: user.name,
+          level: user.level,
           createdAt: date === undefined ? new Date() : date,
           recordRef,
           recordUrl,

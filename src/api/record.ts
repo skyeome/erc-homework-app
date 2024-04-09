@@ -13,6 +13,7 @@ interface RecordUploadData {
   type: string;
   uid: string;
   name: string;
+  level: string;
   createdAt: Date;
   recordRef: string;
   recordUrl: string;
@@ -32,6 +33,7 @@ export interface ImageAndRecordProps {
   type: string;
   uid: string;
   name: string;
+  level: string;
   createdAt: Date;
   title?: string;
   thumb?: string;
@@ -50,6 +52,7 @@ export const uploadRecord = async ({
   type,
   uid,
   name,
+  level,
   createdAt,
   recordRef,
   recordUrl,
@@ -60,6 +63,7 @@ export const uploadRecord = async ({
   await addDoc(collection(db, type), {
     uid,
     name,
+    level,
     date,
     recordRef,
     recordUrl,
@@ -73,6 +77,7 @@ export const uploadImageAndRecord = async (data: ImageAndRecordProps) => {
   const storeData: ImageAndRecordUploadData = {
     uid: data.uid,
     name: data.name,
+    level: data.level,
     date,
   };
 

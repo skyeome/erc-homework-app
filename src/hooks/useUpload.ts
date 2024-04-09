@@ -101,6 +101,7 @@ function useUpload(type: string, image?: string, title?: string) {
         type,
         uid: user.uid ?? "",
         name: user.name ?? "",
+        level: user.level ?? "",
         createdAt: new Date(),
         title,
         thumb: image,

@@ -9,6 +9,7 @@ export class Reading {
     public id: string,
     public uid: string,
     public name: string,
+    public level: string,
     public title: string,
     public thumb: string,
     public images: { imageRef: string; imageUrl: string }[],
@@ -44,6 +45,7 @@ export const readingConverter = {
       snapshot.id,
       data.uid,
       data.name,
+      data.level,
       data.title,
       data.thumb,
       data.images,
@@ -58,6 +60,7 @@ export class Record {
     public id: string,
     public uid: string,
     public name: string,
+    public level: string,
     public recordRef: string,
     public recordUrl: string,
     public date: Timestamp
@@ -90,6 +93,7 @@ export const recordConverter = {
       snapshot.id,
       data.uid,
       data.name,
+      data.level,
       data.recordRef,
       data.recordUrl,
       data.date
