@@ -1,8 +1,15 @@
-import { PropsWithChildren } from "react";
-import { HomeworkTypes } from "../../dashboard/notification/index.types";
+import {
+  ReadingHomeworkData,
+  RecordHomeworkData,
+  WorkbookHomeworkData,
+} from "@/api/admin";
 
-interface HomeworkProps {
-  type: HomeworkTypes;
+export interface WeeklyLevelHomeworkRecordProps {
+  data?: RecordHomeworkData;
 }
-
-export type WeeklyLevelHomeworkItemProps = PropsWithChildren<HomeworkProps>;
+export interface WeeklyLevelHomeworkReadingProps {
+  data?: ReadingHomeworkData;
+}
+export interface WeeklyLevelHomeworkWorkbookProps {
+  data?: WorkbookHomeworkData;
+}
