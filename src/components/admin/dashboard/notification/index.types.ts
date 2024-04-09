@@ -1,8 +1,8 @@
-type NotiTypes = "record" | "reading" | "workbook";
+export type HomeworkTypes = "record" | "reading" | "workbook";
 
 export interface Noti {
   id: number;
   name: string;
-  type: NotiTypes;
+  type: HomeworkTypes;
   date: Date;
 }

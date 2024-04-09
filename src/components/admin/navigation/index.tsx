@@ -1,9 +1,11 @@
 import { useLocation } from "react-router-dom";
 import { Divider, IconButton, List, Typography, useTheme } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import ClassIcon from "@mui/icons-material/Class";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import SchoolIcon from "@mui/icons-material/School";
+import HomeIcon from "@mui/icons-material/Home";
 import ListItemLink from "../menuList";
 import AdminNaviWrap from "./AdminNaviWrap";
 import DrawerHeader from "./index.styles";
@@ -56,8 +58,32 @@ function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
         <ListItemLink
           to="/admin/homework"
           primary="All Students"
-          icon={<PeopleAltIcon />}
-          active={pathname.startsWith("/admin/homework")}
+          icon={<SchoolIcon />}
+          active={pathname.endsWith("homework")}
+        />
+        <ListItemLink
+          to="/admin/homework/level-a"
+          primary="Class A"
+          icon={<ClassIcon />}
+          active={pathname.endsWith("level-a")}
+        />
+        <ListItemLink
+          to="/admin/homework/level-b"
+          primary="Class B"
+          icon={<ClassIcon />}
+          active={pathname.endsWith("level-b")}
+        />
+        <ListItemLink
+          to="/admin/homework/level-c"
+          primary="Class C"
+          icon={<ClassIcon />}
+          active={pathname.endsWith("level-c")}
+        />
+        <ListItemLink
+          to="/admin/homework/level-d"
+          primary="Class D"
+          icon={<ClassIcon />}
+          active={pathname.endsWith("level-d")}
         />
       </List>
       <Divider />

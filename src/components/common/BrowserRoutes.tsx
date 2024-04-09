@@ -17,6 +17,7 @@ import BookReadingDetail from "@/pages/reading/detail";
 import Dashboard from "@/pages/admin/dashboard";
 import AdminHomework from "@/pages/admin/homework";
 import AdminUser from "@/pages/admin/user";
+import AdminHomeworkLevel from "@/pages/admin/homework/level";
 
 function BrowserRoutes() {
   return (
@@ -32,6 +33,7 @@ function BrowserRoutes() {
         </Route>
         <Route path="homework">
           <Route index element={<AdminHomework />} />
+          <Route path=":levelName" element={<AdminHomeworkLevel />} />
         </Route>
       </Route>
       <Route element={<PageLayout />} errorElement={<ErrorPage />}>
