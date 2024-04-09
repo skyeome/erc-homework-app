@@ -5,12 +5,14 @@ import type { RootState } from "./store";
 interface UserState {
   uid: string | null;
   name: string | null;
+  level: string | null;
 }
 
 // Define the initial state using that type
 const initialState: UserState = {
   uid: null,
   name: null,
+  level: null,
 };
 
 export const userSlice = createSlice({
@@ -21,10 +23,12 @@ export const userSlice = createSlice({
     setUser: (state, action: PayloadAction<UserState>) => {
       state.uid = action.payload.uid;
       state.name = action.payload.name;
+      state.level = action.payload.level;
     },
     clearUser: (state) => {
       state.uid = null;
       state.name = null;
+      state.level = null;
     },
   },
 });

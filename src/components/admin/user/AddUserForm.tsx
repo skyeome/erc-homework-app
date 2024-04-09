@@ -1,12 +1,11 @@
 import useAddUserForm from "./AddUserForm.hooks";
-import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import UserTextField from "@/components/common/UserTextField";
 import ShadowBox from "@/components/common/box";
+import LevelSelect from "./LevelSelect";
 
 function AddUserForm() {
   const { control, errors, onSubmit } = useAddUserForm();
@@ -30,19 +29,7 @@ function AddUserForm() {
             <Typography variant="h4" fontWeight={700} mb={1}>
               Class
             </Typography>
-            <Autocomplete
-              id="selectedClass"
-              freeSolo
-              options={[
-                "Class A",
-                "Class B",
-                "Class C",
-                "Class D1",
-                "Class D2",
-                "Class D3",
-              ]}
-              renderInput={(params) => <TextField {...params} />}
-            />
+            <LevelSelect control={control} />
           </Box>
         </Stack>
 
