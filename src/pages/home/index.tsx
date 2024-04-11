@@ -1,7 +1,6 @@
 import AppBar from "@/components/common/appbar";
 import DailyCheckTitle from "@/components/home/DailyCheckTitle";
 import DailyCheckItem from "@/components/home/DailyCheckItem";
-import SallyCheck from "@/components/home/SallyCheck";
 import { useQuery } from "@tanstack/react-query";
 import { getWeeklyCheck } from "@/api/home";
 import { useAppSelector } from "@/hooks/useReduxHook";
@@ -34,7 +33,6 @@ function Home() {
       <DailyCheckItem data={data.wed} date="Wed." />
       <DailyCheckItem data={data.thu} date="Thu." />
       <DailyCheckItem data={data.fri} date="Fri." />
-      <SallyCheck />
     </div>
   );
 }
