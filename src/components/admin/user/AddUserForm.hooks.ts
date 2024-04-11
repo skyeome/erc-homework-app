@@ -5,6 +5,7 @@ import { FirebaseError } from "firebase/app";
 import { AddUserType } from "./AddUserForm.types";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { Student } from "@/libs/firestore";
 
 // const validateEmail = (email: string): boolean => {
 //   // 이메일 형식을 확인하는 정규식
@@ -12,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 //   return emailRegex.test(email);
 // };
 
-const useAddUserForm = () => {
+const useAddUserForm = (defaultValues?: Student) => {
   const navigate = useNavigate();
   const {
     control,
@@ -20,7 +21,7 @@ const useAddUserForm = () => {
     handleSubmit,
     reset,
   } = useForm<AddUserType>({
-    defaultValues: {
+    defaultValues: defaultValues ?? {
       name: "",
       level: "",
       username: "",
@@ -41,8 +42,10 @@ const useAddUserForm = () => {
         newPassword
       );
       await setDoc(doc(db, "user", userCredential.user.uid), {
+        username: data.username,
         name: data.name,
         level: data.level,
+        points: 0,
       });
       reset();
       navigate(-1);

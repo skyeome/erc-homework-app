@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { Controller } from "react-hook-form";
 import { LevelSelectProps } from "./LevelSelect.types";
 
-function LevelSelect({ control }: LevelSelectProps) {
+function LevelSelect({ control, defaultValue }: LevelSelectProps) {
   const options = [
     "Class A",
     "Class B",
@@ -23,7 +23,7 @@ function LevelSelect({ control }: LevelSelectProps) {
           freeSolo
           options={options}
           onChange={(_, data) => onChange(data)}
-          defaultValue={options[0]}
+          defaultValue={defaultValue ?? options[0]}
           renderInput={(params) => (
             <TextField {...params} {...field} inputRef={ref} />
           )}

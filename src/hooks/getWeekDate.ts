@@ -19,6 +19,16 @@ export const getWeekDate = () => {
   return [startOfWeek, endOfWeek];
 };
 
+export const getWeekDateAll = () => {
+  const startOfWeek = getStartOfThisWeek();
+  // 이번 주의 토요일을 구합니다. (월요일에서 7일을 더하고, 시간을 0시 0분으로 설정)
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 7);
+  endOfWeek.setHours(0, 0, 0, 0);
+
+  return [startOfWeek, endOfWeek];
+};
+
 // 이번 주 월요일부터 금요일까지의 날짜 배열 생성
 export const generateWeekDates = () => {
   const startOfWeek = getStartOfThisWeek();

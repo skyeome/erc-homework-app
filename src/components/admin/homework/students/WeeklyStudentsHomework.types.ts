@@ -15,4 +15,5 @@ interface Homeworks {
   record?: boolean;
   reading?: boolean;
   workbook?: boolean;
+  [key: string]: Date | boolean | undefined;
 }

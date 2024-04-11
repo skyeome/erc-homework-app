@@ -6,9 +6,10 @@ import Typography from "@mui/material/Typography";
 import UserTextField from "@/components/common/UserTextField";
 import ShadowBox from "@/components/common/box";
 import LevelSelect from "./LevelSelect";
+import { AddUserFormProps } from "./AddUserForm.types";
 
-function AddUserForm() {
-  const { control, errors, onSubmit } = useAddUserForm();
+function AddUserForm({ defaultValues }: AddUserFormProps) {
+  const { control, errors, onSubmit } = useAddUserForm(defaultValues);
 
   return (
     <ShadowBox p={3}>
@@ -29,7 +30,10 @@ function AddUserForm() {
             <Typography variant="h4" fontWeight={700} mb={1}>
               Class
             </Typography>
-            <LevelSelect control={control} />
+            <LevelSelect
+              control={control}
+              defaultValue={defaultValues?.level}
+            />
           </Box>
         </Stack>
 

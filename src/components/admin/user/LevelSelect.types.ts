@@ -4,4 +4,5 @@ import { AddUserType } from "./AddUserForm.types";
 
 export interface LevelSelectProps {
   control: Control<AddUserType, any>;
+  defaultValue?: string;
 }
