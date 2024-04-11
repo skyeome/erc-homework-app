@@ -5,7 +5,8 @@ import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
-import { HeadCell, Order, Student } from "./UserTable.types";
+import { HeadCell, Order } from "./UserTable.types";
+import { Student } from "@/libs/firestore";
 
 interface UserTableProps {
   numSelected: number;
@@ -21,7 +22,7 @@ interface UserTableProps {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "userId",
+    id: "username",
     numeric: false,
     disablePadding: true,
     label: "Id",

@@ -1,21 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Order, Student } from "./UserTable.types";
-
-export function createData(
-  id: number,
-  userId: string,
-  name: string,
-  level: string,
-  points: number
-): Student {
-  return {
-    id,
-    userId,
-    name,
-    level,
-    points,
-  };
-}
+import { Order } from "./UserTable.types";
 
 export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {

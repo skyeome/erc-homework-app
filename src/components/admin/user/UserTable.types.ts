@@ -1,12 +1,6 @@
-export type Order = "asc" | "desc";
+import { Student } from "@/libs/firestore";
 
-export interface Student {
-  id: number;
-  userId: string;
-  name: string;
-  level: string;
-  points: number;
-}
+export type Order = "asc" | "desc";
 
 export interface HeadCell {
   disablePadding: boolean;

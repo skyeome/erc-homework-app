@@ -100,3 +100,35 @@ export const recordConverter = {
     );
   },
 };
+
+export class Student {
+  constructor(
+    public id: string,
+    public username: string,
+    public name: string,
+    public level: string,
+    public points: string
+  ) {}
+}
+
+// Firestore data converter
+export const studentConverter = {
+  toFirestore: (student: Student) => {
+    return {
+      ...student,
+    };
+  },
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot,
+    options: SnapshotOptions
+  ) => {
+    const data = snapshot.data(options);
+    return new Student(
+      snapshot.id,
+      data.username,
+      data.name,
+      data.level,
+      data.points
+    );
+  },
+};
