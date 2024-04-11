@@ -3,9 +3,11 @@ import { auth, db } from "@/libs/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { AddUserType } from "./AddUserForm.types";
-import { doc, setDoc } from "firebase/firestore";
+import { arrayUnion, doc, writeBatch } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Student } from "@/libs/firestore";
+import { useQuery } from "@tanstack/react-query";
+import { getLevels } from "@/api/admin";
 
 // const validateEmail = (email: string): boolean => {
 //   // 이메일 형식을 확인하는 정규식
@@ -13,7 +15,7 @@ import { Student } from "@/libs/firestore";
 //   return emailRegex.test(email);
 // };
 
-const useAddUserForm = (defaultValues?: Student) => {
+const useAddUserForm = (isEdit?: boolean, defaultValues?: Student) => {
   const navigate = useNavigate();
   const {
     control,
@@ -28,6 +30,10 @@ const useAddUserForm = (defaultValues?: Student) => {
       password: "",
     },
   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["levels", "list"],
+    queryFn: getLevels,
+  });
 
   const onSubmit = handleSubmit(async (data) => {
     const salt = process.env.SOME_CODE;
@@ -36,17 +42,40 @@ const useAddUserForm = (defaultValues?: Student) => {
 
     // 유저 생성
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        newUsername,
-        newPassword
-      );
-      await setDoc(doc(db, "user", userCredential.user.uid), {
-        username: data.username,
-        name: data.name,
-        level: data.level,
-        points: 0,
-      });
+      const batch = writeBatch(db);
+
+      if (!isEdit) {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          newUsername,
+          newPassword
+        );
+        // 유저 생성
+        const userRef = doc(db, "user", userCredential.user.uid);
+        batch.set(userRef, {
+          username: data.username,
+          name: data.name,
+          level: data.level,
+          points: 0,
+        });
+      } else {
+        // 유저 수정
+        if (defaultValues) {
+          const userRef = doc(db, "user", defaultValues.id);
+          batch.update(userRef, {
+            username: data.username,
+            name: data.name,
+            level: data.level,
+          });
+        }
+      }
+
+      // 원래 없던 반이 생성되면 추가한다.
+      const levelRef = doc(db, "levels", "list");
+      batch.update(levelRef, { options: arrayUnion(data.level) });
+
+      await batch.commit();
+
       reset();
       navigate(-1);
     } catch (error) {
@@ -58,7 +87,7 @@ const useAddUserForm = (defaultValues?: Student) => {
     }
   });
 
-  return { control, errors, onSubmit };
+  return { control, errors, onSubmit, options: data, isLoading };
 };
 
 export default useAddUserForm;

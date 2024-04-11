@@ -132,3 +132,23 @@ export const studentConverter = {
     );
   },
 };
+
+export class LevelOptions {
+  constructor(public options: string[]) {}
+}
+
+// Firestore data converter
+export const levelConverter = {
+  toFirestore: (level: LevelOptions) => {
+    return {
+      ...level,
+    };
+  },
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot,
+    options: SnapshotOptions
+  ) => {
+    const data = snapshot.data(options);
+    return new LevelOptions(data.options);
+  },
+};

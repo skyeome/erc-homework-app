@@ -1,5 +1,14 @@
 import { useLocation } from "react-router-dom";
-import { Divider, IconButton, List, Typography, useTheme } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import {
+  CircularProgress,
+  Divider,
+  IconButton,
+  List,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { getLevels } from "@/api/admin";
 import ClassIcon from "@mui/icons-material/Class";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -14,6 +23,10 @@ import { AdminNavigationProps } from "./index.types";
 function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
   const theme = useTheme();
   const { pathname } = useLocation();
+  const { data, isLoading } = useQuery({
+    queryKey: ["levels", "list"],
+    queryFn: getLevels,
+  });
 
   return (
     <AdminNaviWrap open={open}>
@@ -54,38 +67,27 @@ function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
       <Typography variant="h4" fontWeight={700} pt={3} pl={2} pb={1}>
         Homeworks
       </Typography>
-      <List aria-label="Homeworks">
-        <ListItemLink
-          to="/admin/homework"
-          primary="All Students"
-          icon={<SchoolIcon />}
-          active={pathname.endsWith("homework")}
-        />
-        <ListItemLink
-          to="/admin/homework/level-a"
-          primary="Class A"
-          icon={<ClassIcon />}
-          active={pathname.endsWith("level-a")}
-        />
-        <ListItemLink
-          to="/admin/homework/level-b"
-          primary="Class B"
-          icon={<ClassIcon />}
-          active={pathname.endsWith("level-b")}
-        />
-        <ListItemLink
-          to="/admin/homework/level-c"
-          primary="Class C"
-          icon={<ClassIcon />}
-          active={pathname.endsWith("level-c")}
-        />
-        <ListItemLink
-          to="/admin/homework/level-d"
-          primary="Class D"
-          icon={<ClassIcon />}
-          active={pathname.endsWith("level-d")}
-        />
-      </List>
+      {isLoading ? (
+        <CircularProgress />
+      ) : data !== undefined ? (
+        <List aria-label="Homeworks">
+          <ListItemLink
+            to="/admin/homework"
+            primary="All Students"
+            icon={<SchoolIcon />}
+            active={pathname.endsWith("homework")}
+          />
+          {data.map((el, index) => (
+            <ListItemLink
+              key={index}
+              to={`/admin/homework/${el}`}
+              primary={el}
+              icon={<ClassIcon />}
+              active={pathname.endsWith(el)}
+            />
+          ))}
+        </List>
+      ) : null}
       <Divider />
     </AdminNaviWrap>
   );

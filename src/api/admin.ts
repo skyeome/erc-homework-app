@@ -1,9 +1,16 @@
 import { StudentsHomework } from "@/components/admin/homework/students/WeeklyStudentsHomework.types";
 import { getWeekDateAll } from "@/hooks/getWeekDate";
 import { db } from "@/libs/firebase";
-import { Student, recordConverter, studentConverter } from "@/libs/firestore";
+import {
+  Student,
+  levelConverter,
+  recordConverter,
+  studentConverter,
+} from "@/libs/firestore";
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -312,4 +319,16 @@ export const getAllUsersHomework = async ({
   });
 
   return data;
+};
+
+// 레벨 목록 불러오기
+export const getLevels = async () => {
+  let options: string[] = [];
+  const levelRef = doc(db, "levels", "list").withConverter(levelConverter);
+  const docSnap = await getDoc(levelRef);
+
+  if (docSnap.exists()) {
+    options = [...docSnap.data().options];
+  }
+  return options;
 };

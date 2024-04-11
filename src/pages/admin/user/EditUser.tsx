@@ -11,7 +11,7 @@ function EditUser() {
       <Typography variant="h4" fontWeight={700} p={2}>
         Manage Students
       </Typography>
-      <AddUserForm defaultValues={defaultValues} />
+      <AddUserForm isEdit defaultValues={defaultValues} />
     </div>
   );
 }

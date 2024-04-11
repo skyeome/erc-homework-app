@@ -1,6 +1,7 @@
 import useAddUserForm from "./AddUserForm.hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import UserTextField from "@/components/common/UserTextField";
@@ -8,8 +9,11 @@ import ShadowBox from "@/components/common/box";
 import LevelSelect from "./LevelSelect";
 import { AddUserFormProps } from "./AddUserForm.types";
 
-function AddUserForm({ defaultValues }: AddUserFormProps) {
-  const { control, errors, onSubmit } = useAddUserForm(defaultValues);
+function AddUserForm({ isEdit, defaultValues }: AddUserFormProps) {
+  const { control, errors, onSubmit, options, isLoading } = useAddUserForm(
+    isEdit,
+    defaultValues
+  );
 
   return (
     <ShadowBox p={3}>
@@ -30,10 +34,15 @@ function AddUserForm({ defaultValues }: AddUserFormProps) {
             <Typography variant="h4" fontWeight={700} mb={1}>
               Class
             </Typography>
-            <LevelSelect
-              control={control}
-              defaultValue={defaultValues?.level}
-            />
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <LevelSelect
+                options={options}
+                control={control}
+                defaultValue={defaultValues?.level}
+              />
+            )}
           </Box>
         </Stack>
 
@@ -46,19 +55,23 @@ function AddUserForm({ defaultValues }: AddUserFormProps) {
           errors={errors}
           autoComplete="new-username"
         />
-        <Typography variant="h4" fontWeight={700} mt={2}>
-          비밀번호
-        </Typography>
-        <UserTextField
-          name="password"
-          control={control}
-          errors={errors}
-          autoComplete="new-password"
-        />
+        {!isEdit && (
+          <>
+            <Typography variant="h4" fontWeight={700} mt={2}>
+              비밀번호
+            </Typography>
+            <UserTextField
+              name="password"
+              control={control}
+              errors={errors}
+              autoComplete="new-password"
+            />
+          </>
+        )}
 
         <Stack direction="row" justifyContent="flex-end" mt={2}>
           <Button type="submit" variant="contained" size="large">
-            학생 추가
+            {!isEdit ? "학생 추가" : "학생 수정"}
           </Button>
         </Stack>
       </form>
