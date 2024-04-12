@@ -1,4 +1,5 @@
 import { useState } from "react";
+// import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "@/hooks/useReduxHook";
 import Typography from "@mui/material/Typography";
@@ -9,6 +10,7 @@ import { HomeworkTypes } from "@/components/admin/dashboard/notification/index.t
 
 function AdminHomeworkLevel() {
   const { levelName } = useParams();
+  // const cate = useRef<HomeworkTypes>("record");
   const [category, setCategory] = useState<HomeworkTypes>("record");
   const date = useAppSelector((state) => state.date.value);
 
@@ -19,14 +21,14 @@ function AdminHomeworkLevel() {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} md={5}>
-          <WeeklySetDateAndCategory
-            date={date}
-            category={category}
-            setCategory={setCategory}
-          />
+          <WeeklySetDateAndCategory date={date} setCategory={setCategory} />
         </Grid>
         <Grid item xs={12} md={7}>
-          <WeeklyLevelHomework date={date} category={category} />
+          <WeeklyLevelHomework
+            date={date}
+            category={category}
+            levelName={levelName}
+          />
         </Grid>
       </Grid>
     </div>

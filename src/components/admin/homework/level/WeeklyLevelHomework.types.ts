@@ -1,6 +1,7 @@
-import { WeeklySetDateAndCategoryProps } from "./WeeklySetDateAndCategory.types";
+import { HomeworkTypes } from "../../dashboard/notification/index.types";
 
-export type WeeklyLevelHomeworkProps = Omit<
-  WeeklySetDateAndCategoryProps,
-  "setCategory"
->;
+export interface WeeklyLevelHomeworkProps {
+  date: Date;
+  category: HomeworkTypes;
+  levelName?: string;
+}

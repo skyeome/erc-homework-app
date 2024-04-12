@@ -16,9 +16,13 @@ import {
 } from "@/api/admin";
 import WeeklyLevelHomeworkItem from "./WeeklyLevelHomeworkItem";
 
-function WeeklyLevelHomework({ date, category }: WeeklyLevelHomeworkProps) {
+function WeeklyLevelHomework({
+  date,
+  category,
+  levelName,
+}: WeeklyLevelHomeworkProps) {
   return (
-    <Paper sx={{ minHeight: 549 }}>
+    <Paper sx={{ minHeight: 470 }}>
       <Typography variant="h3" fontWeight={700} p={3}>
         {category + " / " + format(date, "yyyy-MM-dd")}
       </Typography>
@@ -26,13 +30,25 @@ function WeeklyLevelHomework({ date, category }: WeeklyLevelHomeworkProps) {
       {/* 클래스별 숙제 컴포넌트 */}
       <Box p={3}>
         {category === "record" && (
-          <WeeklyLevelRecord date={date} category="record" />
+          <WeeklyLevelRecord
+            date={date}
+            category="record"
+            levelName={levelName}
+          />
         )}
         {category === "reading" && (
-          <WeeklyLevelReading date={date} category="reading" />
+          <WeeklyLevelReading
+            date={date}
+            category="reading"
+            levelName={levelName}
+          />
         )}
         {category === "workbook" && (
-          <WeeklyLevelWorkbook date={date} category="workbook" />
+          <WeeklyLevelWorkbook
+            date={date}
+            category="workbook"
+            levelName={levelName}
+          />
         )}
       </Box>
     </Paper>
@@ -40,10 +56,20 @@ function WeeklyLevelHomework({ date, category }: WeeklyLevelHomeworkProps) {
 }
 
 // Record 숙제 컴포넌트
-const WeeklyLevelRecord = ({ date, category }: WeeklyLevelHomeworkProps) => {
+const WeeklyLevelRecord = ({
+  date,
+  category,
+  levelName,
+}: WeeklyLevelHomeworkProps) => {
   const { data } = useQuery({
-    queryKey: ["homeworks", category, date],
-    queryFn: () => getRecordByLevelAndDate("", date),
+    queryKey: [
+      "admin",
+      "homework",
+      levelName,
+      category,
+      format(date, "yyyy-MM-dd"),
+    ],
+    queryFn: () => getRecordByLevelAndDate(levelName ?? "", date),
   });
   return (
     <Grid container>
@@ -74,10 +100,20 @@ const WeeklyLevelRecord = ({ date, category }: WeeklyLevelHomeworkProps) => {
 };
 
 // Reading 숙제 컴포넌트
-const WeeklyLevelReading = ({ date, category }: WeeklyLevelHomeworkProps) => {
+const WeeklyLevelReading = ({
+  date,
+  category,
+  levelName,
+}: WeeklyLevelHomeworkProps) => {
   const { data } = useQuery({
-    queryKey: ["homeworks", category, date],
-    queryFn: () => getReadingByLevelAndDate("", date),
+    queryKey: [
+      "admin",
+      "homework",
+      levelName,
+      category,
+      format(date, "yyyy-MM-dd"),
+    ],
+    queryFn: () => getReadingByLevelAndDate(levelName ?? "", date),
   });
   return (
     <Grid container>
@@ -103,10 +139,20 @@ const WeeklyLevelReading = ({ date, category }: WeeklyLevelHomeworkProps) => {
 };
 
 // Workbook/other 숙제 컴포넌트
-const WeeklyLevelWorkbook = ({ date, category }: WeeklyLevelHomeworkProps) => {
+const WeeklyLevelWorkbook = ({
+  date,
+  category,
+  levelName,
+}: WeeklyLevelHomeworkProps) => {
   const { data } = useQuery({
-    queryKey: ["homeworks", category, date],
-    queryFn: () => getWorkbookByLevelAndDate("", date),
+    queryKey: [
+      "admin",
+      "homework",
+      levelName,
+      category,
+      format(date, "yyyy-MM-dd"),
+    ],
+    queryFn: () => getWorkbookByLevelAndDate(levelName ?? "", date),
   });
   return (
     <Grid container>
