@@ -16,6 +16,8 @@ import {
   ReadingHomeworkData,
   RecordHomeworkData,
   WorkbookHomeworkData,
+  deleteImageAndRecord,
+  deleteRecord,
   getReadingByLevelAndDate,
   getRecordByLevelAndDate,
   getWorkbookByLevelAndDate,
@@ -106,19 +108,23 @@ const WeeklyLevelRecord = ({
   const onClickCheck = async (checkId: string) => {
     try {
       await updateCheckState(category, checkId);
-      refetch();
     } catch (error) {
       if (error instanceof FirebaseError)
         toast.error(`code: ${error.code}, message: ${error.message}`);
+    } finally {
+      refetch();
     }
   };
 
   const onClickDelete = async (deleteObj: RecordHomeworkData) => {
     try {
-      console.log(deleteObj);
+      if (deleteObj.recordRef !== undefined)
+        await deleteRecord(deleteObj.id, deleteObj.recordRef);
     } catch (error) {
       if (error instanceof FirebaseError)
         toast.error(`code: ${error.code}, message: ${error.message}`);
+    } finally {
+      refetch();
     }
   };
 
@@ -191,19 +197,24 @@ const WeeklyLevelReading = ({
   const onClickCheck = async (checkId: string) => {
     try {
       await updateCheckState(category, checkId);
-      refetch();
     } catch (error) {
       if (error instanceof FirebaseError)
         toast.error(`code: ${error.code}, message: ${error.message}`);
+    } finally {
+      refetch();
     }
   };
 
   const onClickDelete = async (deleteObj: ReadingHomeworkData) => {
+    const delImages = deleteObj.images?.map((el) => el.imageRef);
+    const delRecord = deleteObj.record?.recordRef;
     try {
-      console.log(deleteObj);
+      await deleteImageAndRecord(category, deleteObj.id, delImages, delRecord);
     } catch (error) {
       if (error instanceof FirebaseError)
         toast.error(`code: ${error.code}, message: ${error.message}`);
+    } finally {
+      refetch();
     }
   };
 
@@ -268,19 +279,26 @@ const WeeklyLevelWorkbook = ({
   const onClickCheck = async (checkId: string) => {
     try {
       await updateCheckState(category, checkId);
-      refetch();
     } catch (error) {
       if (error instanceof FirebaseError)
         toast.error(`code: ${error.code}, message: ${error.message}`);
+    } finally {
+      refetch();
     }
   };
 
   const onClickDelete = async (deleteObj: WorkbookHomeworkData) => {
+    const delImages = deleteObj.images?.map((el) => el.imageRef);
+    const delRecord = deleteObj.record?.recordRef;
+    console.log(delImages);
+    console.log(delRecord);
     try {
-      console.log(deleteObj);
+      await deleteImageAndRecord(category, deleteObj.id, delImages, delRecord);
     } catch (error) {
       if (error instanceof FirebaseError)
         toast.error(`code: ${error.code}, message: ${error.message}`);
+    } finally {
+      refetch();
     }
   };
 

@@ -1,6 +1,6 @@
 import { StudentsHomework } from "@/components/admin/homework/students/WeeklyStudentsHomework.types";
 import { getWeekDateAll } from "@/hooks/getWeekDate";
-import { db } from "@/libs/firebase";
+import { db, storage } from "@/libs/firebase";
 import {
   Student,
   levelConverter,
@@ -11,6 +11,7 @@ import {
 } from "@/libs/firestore";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -21,6 +22,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
 
 interface HomeworkCommons {
   id: string;
@@ -275,4 +277,26 @@ export const updateCheckState = async (category: string, checkId: string) => {
   await updateDoc(doc(db, category, checkId), {
     check: true,
   });
+};
+
+// delete Record data
+export const deleteRecord = async (id: string, recordRef: string) => {
+  await deleteDoc(doc(db, "record", id));
+  await deleteObject(ref(storage, recordRef));
+};
+
+// delete Image & Record data
+export const deleteImageAndRecord = async (
+  category: string,
+  id: string,
+  images?: string[],
+  record?: string
+) => {
+  await deleteDoc(doc(db, category, id));
+  if (images !== undefined) {
+    console.log(images);
+    const deletePromises = images.map((url) => deleteObject(ref(storage, url)));
+    await Promise.all(deletePromises);
+  }
+  if (record) await deleteObject(ref(storage, record));
 };
