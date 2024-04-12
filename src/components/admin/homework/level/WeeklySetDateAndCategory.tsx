@@ -11,15 +11,18 @@ import Select from "@mui/material/Select";
 import { HomeworkTypes } from "../../dashboard/notification/index.types";
 import { WeeklySetDateAndCategoryProps } from "./WeeklySetDateAndCategory.types";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { format } from "date-fns";
 
 function WeeklySetDateAndCategory({
   date,
+  category,
   setCategory,
+  setSearchParams,
 }: WeeklySetDateAndCategoryProps) {
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      category: "record",
       date,
+      category,
     },
   });
   const {
@@ -32,17 +35,13 @@ function WeeklySetDateAndCategory({
 
   const dispatch = useAppDispatch();
 
-  // const handleChange = (event: SelectChangeEvent) => {
-  //   setCategory(event.target.value as HomeworkTypes);
-  // };
-
-  // const onChangeDate = (value: Date | null) => {
-  //   if (value !== null) dispatch(setDate({ value }));
-  // };
-
   const onSubmit = handleSubmit((data) => {
     setCategory(data.category as HomeworkTypes);
     dispatch(setDate({ value: data.date }));
+    setSearchParams({
+      category: data.category,
+      date: format(data.date, "yyyy-MM-dd"),
+    });
   });
 
   return (
@@ -52,10 +51,10 @@ function WeeklySetDateAndCategory({
           <FormControl fullWidth>
             <InputLabel id="category-select-label">Category</InputLabel>
             <Select
-              labelId="category-select-label"
               id="category-select"
-              value={value}
               label="Category"
+              labelId="category-select-label"
+              value={value}
               onChange={onChange}
             >
               <MenuItem value="record">Record</MenuItem>
@@ -68,7 +67,7 @@ function WeeklySetDateAndCategory({
         <DateCalendar value={dateValue} onChange={onChangeDate} />
         <Box display="flex" justifyContent="flex-end">
           <Button type="submit" variant="outlined">
-            Search!
+            Search homework
           </Button>
         </Box>
       </Box>
