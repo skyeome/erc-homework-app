@@ -1,10 +1,11 @@
 import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
-  CircularProgress,
+  Box,
   Divider,
   IconButton,
   List,
+  Skeleton,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -67,27 +68,35 @@ function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
       <Typography variant="h4" fontWeight={700} pt={3} pl={2} pb={1}>
         Homeworks
       </Typography>
-      {isLoading ? (
-        <CircularProgress />
-      ) : data !== undefined ? (
-        <List aria-label="Homeworks">
-          <ListItemLink
-            to="/admin/homework"
-            primary="All Students"
-            icon={<SchoolIcon />}
-            active={pathname.endsWith("homework")}
-          />
-          {data.map((el, index) => (
-            <ListItemLink
-              key={index}
-              to={`/admin/homework/${el}`}
-              primary={el}
-              icon={<ClassIcon />}
-              active={pathname.endsWith(el)}
-            />
-          ))}
-        </List>
-      ) : null}
+      <List aria-label="Homeworks">
+        <ListItemLink
+          to="/admin/homework"
+          primary="All Students"
+          icon={<SchoolIcon />}
+          active={pathname.endsWith("homework")}
+        />
+        {isLoading ? (
+          <>
+            {[1, 2, 3, 4, 5, 6].map((el) => (
+              <Box component="li" key={el} px={2} py={1.5} height={44.5}>
+                <Skeleton />
+              </Box>
+            ))}
+          </>
+        ) : data !== undefined ? (
+          <>
+            {data.map((el, index) => (
+              <ListItemLink
+                key={index}
+                to={`/admin/homework/${el}`}
+                primary={el}
+                icon={<ClassIcon />}
+                active={pathname.endsWith(el)}
+              />
+            ))}
+          </>
+        ) : null}
+      </List>
       <Divider />
     </AdminNaviWrap>
   );

@@ -7,6 +7,7 @@ import {
   readingConverter,
   recordConverter,
   studentConverter,
+  workbookConverter,
 } from "@/libs/firestore";
 import {
   collection,
@@ -115,21 +116,31 @@ export const getReadingByLevelAndDate = async (level: string, date: Date) => {
   return data;
 };
 // 클래스별 특정날짜 Workbook 데이터 불러오기
-export const getWorkbookByLevelAndDate = async (level: string, date: Date) => {
-  // 추후 제거 필요
-  console.log(date);
-  const data = [
-    {
-      id: "erc1234",
-      uid: "1234",
-      name: "김성겸",
-      title: "설명글",
-      images: [{ imageRef: "", imageUrl: "" }],
-      record: { recordRef: "", recordUrl: "" },
-      date: new Date("2024-04-01 12:00:00"),
-      level,
-    },
-  ];
+export const getWorkbookByLevelAndDate = async (
+  category: string,
+  level: string,
+  date: Date
+) => {
+  // 검색 범위 : 시작 하는 날
+  const startDate = date;
+  startDate.setHours(0, 0, 0, 0);
+  // 검색 범위 : 끝나는 날
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 1);
+  // 데이터 저장
+  const data: WorkbookHomeworkData[] = [];
+
+  const workbookQuery = query(
+    collection(db, category),
+    where("level", "==", level),
+    where("date", ">", startDate),
+    where("date", "<", endDate)
+  ).withConverter(workbookConverter);
+  const workbookSn = await getDocs(workbookQuery);
+  workbookSn.forEach((snap) => {
+    const temp = snap.data();
+    data.push(temp);
+  });
   return data;
 };
 

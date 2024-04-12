@@ -61,6 +61,7 @@ function WeeklySetDateAndCategory({
               <MenuItem value="record">Record</MenuItem>
               <MenuItem value="reading">Reading</MenuItem>
               <MenuItem value="workbook">Workbook</MenuItem>
+              <MenuItem value="other">Other</MenuItem>
             </Select>
           </FormControl>
         </Box>

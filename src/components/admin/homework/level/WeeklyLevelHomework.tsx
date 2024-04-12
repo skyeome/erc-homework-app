@@ -15,6 +15,7 @@ import {
   getWorkbookByLevelAndDate,
 } from "@/api/admin";
 import WeeklyLevelHomeworkItem from "./WeeklyLevelHomeworkItem";
+import Skeleton from "@mui/material/Skeleton";
 
 function WeeklyLevelHomework({
   date,
@@ -29,24 +30,22 @@ function WeeklyLevelHomework({
       <Divider />
       {/* 클래스별 숙제 컴포넌트 */}
       <Box p={3}>
-        {category === "record" && (
+        {category === "record" ? (
           <WeeklyLevelRecord
             date={date}
             category="record"
             levelName={levelName}
           />
-        )}
-        {category === "reading" && (
+        ) : category === "reading" ? (
           <WeeklyLevelReading
             date={date}
             category="reading"
             levelName={levelName}
           />
-        )}
-        {category === "workbook" && (
+        ) : (
           <WeeklyLevelWorkbook
             date={date}
-            category="workbook"
+            category={category}
             levelName={levelName}
           />
         )}
@@ -55,13 +54,39 @@ function WeeklyLevelHomework({
   );
 }
 
+// skeleton
+const WeeklyLevelHomeworkSkeleton = () => {
+  return (
+    <Grid container spacing={2}>
+      {[1, 2, 3, 4].map((item) => (
+        <Grid item key={item} xs={12} sm={6} md={12} lg={6}>
+          <WeeklyLevelHomeworkItem>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={1.5}
+            >
+              <Typography variant="h5" fontWeight={700}>
+                <Skeleton width={100} />
+              </Typography>
+              <Skeleton width={70} height={33} />
+            </Stack>
+            <Skeleton height={55} />
+          </WeeklyLevelHomeworkItem>
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
 // Record 숙제 컴포넌트
 const WeeklyLevelRecord = ({
   date,
   category,
   levelName,
 }: WeeklyLevelHomeworkProps) => {
-  const { data } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: [
       "admin",
       "homework",
@@ -72,6 +97,7 @@ const WeeklyLevelRecord = ({
     queryFn: () => getRecordByLevelAndDate(levelName ?? "", date),
   });
 
+  if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
   return (
     <Grid container spacing={2}>
       {data?.map((item) => (
@@ -106,7 +132,7 @@ const WeeklyLevelReading = ({
   category,
   levelName,
 }: WeeklyLevelHomeworkProps) => {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [
       "admin",
       "homework",
@@ -117,6 +143,7 @@ const WeeklyLevelReading = ({
     queryFn: () => getReadingByLevelAndDate(levelName ?? "", date),
   });
 
+  if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
   return (
     <Grid container spacing={2}>
       {data?.map((item) => (
@@ -146,7 +173,7 @@ const WeeklyLevelWorkbook = ({
   category,
   levelName,
 }: WeeklyLevelHomeworkProps) => {
-  const { data, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [
       "admin",
       "homework",
@@ -154,10 +181,10 @@ const WeeklyLevelWorkbook = ({
       category,
       format(date, "yyyy-MM-dd"),
     ],
-    queryFn: () => getWorkbookByLevelAndDate(levelName ?? "", date),
+    queryFn: () => getWorkbookByLevelAndDate(category, levelName ?? "", date),
   });
-  console.log(error);
 
+  if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
   return (
     <Grid container spacing={2}>
       {data?.map((item) => (

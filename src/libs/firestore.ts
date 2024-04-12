@@ -101,6 +101,44 @@ export const recordConverter = {
   },
 };
 
+export class Workbook {
+  constructor(
+    public id: string,
+    public uid: string,
+    public name: string,
+    public title: string,
+    public level: string,
+    public images: { imageRef: string; imageUrl: string }[],
+    public record: { recordRef: string; recordUrl: string },
+    public date: Timestamp
+  ) {}
+}
+
+// Firestore data converter
+export const workbookConverter = {
+  toFirestore: (workbook: Workbook) => {
+    return {
+      ...workbook,
+    };
+  },
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot,
+    options: SnapshotOptions
+  ) => {
+    const data = snapshot.data(options);
+    return new Workbook(
+      snapshot.id,
+      data.uid,
+      data.name,
+      data.title,
+      data.level,
+      data.images,
+      data.record,
+      data.date
+    );
+  },
+};
+
 export class Student {
   constructor(
     public id: string,
