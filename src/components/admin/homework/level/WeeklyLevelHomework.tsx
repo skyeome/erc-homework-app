@@ -61,7 +61,7 @@ const WeeklyLevelRecord = ({
   category,
   levelName,
 }: WeeklyLevelHomeworkProps) => {
-  const { data, error } = useQuery({
+  const { data } = useQuery({
     queryKey: [
       "admin",
       "homework",
@@ -71,7 +71,6 @@ const WeeklyLevelRecord = ({
     ],
     queryFn: () => getRecordByLevelAndDate(levelName ?? "", date),
   });
-  console.log(error);
 
   return (
     <Grid container spacing={2}>
@@ -107,7 +106,7 @@ const WeeklyLevelReading = ({
   category,
   levelName,
 }: WeeklyLevelHomeworkProps) => {
-  const { data, error } = useQuery({
+  const { data } = useQuery({
     queryKey: [
       "admin",
       "homework",
@@ -117,7 +116,6 @@ const WeeklyLevelReading = ({
     ],
     queryFn: () => getReadingByLevelAndDate(levelName ?? "", date),
   });
-  console.log(error);
 
   return (
     <Grid container spacing={2}>

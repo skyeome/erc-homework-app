@@ -1,4 +1,4 @@
-import { Box, BoxProps, styled } from "@mui/material";
+import { Box, BoxProps, Typography, styled } from "@mui/material";
 
 export const WeeklyLevelHomeworkItemBox = styled((props: BoxProps) => (
   <Box borderRadius={2} p={1.5} {...props} />
@@ -18,6 +18,7 @@ export const WeeklyLevelHomeworkRecordWrap = styled(Box)`
 `;
 
 export const WeeklyLevelHomeworkReadingWrap = styled(Box)(({ theme }) => ({
+  flexShrink: 0,
   backgroundColor:
     theme.palette.mode === "light"
       ? theme.palette.lightBg.main
@@ -28,3 +29,10 @@ export const WeeklyLevelHomeworkReadingWrap = styled(Box)(({ theme }) => ({
     objectFit: "cover",
   },
 }));
+
+export const WeeklyLevelHomeworkTypo = styled(Typography)`
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+`;

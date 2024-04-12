@@ -53,10 +53,11 @@ const WeeklyLevelHomeworkReading = ({
     <Stack direction="row" mt={1.5} gap={1.5}>
       {data?.thumb !== undefined && data?.thumb !== "" ? (
         <Styled.WeeklyLevelHomeworkReadingWrap width={35} height={55}>
-          <img
-            src={data?.thumb || data?.images[0]?.imageUrl}
-            alt={data?.title}
-          />
+          <img src={data?.thumb} alt={data?.title} />
+        </Styled.WeeklyLevelHomeworkReadingWrap>
+      ) : data?.thumb === undefined ? (
+        <Styled.WeeklyLevelHomeworkReadingWrap width={35} height={55}>
+          <img src={data?.images[0]?.imageUrl} alt={data?.title} />
         </Styled.WeeklyLevelHomeworkReadingWrap>
       ) : (
         <Styled.WeeklyLevelHomeworkReadingWrap
@@ -70,7 +71,9 @@ const WeeklyLevelHomeworkReading = ({
         </Styled.WeeklyLevelHomeworkReadingWrap>
       )}
       <div>
-        <Typography mt={0.5}>{data?.title}</Typography>
+        <Styled.WeeklyLevelHomeworkTypo mt={0.5}>
+          {data?.title}
+        </Styled.WeeklyLevelHomeworkTypo>
         <Stack direction="row" gap={1}>
           <Typography color="GrayText">
             <ImageIcon fontSize="small" sx={{ verticalAlign: "text-bottom" }} />{" "}
