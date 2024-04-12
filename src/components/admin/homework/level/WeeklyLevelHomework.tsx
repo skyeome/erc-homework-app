@@ -1,21 +1,27 @@
+import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
+import { FirebaseError } from "firebase/app";
 import { format } from "date-fns";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
+import Skeleton from "@mui/material/Skeleton";
+import LoadingButton from "@mui/lab/LoadingButton";
 import DownloadIcon from "@mui/icons-material/Download";
 import { WeeklyLevelHomeworkProps } from "./WeeklyLevelHomework.types";
 import {
+  ReadingHomeworkData,
+  RecordHomeworkData,
+  WorkbookHomeworkData,
   getReadingByLevelAndDate,
   getRecordByLevelAndDate,
   getWorkbookByLevelAndDate,
+  updateCheckState,
 } from "@/api/admin";
 import WeeklyLevelHomeworkItem from "./WeeklyLevelHomeworkItem";
-import Skeleton from "@mui/material/Skeleton";
 
 function WeeklyLevelHomework({
   date,
@@ -86,7 +92,7 @@ const WeeklyLevelRecord = ({
   category,
   levelName,
 }: WeeklyLevelHomeworkProps) => {
-  const { isLoading, data } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [
       "admin",
       "homework",
@@ -96,6 +102,25 @@ const WeeklyLevelRecord = ({
     ],
     queryFn: () => getRecordByLevelAndDate(levelName ?? "", date),
   });
+
+  const onClickCheck = async (checkId: string) => {
+    try {
+      await updateCheckState(category, checkId);
+      refetch();
+    } catch (error) {
+      if (error instanceof FirebaseError)
+        toast.error(`code: ${error.code}, message: ${error.message}`);
+    }
+  };
+
+  const onClickDelete = async (deleteObj: RecordHomeworkData) => {
+    try {
+      console.log(deleteObj);
+    } catch (error) {
+      if (error instanceof FirebaseError)
+        toast.error(`code: ${error.code}, message: ${error.message}`);
+    }
+  };
 
   if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
   return (
@@ -112,10 +137,30 @@ const WeeklyLevelRecord = ({
                 {item.name}
               </Typography>
               <Stack direction="row" alignItems="center" gap={1}>
-                <a href={item.recordUrl} download>
-                  <DownloadIcon sx={{ verticalAlign: "middle" }} />
-                </a>
-                <Button variant="contained">Check</Button>
+                {item.recordUrl !== undefined && (
+                  <a href={item.recordUrl} download>
+                    <DownloadIcon sx={{ verticalAlign: "middle" }} />
+                  </a>
+                )}
+                {item.check ? (
+                  <LoadingButton
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => onClickDelete(item)}
+                    loading={isLoading}
+                  >
+                    Delete
+                  </LoadingButton>
+                ) : (
+                  <LoadingButton
+                    variant="contained"
+                    onClick={() => onClickCheck(item.id)}
+                    loading={isLoading}
+                    disabled={item.recordUrl === undefined}
+                  >
+                    Check
+                  </LoadingButton>
+                )}
               </Stack>
             </Stack>
             <WeeklyLevelHomeworkItem.Record data={item} />
@@ -132,7 +177,7 @@ const WeeklyLevelReading = ({
   category,
   levelName,
 }: WeeklyLevelHomeworkProps) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [
       "admin",
       "homework",
@@ -142,6 +187,25 @@ const WeeklyLevelReading = ({
     ],
     queryFn: () => getReadingByLevelAndDate(levelName ?? "", date),
   });
+
+  const onClickCheck = async (checkId: string) => {
+    try {
+      await updateCheckState(category, checkId);
+      refetch();
+    } catch (error) {
+      if (error instanceof FirebaseError)
+        toast.error(`code: ${error.code}, message: ${error.message}`);
+    }
+  };
+
+  const onClickDelete = async (deleteObj: ReadingHomeworkData) => {
+    try {
+      console.log(deleteObj);
+    } catch (error) {
+      if (error instanceof FirebaseError)
+        toast.error(`code: ${error.code}, message: ${error.message}`);
+    }
+  };
 
   if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
   return (
@@ -157,7 +221,24 @@ const WeeklyLevelReading = ({
               <Typography variant="h5" fontWeight={700}>
                 {item.name}
               </Typography>
-              <Button variant="contained">Check</Button>
+              {item.check ? (
+                <LoadingButton
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => onClickDelete(item)}
+                  loading={isLoading}
+                >
+                  Delete
+                </LoadingButton>
+              ) : (
+                <LoadingButton
+                  variant="contained"
+                  onClick={() => onClickCheck(item.id)}
+                  loading={isLoading}
+                >
+                  Check
+                </LoadingButton>
+              )}
             </Stack>
             <WeeklyLevelHomeworkItem.Reading data={item} />
           </WeeklyLevelHomeworkItem>
@@ -173,7 +254,7 @@ const WeeklyLevelWorkbook = ({
   category,
   levelName,
 }: WeeklyLevelHomeworkProps) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [
       "admin",
       "homework",
@@ -183,6 +264,25 @@ const WeeklyLevelWorkbook = ({
     ],
     queryFn: () => getWorkbookByLevelAndDate(category, levelName ?? "", date),
   });
+
+  const onClickCheck = async (checkId: string) => {
+    try {
+      await updateCheckState(category, checkId);
+      refetch();
+    } catch (error) {
+      if (error instanceof FirebaseError)
+        toast.error(`code: ${error.code}, message: ${error.message}`);
+    }
+  };
+
+  const onClickDelete = async (deleteObj: WorkbookHomeworkData) => {
+    try {
+      console.log(deleteObj);
+    } catch (error) {
+      if (error instanceof FirebaseError)
+        toast.error(`code: ${error.code}, message: ${error.message}`);
+    }
+  };
 
   if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
   return (
@@ -198,7 +298,24 @@ const WeeklyLevelWorkbook = ({
               <Typography variant="h5" fontWeight={700}>
                 {item.name}
               </Typography>
-              <Button variant="contained">Check</Button>
+              {item.check ? (
+                <LoadingButton
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => onClickDelete(item)}
+                  loading={isLoading}
+                >
+                  Delete
+                </LoadingButton>
+              ) : (
+                <LoadingButton
+                  variant="contained"
+                  onClick={() => onClickCheck(item.id)}
+                  loading={isLoading}
+                >
+                  Check
+                </LoadingButton>
+              )}
             </Stack>
             <WeeklyLevelHomeworkItem.Workbook data={item} />
           </WeeklyLevelHomeworkItem>

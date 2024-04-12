@@ -14,7 +14,8 @@ export class Reading {
     public thumb: string,
     public images: { imageRef: string; imageUrl: string }[],
     public record: { recordRef: string; recordUrl: string },
-    public date: Timestamp
+    public date: Timestamp,
+    public check: boolean
   ) {}
   toString() {
     return `
@@ -50,7 +51,8 @@ export const readingConverter = {
       data.thumb,
       data.images,
       data.record,
-      data.date
+      data.date,
+      data.check
     );
   },
 };
@@ -63,7 +65,8 @@ export class Record {
     public level: string,
     public recordRef: string,
     public recordUrl: string,
-    public date: Timestamp
+    public date: Timestamp,
+    public check: boolean
   ) {}
   toString() {
     return `
@@ -96,7 +99,8 @@ export const recordConverter = {
       data.level,
       data.recordRef,
       data.recordUrl,
-      data.date
+      data.date,
+      data.check
     );
   },
 };
@@ -110,7 +114,8 @@ export class Workbook {
     public level: string,
     public images: { imageRef: string; imageUrl: string }[],
     public record: { recordRef: string; recordUrl: string },
-    public date: Timestamp
+    public date: Timestamp,
+    public check: boolean
   ) {}
 }
 
@@ -134,7 +139,8 @@ export const workbookConverter = {
       data.level,
       data.images,
       data.record,
-      data.date
+      data.date,
+      data.check
     );
   },
 };

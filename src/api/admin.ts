@@ -18,6 +18,7 @@ import {
   orderBy,
   query,
   startAfter,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
@@ -25,8 +26,8 @@ interface HomeworkCommons {
   id: string;
   uid: string;
   name: string;
-  // date: Date;
   level: string;
+  check?: boolean;
 }
 
 export interface RecordHomeworkData extends HomeworkCommons {
@@ -154,116 +155,6 @@ export const getAllUsers = async () => {
   return data;
 };
 
-// const WeeklyStudentsData: StudentsHomework[] = [
-//   {
-//     uid: "erc1234",
-//     name: "김OO",
-//     mon: {
-//       record: true,
-//       workbook: true,
-//     },
-//     tue: {
-//       record: true,
-//       reading: true,
-//     },
-//     wed: {
-//       record: true,
-//       workbook: true,
-//     },
-//     thu: {
-//       record: true,
-//       reading: true,
-//     },
-//     fri: {
-//       record: true,
-//     },
-//   },
-//   {
-//     uid: "erc2345",
-//     name: "이XX",
-//     mon: {
-//       record: true,
-//       workbook: true,
-//     },
-//     tue: {
-//       record: true,
-//     },
-//     wed: {
-//       record: true,
-//       workbook: true,
-//     },
-//     thu: {
-//       record: true,
-//       reading: true,
-//     },
-//     fri: {
-//       record: true,
-//     },
-//   },
-//   {
-//     uid: "erc3456",
-//     name: "박OO",
-//     mon: {
-//       record: true,
-//     },
-//     tue: {
-//       record: true,
-//       reading: true,
-//     },
-//     wed: {
-//       record: true,
-//     },
-//     thu: {
-//       record: true,
-//       reading: true,
-//     },
-//     fri: {
-//       record: true,
-//     },
-//   },
-//   {
-//     uid: "erc4567",
-//     name: "최XX",
-//     mon: {
-//       record: true,
-//       workbook: true,
-//     },
-//     tue: {
-//       record: true,
-//       reading: true,
-//     },
-//     wed: {
-//       record: true,
-//       workbook: true,
-//     },
-//     thu: {
-//       record: true,
-//       reading: true,
-//     },
-//   },
-//   {
-//     uid: "erc5678",
-//     name: "정OO",
-//     mon: {
-//       record: true,
-//       workbook: true,
-//     },
-//     tue: {
-//       reading: true,
-//     },
-//     wed: {
-//       record: true,
-//       workbook: true,
-//     },
-//     thu: {
-//       record: true,
-//     },
-//     fri: {
-//       record: true,
-//     },
-//   },
-// ];
-
 const setWeeklyHomeworkState = (
   day: number,
   result: StudentsHomework,
@@ -377,4 +268,11 @@ export const getLevels = async () => {
     options = [...docSnap.data().options];
   }
   return options;
+};
+
+// update check state
+export const updateCheckState = async (category: string, checkId: string) => {
+  await updateDoc(doc(db, category, checkId), {
+    check: true,
+  });
 };
