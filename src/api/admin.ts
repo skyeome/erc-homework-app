@@ -23,13 +23,13 @@ interface HomeworkCommons {
   id: string;
   uid: string;
   name: string;
-  date: Date;
+  // date: Date;
   level: string;
 }
 
 export interface RecordHomeworkData extends HomeworkCommons {
-  recordRef: string;
-  recordUrl: string;
+  recordRef?: string;
+  recordUrl?: string;
 }
 export interface ReadingHomeworkData extends HomeworkCommons {
   title: string;
@@ -45,19 +45,47 @@ export interface WorkbookHomeworkData extends HomeworkCommons {
 
 // 클래스별 특정날짜 Record 데이터 불러오기
 export const getRecordByLevelAndDate = async (level: string, date: Date) => {
-  // 추후 제거 필요
-  console.log(date);
-  const data = [
-    {
-      id: "erc1234",
-      uid: "1234",
-      name: "김성겸",
-      recordRef: "",
-      recordUrl: "",
-      date: new Date("2024-04-01 12:00:00"),
-      level,
-    },
-  ];
+  // 검색 범위 : 시작 하는 날
+  const startDate = date;
+  startDate.setHours(0, 0, 0, 0);
+  // 검색 범위 : 끝나는 날
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 1);
+  // 데이터 저장
+  const data: RecordHomeworkData[] = [];
+
+  const recordQuery = query(
+    collection(db, "record"),
+    where("level", "==", level),
+    where("date", ">", startDate),
+    where("date", "<", endDate)
+  ).withConverter(recordConverter);
+  const userQuery = query(
+    collection(db, "user"),
+    where("level", "==", level)
+  ).withConverter(studentConverter);
+
+  const recordSn = await getDocs(recordQuery);
+  const userSn = await getDocs(userQuery);
+
+  recordSn.forEach((snap) => {
+    const temp = snap.data();
+    data.push(temp);
+  });
+
+  userSn.forEach((snap) => {
+    const temp = snap.data();
+    const matches = data.findIndex((record) => record.uid === temp.id);
+    if (matches < 0) {
+      data.push({
+        id: temp.id,
+        uid: temp.username,
+        level: temp.level,
+        name: temp.name,
+      });
+    }
+  });
+
   return data;
 };
 // 클래스별 특정날짜 Reading 데이터 불러오기

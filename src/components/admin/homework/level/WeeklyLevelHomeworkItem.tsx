@@ -5,15 +5,19 @@ import HideImageIcon from "@mui/icons-material/HideImage";
 import ImageIcon from "@mui/icons-material/Image";
 import MicIcon from "@mui/icons-material/Mic";
 import {
+  WeeklyLevelHomeworkItemProps,
   WeeklyLevelHomeworkReadingProps,
   WeeklyLevelHomeworkRecordProps,
   WeeklyLevelHomeworkWorkbookProps,
 } from "./WeeklyLevelHomeworkItem.types";
 import * as Styled from "./WeeklyLevelHomeworkItem.styles";
 
-function WeeklyLevelHomeworkItem({ children }: PropsWithChildren) {
+function WeeklyLevelHomeworkItem({
+  complete,
+  children,
+}: PropsWithChildren<WeeklyLevelHomeworkItemProps>) {
   return (
-    <Styled.WeeklyLevelHomeworkItemBox>
+    <Styled.WeeklyLevelHomeworkItemBox complete={`${complete}`}>
       {children}
     </Styled.WeeklyLevelHomeworkItemBox>
   );
@@ -23,8 +27,16 @@ const WeeklyLevelHomeworkRecord = ({
   data,
 }: WeeklyLevelHomeworkRecordProps) => {
   const isSupport = MediaRecorder.isTypeSupported("audio/webm;codecs=opus");
+  if (data?.recordUrl === undefined)
+    return (
+      <Styled.WeeklyLevelHomeworkRecordWrap mt={1.5} height={55}>
+        <Typography color="error" fontWeight={700}>
+          숙제 제출 전
+        </Typography>
+      </Styled.WeeklyLevelHomeworkRecordWrap>
+    );
   return (
-    <Styled.WeeklyLevelHomeworkRecordWrap mt={1.5}>
+    <Styled.WeeklyLevelHomeworkRecordWrap mt={1.5} height={55}>
       <audio controls>
         <source
           src={data?.recordUrl}

@@ -41,7 +41,6 @@ function WeeklySetDateAndCategory({
   // };
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
     setCategory(data.category as HomeworkTypes);
     dispatch(setDate({ value: data.date }));
   });

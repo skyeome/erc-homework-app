@@ -4,6 +4,10 @@ import {
   WorkbookHomeworkData,
 } from "@/api/admin";
 
+export interface WeeklyLevelHomeworkItemProps {
+  complete?: boolean;
+}
+
 export interface WeeklyLevelHomeworkRecordProps {
   data?: RecordHomeworkData;
 }
