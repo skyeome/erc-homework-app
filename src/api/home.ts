@@ -29,6 +29,26 @@ const setWeeklyByDay = (
   }
 };
 
+const setWeeklyCheck = (day: number, result: WeeklyCheck) => {
+  switch (day) {
+    case 1:
+      result.mon.checked = true;
+      break;
+    case 2:
+      result.tue.checked = true;
+      break;
+    case 3:
+      result.wed.checked = true;
+      break;
+    case 4:
+      result.thu.checked = true;
+      break;
+    case 5:
+      result.fri.checked = true;
+      break;
+  }
+};
+
 export const getWeeklyCheck = async (uid: string | null) => {
   if (!uid) throw new Error("로그인 해주세요");
   // 결과값 저장하는 변수
@@ -67,9 +87,12 @@ export const getWeeklyCheck = async (uid: string | null) => {
   const promises = [getDocs(q1), getDocs(q2), getDocs(q3)];
   const results = await Promise.all(promises);
   results[0].forEach((doc) => {
-    const date = doc.data().date.toDate();
+    const data = doc.data();
+    const date = data.date.toDate();
     const day = date.getDay();
+    const check = data.check;
     setWeeklyByDay(day, result, "record", true);
+    if (check) setWeeklyCheck(day, result);
   });
   results[1].forEach((doc) => {
     const date = doc.data().date.toDate();
