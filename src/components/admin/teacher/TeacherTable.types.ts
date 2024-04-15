@@ -1,10 +1,10 @@
-import { Student } from "@/libs/firestore";
+import { Teacher } from "@/libs/firestore";
 
 export type Order = "asc" | "desc";
 
 export interface HeadCell {
   disablePadding: boolean;
-  id: keyof Student;
+  id: keyof Teacher;
   label: string;
   numeric: boolean;
 }

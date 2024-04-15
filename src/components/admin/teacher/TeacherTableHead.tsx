@@ -6,7 +6,8 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
 import { Teacher } from "@/libs/firestore";
-import { HeadCell, Order } from "../user/UserTable.types";
+import { Order } from "../user/UserTable.types";
+import { HeadCell } from "./TeacherTable.types";
 
 interface UserTableProps {
   numSelected: number;

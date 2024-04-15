@@ -1,16 +1,16 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
+// import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import TeacherTextField from "@/components/common/TeacherTextField";
 import ShadowBox from "@/components/common/box";
-import LevelSelect from "./LevelSelect";
+// import LevelSelect from "./LevelSelect";
 import useAddTeacherForm from "./AddTeacherForm.hooks";
 import { AddTeacherFormProps } from "./AddTeacherForm.types";
 
 function AddTeacherForm({ isEdit, defaultValues }: AddTeacherFormProps) {
-  const { control, errors, onSubmit, options, isLoading } = useAddTeacherForm(
+  const { control, errors, onSubmit } = useAddTeacherForm(
     isEdit,
     defaultValues
   );
@@ -30,7 +30,7 @@ function AddTeacherForm({ isEdit, defaultValues }: AddTeacherFormProps) {
               autoComplete="off"
             />
           </Box>
-          <Box flex={1}>
+          {/* <Box flex={1}>
             <Typography variant="h4" fontWeight={700} mb={1}>
               Class
             </Typography>
@@ -43,7 +43,7 @@ function AddTeacherForm({ isEdit, defaultValues }: AddTeacherFormProps) {
                 defaultValue={defaultValues?.level}
               />
             )}
-          </Box>
+          </Box> */}
         </Stack>
 
         <Typography variant="h4" fontWeight={700} mt={2}>
