@@ -9,7 +9,7 @@ function EditTeacher() {
   return (
     <div>
       <Typography variant="h4" fontWeight={700} p={2}>
-        Manage Students
+        Manage Teachers
       </Typography>
       <AddTeacherForm isEdit defaultValues={defaultValues} />
     </div>

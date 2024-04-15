@@ -1,8 +1,8 @@
-import { Student } from "@/libs/firestore";
+import { Teacher } from "@/libs/firestore";
 
 export interface AddTeacherFormProps {
   isEdit?: boolean;
-  defaultValues?: Student;
+  defaultValues?: Teacher;
 }
 
 export interface LoginTeacherType {

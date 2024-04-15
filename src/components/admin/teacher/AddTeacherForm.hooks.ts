@@ -5,11 +5,11 @@ import { FirebaseError } from "firebase/app";
 import { AddTeacherType } from "./AddTeacherForm.types";
 import { arrayUnion, doc, writeBatch } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { Student } from "@/libs/firestore";
+import { Teacher } from "@/libs/firestore";
 import { useQuery } from "@tanstack/react-query";
 import { getLevels } from "@/api/admin";
 
-const useAddTeacherForm = (isEdit?: boolean, defaultValues?: Student) => {
+const useAddTeacherForm = (isEdit?: boolean, defaultValues?: Teacher) => {
   const navigate = useNavigate();
   const {
     control,
@@ -19,7 +19,6 @@ const useAddTeacherForm = (isEdit?: boolean, defaultValues?: Student) => {
   } = useForm<AddTeacherType>({
     defaultValues: defaultValues ?? {
       name: "",
-      level: "",
       email: "",
       password: "",
     },
@@ -45,7 +44,7 @@ const useAddTeacherForm = (isEdit?: boolean, defaultValues?: Student) => {
         batch.set(userRef, {
           email: data.email,
           name: data.name,
-          level: data.level,
+          level: "",
           teacher: true,
         });
       } else {
@@ -55,7 +54,6 @@ const useAddTeacherForm = (isEdit?: boolean, defaultValues?: Student) => {
           batch.update(userRef, {
             email: data.email,
             name: data.name,
-            level: data.level,
           });
         }
       }

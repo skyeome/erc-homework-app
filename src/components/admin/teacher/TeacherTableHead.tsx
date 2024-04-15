@@ -5,14 +5,14 @@ import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
-import { Student } from "@/libs/firestore";
+import { Teacher } from "@/libs/firestore";
 import { HeadCell, Order } from "../user/UserTable.types";
 
 interface UserTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof Student
+    property: keyof Teacher
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
@@ -22,7 +22,7 @@ interface UserTableProps {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "username",
+    id: "email",
     numeric: false,
     disablePadding: true,
     label: "Id",
@@ -32,18 +32,6 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: false,
     label: "Name",
-  },
-  {
-    id: "level",
-    numeric: true,
-    disablePadding: false,
-    label: "Class",
-  },
-  {
-    id: "points",
-    numeric: true,
-    disablePadding: false,
-    label: "Points",
   },
 ];
 
@@ -57,7 +45,7 @@ function UserTableHead(props: UserTableProps) {
     onRequestSort,
   } = props;
   const createSortHandler =
-    (property: keyof Student) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof Teacher) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 

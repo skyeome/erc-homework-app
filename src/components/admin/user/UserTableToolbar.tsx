@@ -8,10 +8,11 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 
 interface UserTableToolbarProps {
   numSelected: number;
+  text?: string;
 }
 
 function UserTableToolbar(props: UserTableToolbarProps) {
-  const { numSelected } = props;
+  const { numSelected, text } = props;
 
   return (
     <Toolbar
@@ -43,7 +44,7 @@ function UserTableToolbar(props: UserTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          Students
+          {text ?? "Students"}
         </Typography>
       )}
       {numSelected > 0 ? (

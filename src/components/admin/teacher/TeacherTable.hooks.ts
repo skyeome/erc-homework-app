@@ -1,14 +1,14 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { Student } from "@/libs/firestore";
+import { Teacher } from "@/libs/firestore";
 import { getAllTeachers } from "@/api/admin";
 import { getComparator, stableSort } from "../user/UserTable.utils";
 import { Order } from "../user/UserTable.types";
 
 const useTeacherTable = () => {
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof Student>("username");
+  const [orderBy, setOrderBy] = useState<keyof Teacher>("email");
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -20,7 +20,7 @@ const useTeacherTable = () => {
 
   const handleRequestSort = (
     _event: React.MouseEvent<unknown>,
-    property: keyof Student
+    property: keyof Teacher
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");

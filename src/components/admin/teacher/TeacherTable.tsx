@@ -34,7 +34,7 @@ export default function AllTeachers() {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <UserTableToolbar numSelected={selected.length} />
+        <UserTableToolbar numSelected={selected.length} text="Teachers" />
         <TableContainer>
           <Table aria-labelledby="tableTitle" size="medium">
             <UserTableHead
@@ -48,7 +48,7 @@ export default function AllTeachers() {
             <TableBody>
               {visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row.id);
-                const labelId = `students-checkbox-${index}`;
+                const labelId = `teachers-checkbox-${index}`;
 
                 return (
                   <TableRow
@@ -77,11 +77,9 @@ export default function AllTeachers() {
                       scope="row"
                       padding="none"
                     >
-                      {row.username}
+                      {row.email}
                     </TableCell>
                     <TableCell>{row.name}</TableCell>
-                    <TableCell align="right">{row.level}</TableCell>
-                    <TableCell align="right">{row.points}</TableCell>
                   </TableRow>
                 );
               })}
