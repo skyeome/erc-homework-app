@@ -1,25 +1,37 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { signOut } from "firebase/auth";
+import { auth } from "@/libs/firebase";
+import { persistor } from "@/libs/store";
+import { clearUser } from "@/libs/userSlice";
+import { useAppDispatch } from "@/hooks/useReduxHook";
+import { FirebaseError } from "firebase/app";
+import { getLevels } from "@/api/admin";
 import {
   Box,
   Divider,
   IconButton,
   List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Skeleton,
   Typography,
   useTheme,
 } from "@mui/material";
-import { getLevels } from "@/api/admin";
 import ClassIcon from "@mui/icons-material/Class";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SchoolIcon from "@mui/icons-material/School";
 import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
 import ListItemLink from "../menuList";
 import AdminNaviWrap from "./AdminNaviWrap";
-import DrawerHeader from "./index.styles";
 import { AdminNavigationProps } from "./index.types";
+import DrawerHeader from "./index.styles";
+import { clearTeacher } from "@/libs/adminSlice";
+import client from "@/libs/client";
 
 function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
   const theme = useTheme();
@@ -28,6 +40,25 @@ function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
     queryKey: ["levels", "list"],
     queryFn: getLevels,
   });
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const onClickLogout = async () => {
+    try {
+      await signOut(auth);
+      await persistor.purge();
+      dispatch(clearUser());
+      dispatch(clearTeacher());
+      client.removeQueries();
+      navigate("/auth/login", { replace: true });
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        console.log(error.code);
+        console.log(error.message);
+      }
+    }
+  };
 
   return (
     <AdminNaviWrap open={open}>
@@ -104,6 +135,14 @@ function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
         ) : null}
       </List>
       <Divider />
+      <List aria-label="Logout">
+        <ListItemButton onClick={onClickLogout}>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItemButton>
+      </List>
     </AdminNaviWrap>
   );
 }

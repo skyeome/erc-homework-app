@@ -13,6 +13,7 @@ import * as Styled from "./index.styles";
 import { useAppDispatch } from "@/hooks/useReduxHook";
 import { clearUser } from "@/libs/userSlice";
 import { persistor } from "@/libs/store";
+import client from "@/libs/client";
 
 function AppBar({ title, disableBack }: AppBarProps) {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function AppBar({ title, disableBack }: AppBarProps) {
       await signOut(auth);
       await persistor.purge();
       dispatch(clearUser());
+      client.removeQueries();
       navigate("/auth/login", { replace: true });
     } catch (error) {
       if (error instanceof FirebaseError) {

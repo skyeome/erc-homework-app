@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import AppBar from "@/components/common/appbar";
 import DailyCheckTitle from "@/components/home/DailyCheckTitle";
 import DailyCheckItem from "@/components/home/DailyCheckItem";
@@ -5,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getWeeklyCheck } from "@/api/home";
 import { useAppSelector } from "@/hooks/useReduxHook";
 import { Box, CircularProgress } from "@mui/material";
+import { getAdminState } from "@/api/auth";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const { uid } = useAppSelector((state) => state.user);
@@ -12,6 +15,18 @@ function Home() {
     queryKey: ["home"],
     queryFn: () => getWeeklyCheck(uid),
   });
+
+  const navigate = useNavigate();
+  const { data: adminData } = useQuery({
+    queryKey: ["admin", "user"],
+    queryFn: () => getAdminState(uid),
+    gcTime: 0,
+    staleTime: 0,
+  });
+
+  useEffect(() => {
+    if (adminData?.teacher) navigate("/admin", { replace: true });
+  }, [adminData, navigate]);
 
   if (!data)
     return (

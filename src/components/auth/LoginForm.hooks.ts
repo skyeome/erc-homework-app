@@ -5,12 +5,13 @@ import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import { AddUserType } from "../admin/user/AddUserForm.types";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHook";
-import { setTeacher } from "@/libs/userSlice";
+import { clearTeacher, setTeacher } from "@/libs/adminSlice";
+import toast from "react-hot-toast";
 
 const useLoginForm = () => {
   const navigate = useNavigate();
   // const [keepLogin, setKeepLogin] = useState(true);
-  const isTeacher = useAppSelector((state) => state.user.teacher);
+  const isTeacher = useAppSelector((state) => state.admin.teacher);
   const dispatch = useAppDispatch();
 
   const {
@@ -27,7 +28,8 @@ const useLoginForm = () => {
 
   const onClickSwitch = () => {
     // setKeepLogin((prev) => !prev);
-    dispatch(setTeacher({ teacher: !isTeacher }));
+    if (isTeacher) dispatch(clearTeacher());
+    else dispatch(setTeacher());
   };
 
   const onSubmit = handleSubmit(async (data: AddUserType) => {
@@ -48,8 +50,9 @@ const useLoginForm = () => {
     } catch (error) {
       if (error instanceof FirebaseError) {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        if (errorCode === "auth/invalid-email")
+          toast.error("아이디 혹은 비밀번호가 다릅니다.");
+        else toast.error("로그인중 알 수 없는 에러가 발생했습니다.");
       }
     }
   });
