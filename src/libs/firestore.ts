@@ -177,6 +177,38 @@ export const studentConverter = {
   },
 };
 
+export class Teacher {
+  constructor(
+    public id: string,
+    public email: string,
+    public name: string,
+    public level: string,
+    public teacher: boolean
+  ) {}
+}
+
+// Firestore data converter
+export const teacherConverter = {
+  toFirestore: (teacher: Teacher) => {
+    return {
+      ...teacher,
+    };
+  },
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot,
+    options: SnapshotOptions
+  ) => {
+    const data = snapshot.data(options);
+    return new Teacher(
+      snapshot.id,
+      data.email,
+      data.name,
+      data.level,
+      data.teacher
+    );
+  },
+};
+
 export class LevelOptions {
   constructor(public options: string[]) {}
 }

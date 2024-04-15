@@ -3,10 +3,12 @@ import { getWeekDateAll } from "@/hooks/getWeekDate";
 import { db, storage } from "@/libs/firebase";
 import {
   Student,
+  Teacher,
   levelConverter,
   readingConverter,
   recordConverter,
   studentConverter,
+  teacherConverter,
   workbookConverter,
 } from "@/libs/firestore";
 import {
@@ -150,6 +152,16 @@ export const getWorkbookByLevelAndDate = async (
 export const getAllUsers = async () => {
   const data: Student[] = [];
   const q = query(collection(db, "user")).withConverter(studentConverter);
+  const querySn = await getDocs(q);
+  querySn.forEach((doc) => {
+    data.push(doc.data());
+  });
+  return data;
+};
+
+export const getAllTeachers = async () => {
+  const data: Teacher[] = [];
+  const q = query(collection(db, "teacher")).withConverter(teacherConverter);
   const querySn = await getDocs(q);
   querySn.forEach((doc) => {
     data.push(doc.data());

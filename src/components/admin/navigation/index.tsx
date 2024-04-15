@@ -63,6 +63,12 @@ function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
           icon={<PeopleAltIcon />}
           active={pathname.startsWith("/admin/user")}
         />
+        <ListItemLink
+          to="/admin/teacher"
+          primary="Teachers"
+          icon={<PeopleAltIcon />}
+          active={pathname.startsWith("/admin/teacher")}
+        />
       </List>
       <Divider />
       <Typography variant="h4" fontWeight={700} pt={3} pl={2} pb={1}>

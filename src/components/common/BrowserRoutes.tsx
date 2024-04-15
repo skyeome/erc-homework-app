@@ -19,6 +19,9 @@ import AdminHomework from "@/pages/admin/homework";
 import AdminUser from "@/pages/admin/user";
 import EditUser from "@/pages/admin/user/EditUser";
 import AdminHomeworkLevel from "@/pages/admin/homework/level";
+import AdminTeacher from "@/pages/admin/teacher";
+import AddTeacher from "@/pages/admin/teacher/AddTeacher";
+import EditTeacher from "@/pages/admin/teacher/EditTeacher";
 
 function BrowserRoutes() {
   return (
@@ -32,6 +35,11 @@ function BrowserRoutes() {
           <Route index element={<AdminUser />} />
           <Route path="add" element={<AddUser />} />
           <Route path="edit" element={<EditUser />} />
+        </Route>
+        <Route path="teacher">
+          <Route index element={<AdminTeacher />} />
+          <Route path="add" element={<AddTeacher />} />
+          <Route path="edit" element={<EditTeacher />} />
         </Route>
         <Route path="homework">
           <Route index element={<AdminHomework />} />

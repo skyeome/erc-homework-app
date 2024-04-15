@@ -2,10 +2,10 @@ import { Stack, Typography } from "@mui/material";
 import DateBox from "@/components/admin/dashboard/datebox";
 import AdminNotification from "@/components/admin/dashboard/notification";
 import AdminProgress from "@/components/admin/dashboard/progress";
-import requestPermission from "@/hooks/requestPermission";
+import useRequestPermission from "@/hooks/requestPermission";
 
 function Dashboard() {
-  requestPermission();
+  useRequestPermission();
   return (
     <div>
       <Typography variant="h4" fontWeight={700} p={2}>
