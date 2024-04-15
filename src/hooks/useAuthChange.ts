@@ -12,9 +12,10 @@ export default function useAuthChange() {
   const { currentUser } = auth;
   const { data } = useQuery({
     queryKey: ["user"],
-    queryFn: () => getCurrentUser(currentUser?.uid),
+    queryFn: () => getCurrentUser(isTeacher, currentUser?.uid),
   });
   const uid = useAppSelector((state) => state.user.uid);
+  const isTeacher = useAppSelector((state) => state.user.teacher);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

@@ -1,18 +1,17 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  browserSessionPersistence,
-  setPersistence,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/libs/firebase";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import { AddUserType } from "../admin/user/AddUserForm.types";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHook";
+import { setTeacher } from "@/libs/userSlice";
 
 const useLoginForm = () => {
   const navigate = useNavigate();
-  const [keepLogin, setKeepLogin] = useState(true);
+  // const [keepLogin, setKeepLogin] = useState(true);
+  const isTeacher = useAppSelector((state) => state.user.teacher);
+  const dispatch = useAppDispatch();
 
   const {
     handleSubmit,
@@ -27,7 +26,8 @@ const useLoginForm = () => {
   });
 
   const onClickSwitch = () => {
-    setKeepLogin((prev) => !prev);
+    // setKeepLogin((prev) => !prev);
+    dispatch(setTeacher({ teacher: !isTeacher }));
   };
 
   const onSubmit = handleSubmit(async (data: AddUserType) => {
@@ -37,9 +37,13 @@ const useLoginForm = () => {
 
     // 로그인 작업
     try {
-      if (!keepLogin) await setPersistence(auth, browserSessionPersistence);
-      await signInWithEmailAndPassword(auth, newUsername, newPassword);
-      navigate("/");
+      if (!isTeacher) {
+        await signInWithEmailAndPassword(auth, newUsername, newPassword);
+        navigate("/");
+      } else {
+        await signInWithEmailAndPassword(auth, data.username, data.password);
+        navigate("/admin");
+      }
       reset();
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -53,7 +57,7 @@ const useLoginForm = () => {
   return {
     control,
     errors,
-    keepLogin,
+    isTeacher,
     onClickSwitch,
     onSubmit,
   };

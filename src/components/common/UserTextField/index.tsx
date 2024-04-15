@@ -4,8 +4,14 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import { UserTextFieldProps } from "./index.types";
 
-function UserTextField({ name, control, errors, ...rest }: UserTextFieldProps) {
-  const rules =
+function UserTextField({
+  name,
+  control,
+  errors,
+  rules,
+  ...rest
+}: UserTextFieldProps) {
+  const validateRules =
     name === "username"
       ? {
           required: "아이디는 필수 입니다.",
@@ -34,7 +40,7 @@ function UserTextField({ name, control, errors, ...rest }: UserTextFieldProps) {
       <Controller
         name={name}
         control={control}
-        rules={rules}
+        rules={rules ?? validateRules}
         render={({ field }) => (
           <TextField
             type={name === "password" ? "password" : "text"}
