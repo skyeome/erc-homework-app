@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 import { getMessaging, getToken } from "firebase/messaging";
+import { useAppSelector } from "./useReduxHook";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { db } from "@/libs/firebase";
 
 const messaging = getMessaging();
 
-const requestPermission = async () => {
+const requestPermission = async (uid: string | null) => {
   try {
     const permission = await Notification.requestPermission();
     if (permission === "granted") {
@@ -11,9 +14,12 @@ const requestPermission = async () => {
       const currentToken = await getToken(messaging, {
         vapidKey: process.env.VAPID_KEY,
       });
-      if (currentToken) {
-        // Send the token to your server and update the UI if necessary
-        console.log(currentToken);
+      if (currentToken && uid !== null) {
+        // 토큰은 서버로 전송
+        const teacherRef = doc(db, "teacher", uid);
+        await updateDoc(teacherRef, {
+          tokens: arrayUnion(currentToken),
+        });
       } else {
         // Show permission request UI
         console.log(
@@ -28,9 +34,11 @@ const requestPermission = async () => {
 };
 
 async function useRequestPermission() {
+  const uid = useAppSelector((state) => state.user.uid);
+
   useEffect(() => {
-    requestPermission();
-  }, []);
+    requestPermission(uid);
+  }, [uid]);
 }
 
 export default useRequestPermission;
