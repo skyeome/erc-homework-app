@@ -1,13 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
+import { MouseEvent, useCallback, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/libs/firebase";
 import { FirebaseError } from "firebase/app";
 import Typography from "@mui/material/Typography";
-import { Chip } from "@mui/material";
 import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { AppBarProps } from "./index.types";
 import * as Styled from "./index.styles";
 import { useAppDispatch } from "@/hooks/useReduxHook";
@@ -20,6 +25,16 @@ function AppBar({ title, disableBack }: AppBarProps) {
   const goBack = useCallback(() => {
     navigate(-1);
   }, [navigate]);
+
+  // 메뉴 열기/닫기 관련 state
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const dispatch = useAppDispatch();
 
@@ -57,7 +72,7 @@ function AppBar({ title, disableBack }: AppBarProps) {
             {title}
           </Typography>
         </Styled.AppBarTitle>
-        <Styled.AppBarPoint onClick={handleLogout}>
+        <Styled.AppBarPoint onClick={handleClick}>
           <Chip
             variant="outlined"
             color="primary"
@@ -65,6 +80,22 @@ function AppBar({ title, disableBack }: AppBarProps) {
             label="100"
           />
         </Styled.AppBarPoint>
+        <Menu
+          id="user-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Logout</ListItemText>
+          </MenuItem>
+        </Menu>
       </div>
     </Styled.AppBarWrap>
   );
