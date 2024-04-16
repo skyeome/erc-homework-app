@@ -14,6 +14,7 @@ import {
   workbookConverter,
 } from "@/libs/firestore";
 import {
+  Timestamp,
   collection,
   deleteDoc,
   doc,
@@ -36,6 +37,7 @@ interface HomeworkCommons {
   name: string;
   level: string;
   check?: boolean;
+  date?: Timestamp;
 }
 
 export interface RecordHomeworkData extends HomeworkCommons {
@@ -44,7 +46,7 @@ export interface RecordHomeworkData extends HomeworkCommons {
 }
 export interface ReadingHomeworkData extends HomeworkCommons {
   title: string;
-  thumb: string;
+  thumb?: string;
   images: { imageRef: string; imageUrl: string }[];
   record: { recordRef: string; recordUrl: string };
 }
@@ -339,6 +341,26 @@ export const getNotifications = async () => {
   const q = query(
     collection(db, "notification"),
     orderBy("timestamp")
+  ).withConverter(notificationConverter);
+  const notiSnap = await getDocs(q);
+  notiSnap.forEach((el) => {
+    const temp = el.data();
+    data.push(temp);
+  });
+  return data;
+};
+
+export const getAllNotification = async ({
+  pageParam,
+}: {
+  pageParam: Date;
+}) => {
+  const data: Notification[] = [];
+  const q = query(
+    collection(db, "notification"),
+    orderBy("timestamp"),
+    startAfter(pageParam),
+    limit(5)
   ).withConverter(notificationConverter);
   const notiSnap = await getDocs(q);
   notiSnap.forEach((el) => {

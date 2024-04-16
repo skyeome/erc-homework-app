@@ -13,7 +13,9 @@ export interface WeeklyLevelHomeworkRecordProps {
 }
 export interface WeeklyLevelHomeworkReadingProps {
   data?: ReadingHomeworkData;
+  handleClick?: (id: string) => void;
 }
 export interface WeeklyLevelHomeworkWorkbookProps {
   data?: WorkbookHomeworkData;
+  handleClick?: (id: string) => void;
 }

@@ -236,7 +236,7 @@ export class Notification {
     public name: string,
     public level: string,
     public date: Timestamp,
-    public createdAt: Timestamp
+    public timestamp: Timestamp
   ) {}
 }
 
@@ -258,7 +258,7 @@ export const notificationConverter = {
       data.name,
       data.level,
       data.date,
-      data.createdAt
+      data.timestamp
     );
   },
 };

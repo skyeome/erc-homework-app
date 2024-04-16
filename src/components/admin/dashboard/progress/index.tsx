@@ -39,7 +39,7 @@ function AdminProgress() {
         <Typography variant="h4" fontWeight={700}>
           Homeworks Progress
         </Typography>
-        <Link to="">
+        <Link to="/admin/homework">
           More
           <ChevronRightIcon sx={{ verticalAlign: "middle" }} />
         </Link>

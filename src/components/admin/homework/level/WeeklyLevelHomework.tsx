@@ -1,7 +1,8 @@
-import toast from "react-hot-toast";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FirebaseError } from "firebase/app";
 import { format } from "date-fns";
+import toast from "react-hot-toast";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
@@ -24,12 +25,17 @@ import {
   updateCheckState,
 } from "@/api/admin";
 import WeeklyLevelHomeworkItem from "./WeeklyLevelHomeworkItem";
+import WeeklyLevelHomeworkModal from "./WeeklyLevelHomeworkModal";
+import useModal from "@/hooks/useModal";
 
 function WeeklyLevelHomework({
   date,
   category,
   levelName,
 }: WeeklyLevelHomeworkProps) {
+  const { open, handleOpen, handleClose } = useModal();
+  const [modalData, setModalData] = useState<ReadingHomeworkData>();
+
   return (
     <Paper sx={{ minHeight: 470 }}>
       <Typography variant="h3" fontWeight={700} p={3}>
@@ -49,15 +55,24 @@ function WeeklyLevelHomework({
             date={date}
             category="reading"
             levelName={levelName}
+            handleOpen={handleOpen}
+            setModalData={setModalData}
           />
         ) : (
           <WeeklyLevelWorkbook
             date={date}
             category={category}
             levelName={levelName}
+            handleOpen={handleOpen}
+            setModalData={setModalData}
           />
         )}
       </Box>
+      <WeeklyLevelHomeworkModal
+        open={open}
+        handleClose={handleClose}
+        modalData={modalData}
+      />
     </Paper>
   );
 }
@@ -182,6 +197,8 @@ const WeeklyLevelReading = ({
   date,
   category,
   levelName,
+  handleOpen,
+  setModalData,
 }: WeeklyLevelHomeworkProps) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: [
@@ -218,6 +235,14 @@ const WeeklyLevelReading = ({
     }
   };
 
+  const handleClick = (id: string) => {
+    const modalData = data?.find((item) => item.id === id);
+    if (handleOpen && setModalData && modalData) {
+      handleOpen();
+      setModalData(modalData);
+    }
+  };
+
   if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
   return (
     <Grid container spacing={2}>
@@ -251,7 +276,10 @@ const WeeklyLevelReading = ({
                 </LoadingButton>
               )}
             </Stack>
-            <WeeklyLevelHomeworkItem.Reading data={item} />
+            <WeeklyLevelHomeworkItem.Reading
+              data={item}
+              handleClick={handleClick}
+            />
           </WeeklyLevelHomeworkItem>
         </Grid>
       ))}
@@ -264,6 +292,8 @@ const WeeklyLevelWorkbook = ({
   date,
   category,
   levelName,
+  handleOpen,
+  setModalData,
 }: WeeklyLevelHomeworkProps) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: [
@@ -290,8 +320,6 @@ const WeeklyLevelWorkbook = ({
   const onClickDelete = async (deleteObj: WorkbookHomeworkData) => {
     const delImages = deleteObj.images?.map((el) => el.imageRef);
     const delRecord = deleteObj.record?.recordRef;
-    console.log(delImages);
-    console.log(delRecord);
     try {
       await deleteImageAndRecord(category, deleteObj.id, delImages, delRecord);
     } catch (error) {
@@ -299,6 +327,14 @@ const WeeklyLevelWorkbook = ({
         toast.error(`code: ${error.code}, message: ${error.message}`);
     } finally {
       refetch();
+    }
+  };
+
+  const handleClick = (id: string) => {
+    const modalData = data?.find((item) => item.id === id);
+    if (handleOpen && setModalData && modalData) {
+      handleOpen();
+      setModalData(modalData);
     }
   };
 
@@ -335,7 +371,10 @@ const WeeklyLevelWorkbook = ({
                 </LoadingButton>
               )}
             </Stack>
-            <WeeklyLevelHomeworkItem.Workbook data={item} />
+            <WeeklyLevelHomeworkItem.Workbook
+              data={item}
+              handleClick={handleClick}
+            />
           </WeeklyLevelHomeworkItem>
         </Grid>
       ))}

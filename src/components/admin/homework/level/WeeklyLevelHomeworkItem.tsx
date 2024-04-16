@@ -48,9 +48,18 @@ const WeeklyLevelHomeworkRecord = ({
 };
 const WeeklyLevelHomeworkReading = ({
   data,
+  handleClick,
 }: WeeklyLevelHomeworkReadingProps) => {
   return (
-    <Stack direction="row" mt={1.5} gap={1.5}>
+    <Stack
+      direction="row"
+      mt={1.5}
+      gap={1.5}
+      onClick={() => {
+        if (handleClick && data) handleClick(data.id);
+      }}
+      sx={{ cursor: "pointer" }}
+    >
       {data?.thumb !== undefined && data?.thumb !== "" ? (
         <Styled.WeeklyLevelHomeworkReadingWrap width={35} height={55}>
           <img src={data?.thumb} alt={data?.title} />
@@ -91,9 +100,18 @@ const WeeklyLevelHomeworkReading = ({
 };
 const WeeklyLevelHomeworkWorkbook = ({
   data,
+  handleClick,
 }: WeeklyLevelHomeworkWorkbookProps) => {
   return (
-    <Stack direction="row" mt={1.5} gap={1.5}>
+    <Stack
+      direction="row"
+      mt={1.5}
+      gap={1.5}
+      onClick={() => {
+        if (handleClick && data) handleClick(data.id);
+      }}
+      sx={{ cursor: "pointer" }}
+    >
       {data?.images[0] !== undefined && data?.images[0].imageUrl !== "" ? (
         <Styled.WeeklyLevelHomeworkReadingWrap width={35} height={55}>
           <img src={data?.images[0]?.imageUrl} alt={data?.title} />
