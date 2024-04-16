@@ -22,6 +22,7 @@ import AdminHomeworkLevel from "@/pages/admin/homework/level";
 import AdminTeacher from "@/pages/admin/teacher";
 import AddTeacher from "@/pages/admin/teacher/AddTeacher";
 import EditTeacher from "@/pages/admin/teacher/EditTeacher";
+import AdminNotis from "@/pages/admin/noti";
 
 function BrowserRoutes() {
   return (
@@ -31,6 +32,7 @@ function BrowserRoutes() {
       </Route>
       <Route path="admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
+        <Route path="notis" element={<AdminNotis />} />
         <Route path="user">
           <Route index element={<AdminUser />} />
           <Route path="add" element={<AddUser />} />

@@ -1,13 +1,14 @@
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { FirebaseError } from "firebase/app";
-import { format } from "date-fns";
-import { storage } from "@/libs/firebase";
-import type { chunks, setChunks } from "@/components/record/Recorder.types";
-import { getThisWeekRecord, uploadRecord } from "@/api/record";
-import { useAppSelector } from "./useReduxHook";
-import toast from "react-hot-toast";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { format } from "date-fns";
+import { FirebaseError } from "firebase/app";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "@/libs/firebase";
+import { getThisWeekRecord, uploadRecord } from "@/api/record";
+import type { chunks, setChunks } from "@/components/record/Recorder.types";
+import { useAppSelector } from "./useReduxHook";
+import { setNotification } from "@/api/admin";
 
 interface RecordUploadData {
   type: string;
@@ -77,7 +78,7 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
         await uploadBytes(fileRef, blob);
         recordUrl = await getDownloadURL(fileRef);
         // db에 url과 파일이름 저장
-        await uploadRecord({
+        const id = await uploadRecord({
           type,
           uid: user.uid,
           name: user.name,
@@ -86,6 +87,8 @@ function useRecordUpload({ type, chunks, setChunks, date }: RecordUploadData) {
           recordRef,
           recordUrl,
         });
+        // 알림에 기록 저장
+        await setNotification(id, type, user.name, user.level, date);
         toast.success("숙제 제출이 완료되었습니다.");
         handleClickAgain();
         refetch();

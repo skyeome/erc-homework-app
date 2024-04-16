@@ -2,9 +2,11 @@ import { StudentsHomework } from "@/components/admin/homework/students/WeeklyStu
 import { getWeekDateAll } from "@/hooks/getWeekDate";
 import { db, storage } from "@/libs/firebase";
 import {
+  Notification,
   Student,
   Teacher,
   levelConverter,
+  notificationConverter,
   readingConverter,
   recordConverter,
   studentConverter,
@@ -20,6 +22,8 @@ import {
   limit,
   orderBy,
   query,
+  serverTimestamp,
+  setDoc,
   startAfter,
   updateDoc,
   where,
@@ -311,4 +315,35 @@ export const deleteImageAndRecord = async (
     await Promise.all(deletePromises);
   }
   if (record) await deleteObject(ref(storage, record));
+};
+
+// 알림 목록 추가
+export const setNotification = async (
+  id: string,
+  type: string,
+  name: string,
+  level: string,
+  date?: Date
+) => {
+  await setDoc(doc(db, "notification", id), {
+    type,
+    name,
+    level,
+    date,
+    timestamp: serverTimestamp(),
+  });
+};
+
+export const getNotifications = async () => {
+  const data: Notification[] = [];
+  const q = query(
+    collection(db, "notification"),
+    orderBy("timestamp")
+  ).withConverter(notificationConverter);
+  const notiSnap = await getDocs(q);
+  notiSnap.forEach((el) => {
+    const temp = el.data();
+    data.push(temp);
+  });
+  return data;
 };

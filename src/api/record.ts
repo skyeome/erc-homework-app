@@ -60,7 +60,7 @@ export const uploadRecord = async ({
   const date = new Date(createdAt);
   // const date = format(createdAt, "yyyy-MM-dd");
 
-  await addDoc(collection(db, type), {
+  const { id } = await addDoc(collection(db, type), {
     uid,
     name,
     level,
@@ -68,6 +68,7 @@ export const uploadRecord = async ({
     recordRef,
     recordUrl,
   });
+  return id;
 };
 
 export const uploadImageAndRecord = async (data: ImageAndRecordProps) => {
@@ -87,7 +88,8 @@ export const uploadImageAndRecord = async (data: ImageAndRecordProps) => {
   if (data.record) storeData.record = data.record;
   storeData.date = date;
 
-  await addDoc(collection(db, data.type), storeData);
+  const { id } = await addDoc(collection(db, data.type), storeData);
+  return id;
 };
 
 export const getThisWeekRecord = async (uid: string | null) => {

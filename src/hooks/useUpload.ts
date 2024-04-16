@@ -8,6 +8,7 @@ import imageCompression from "browser-image-compression";
 import useRecordUpload from "./useRecordUpload";
 import { useAppSelector } from "./useReduxHook";
 import { ImageAndRecordProps, uploadImageAndRecord } from "@/api/record";
+import { setNotification } from "@/api/admin";
 
 export interface ImagesInfo {
   imageRef: string;
@@ -114,7 +115,15 @@ function useUpload(type: string, image?: string, title?: string) {
       if (results.length > 0) storeData.images = results;
       if (record) storeData.record = record;
 
-      await uploadImageAndRecord(storeData);
+      const id = await uploadImageAndRecord(storeData);
+      // 알림에 기록 저장
+      await setNotification(
+        id,
+        type,
+        user.name ?? "",
+        user.level ?? "",
+        new Date()
+      );
       toast.success("숙제가 정상적으로 업로드 되었습니다.");
       handleReset();
     } catch (error) {

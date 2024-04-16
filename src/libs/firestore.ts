@@ -228,3 +228,37 @@ export const levelConverter = {
     return new LevelOptions(data.options);
   },
 };
+
+export class Notification {
+  constructor(
+    public id: string,
+    public type: string,
+    public name: string,
+    public level: string,
+    public date: Timestamp,
+    public createdAt: Timestamp
+  ) {}
+}
+
+// Firestore data converter
+export const notificationConverter = {
+  toFirestore: (notification: Notification) => {
+    return {
+      ...notification,
+    };
+  },
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot,
+    options: SnapshotOptions
+  ) => {
+    const data = snapshot.data(options);
+    return new Notification(
+      snapshot.id,
+      data.type,
+      data.name,
+      data.level,
+      data.date,
+      data.createdAt
+    );
+  },
+};

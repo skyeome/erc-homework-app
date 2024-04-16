@@ -1,89 +1,62 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getNotifications } from "@/api/admin";
+import { format } from "date-fns";
 import { Stack, Typography } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ShadowBox from "@/components/common/box";
-import { format } from "date-fns";
-import NotiItem from "./notiItem";
 import MicIcon from "@mui/icons-material/Mic";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
-import { Noti } from "./index.types";
+import NotiItem from "./notiItem";
 import * as Styled from "./index.styles";
 
-const NOTIS: Noti[] = [
-  {
-    id: 1,
-    name: "김OO",
-    type: "record",
-    date: new Date("2024-04-01 12:34:56"),
-  },
-  {
-    id: 2,
-    name: "박XX",
-    type: "reading",
-    date: new Date("2024-04-01 12:23:45"),
-  },
-  {
-    id: 3,
-    name: "길OO",
-    type: "workbook",
-    date: new Date("2024-04-01 12:12:12"),
-  },
-  {
-    id: 4,
-    name: "최XX",
-    type: "reading",
-    date: new Date("2024-03-31 23:23:45"),
-  },
-  {
-    id: 5,
-    name: "유OO",
-    type: "workbook",
-    date: new Date("2024-03-31 23:12:12"),
-  },
-  {
-    id: 6,
-    name: "김OO",
-    type: "record",
-    date: new Date("2024-03-31 22:34:56"),
-  },
-];
-
 function AdminNotification() {
+  const { data } = useQuery({
+    queryKey: ["admin", "notifications"],
+    queryFn: getNotifications,
+  });
+
   return (
     <ShadowBox p={3} flex={1}>
       <Stack direction="row" justifyContent="space-between" mb={2}>
         <Typography variant="h4" fontWeight={700}>
           Notification
         </Typography>
-        <Link to="">
+        <Link to="/admin/notis">
           More
           <ChevronRightIcon sx={{ verticalAlign: "middle" }} />
         </Link>
       </Stack>
-      {NOTIS.map((item) => (
+      {data?.map((item) => (
         <NotiItem key={item.id}>
-          <Stack direction="row" alignItems="center" gap={1}>
-            {item.type === "record" ? (
-              <Styled.RecordIconWrap>
-                <MicIcon />
-              </Styled.RecordIconWrap>
-            ) : item.type === "reading" ? (
-              <Styled.ReadingIconWrap>
-                <AutoStoriesIcon />
-              </Styled.ReadingIconWrap>
-            ) : (
-              <Styled.WorkbookIconWrap>
-                <StickyNote2Icon />
-              </Styled.WorkbookIconWrap>
-            )}
-            <Typography variant="body1">
-              <strong>{item.name}</strong> has submitted his{" "}
-              <strong>{item.type} homework.</strong>
-            </Typography>
-          </Stack>
+          <Link
+            to={`/admin/homework/${item.level}?category=${
+              item.type
+            }&date=${format(item.date.toDate(), "yyyy-MM-dd")}`}
+          >
+            <Stack direction="row" alignItems="center" gap={1}>
+              {item.type === "record" ? (
+                <Styled.RecordIconWrap>
+                  <MicIcon />
+                </Styled.RecordIconWrap>
+              ) : item.type === "reading" ? (
+                <Styled.ReadingIconWrap>
+                  <AutoStoriesIcon />
+                </Styled.ReadingIconWrap>
+              ) : (
+                <Styled.WorkbookIconWrap>
+                  <StickyNote2Icon />
+                </Styled.WorkbookIconWrap>
+              )}
+              <Typography variant="body1">
+                <strong>{item.name}</strong> has submitted his{" "}
+                <strong>{item.type} homework.</strong>
+              </Typography>
+            </Stack>
+          </Link>
           <Typography variant="body2">
-            {format(item.date, "yyyy-MM-dd hh:mm:ss")}
+            {format(item.date.toDate(), "yyyy-MM-dd hh:mm:ss")}
           </Typography>
         </NotiItem>
       ))}

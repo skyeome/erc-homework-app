@@ -26,6 +26,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SchoolIcon from "@mui/icons-material/School";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItemLink from "../menuList";
 import AdminNaviWrap from "./AdminNaviWrap";
 import { AdminNavigationProps } from "./index.types";
@@ -81,6 +82,12 @@ function AdminNavigation({ open, handleClose }: AdminNavigationProps) {
           primary="Home"
           icon={<HomeIcon />}
           active={pathname.endsWith("admin")}
+        />
+        <ListItemLink
+          to="/admin/notis"
+          primary="Notifications"
+          icon={<NotificationsIcon />}
+          active={pathname.endsWith("notis")}
         />
       </List>
       <Divider />
