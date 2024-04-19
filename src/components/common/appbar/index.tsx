@@ -15,16 +15,26 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { AppBarProps } from "./index.types";
 import * as Styled from "./index.styles";
-import { useAppDispatch } from "@/hooks/useReduxHook";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHook";
 import { clearUser } from "@/libs/userSlice";
 import { persistor } from "@/libs/store";
 import client from "@/libs/client";
+import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "@/api/auth";
 
 function AppBar({ title, disableBack }: AppBarProps) {
   const navigate = useNavigate();
   const goBack = useCallback(() => {
     navigate(-1);
   }, [navigate]);
+
+  // 유저 포인트 가져오기
+  const uid = useAppSelector((state) => state.user.uid);
+  const { data } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getCurrentUser(uid ?? ""),
+  });
 
   // 메뉴 열기/닫기 관련 state
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -47,8 +57,7 @@ function AppBar({ title, disableBack }: AppBarProps) {
       navigate("/auth/login", { replace: true });
     } catch (error) {
       if (error instanceof FirebaseError) {
-        console.log(error.code);
-        console.log(error.message);
+        toast.error(error.message);
       }
     }
   };
@@ -77,7 +86,7 @@ function AppBar({ title, disableBack }: AppBarProps) {
             variant="outlined"
             color="primary"
             icon={<MonetizationOnIcon />}
-            label="100"
+            label={data?.points}
           />
         </Styled.AppBarPoint>
         <Menu

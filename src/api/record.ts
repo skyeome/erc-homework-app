@@ -4,8 +4,11 @@ import {
   DocumentData,
   addDoc,
   collection,
+  doc,
   getDocs,
+  increment,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
@@ -68,6 +71,8 @@ export const uploadRecord = async ({
     recordRef,
     recordUrl,
   });
+  // 포인트 1점 올려주기
+  await updateDoc(doc(db, "user", uid), { points: increment(1) });
   return id;
 };
 
@@ -89,6 +94,8 @@ export const uploadImageAndRecord = async (data: ImageAndRecordProps) => {
   storeData.date = date;
 
   const { id } = await addDoc(collection(db, data.type), storeData);
+  // 포인트 1점 올려주기
+  await updateDoc(doc(db, "user", data.uid), { points: increment(1) });
   return id;
 };
 

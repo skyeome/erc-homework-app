@@ -1,18 +1,18 @@
 import { db } from "@/libs/firebase";
-import { teacherConverter } from "@/libs/firestore";
-import { UserState } from "@/libs/userSlice";
+import { studentConverter, teacherConverter } from "@/libs/firestore";
 import { doc, getDoc } from "firebase/firestore";
 
-export const getCurrentUser = async (
-  uid?: string
-): Promise<UserState | undefined> => {
+export const getCurrentUser = async (uid?: string) => {
   if (!uid) throw new Error("로그인 해주세요");
-  const userSnap = await getDoc(doc(db, "user", uid));
+  const userSnap = await getDoc(
+    doc(db, "user", uid).withConverter(studentConverter)
+  );
   if (userSnap.exists()) {
     const data = {
       uid,
       name: userSnap.data().name,
       level: userSnap.data().level,
+      points: userSnap.data().points,
       teacher: false,
     };
     return data;
