@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 import { getAllNotification } from "@/api/admin";
 import ShadowBox from "@/components/common/box";
 import Box from "@mui/material/Box";
@@ -70,7 +71,9 @@ function AdminNotis() {
                   </Stack>
                 </Link>
                 <Typography variant="body2">
-                  {format(item.date.toDate(), "yyyy-MM-dd hh:mm:ss")}
+                  {format(item.date.toDate(), "yyyy-MM-dd aa hh:mm:ss", {
+                    locale: ko,
+                  })}
                 </Typography>
               </NotiItem>
             ))}

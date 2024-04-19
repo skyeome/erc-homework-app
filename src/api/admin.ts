@@ -297,6 +297,16 @@ export const updateCheckState = async (category: string, checkId: string) => {
   });
 };
 
+// update check state to uncheck
+export const updateCheckToUnCheck = async (
+  category: string,
+  checkId: string
+) => {
+  await updateDoc(doc(db, category, checkId), {
+    check: false,
+  });
+};
+
 // delete Record data
 export const deleteRecord = async (id: string, recordRef: string) => {
   await deleteDoc(doc(db, "record", id));
@@ -340,7 +350,8 @@ export const getNotifications = async () => {
   const data: Notification[] = [];
   const q = query(
     collection(db, "notification"),
-    orderBy("timestamp")
+    orderBy("timestamp"),
+    limit(6)
   ).withConverter(notificationConverter);
   const notiSnap = await getDocs(q);
   notiSnap.forEach((el) => {

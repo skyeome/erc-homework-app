@@ -23,6 +23,7 @@ import {
   getRecordByLevelAndDate,
   getWorkbookByLevelAndDate,
   updateCheckState,
+  updateCheckToUnCheck,
 } from "@/api/admin";
 import WeeklyLevelHomeworkItem from "./WeeklyLevelHomeworkItem";
 import WeeklyLevelHomeworkModal from "./WeeklyLevelHomeworkModal";
@@ -131,6 +132,17 @@ const WeeklyLevelRecord = ({
     }
   };
 
+  const onClickUnCheck = async (checkId: string) => {
+    try {
+      await updateCheckToUnCheck(category, checkId);
+    } catch (error) {
+      if (error instanceof FirebaseError)
+        toast.error(`code: ${error.code}, message: ${error.message}`);
+    } finally {
+      refetch();
+    }
+  };
+
   const onClickDelete = async (deleteObj: RecordHomeworkData) => {
     try {
       if (deleteObj.recordRef !== undefined)
@@ -144,6 +156,8 @@ const WeeklyLevelRecord = ({
   };
 
   if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
+  if (data?.length === 0)
+    return <Typography variant="h4">No homework found.</Typography>;
   return (
     <Grid container spacing={2}>
       {data?.map((item) => (
@@ -164,14 +178,23 @@ const WeeklyLevelRecord = ({
                   </a>
                 )}
                 {item.check ? (
-                  <LoadingButton
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => onClickDelete(item)}
-                    loading={isLoading}
-                  >
-                    Delete
-                  </LoadingButton>
+                  <Stack direction="row" spacing={1}>
+                    <LoadingButton
+                      variant="outlined"
+                      onClick={() => onClickUnCheck(item.id)}
+                      loading={isLoading}
+                    >
+                      UnCheck
+                    </LoadingButton>
+                    <LoadingButton
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => onClickDelete(item)}
+                      loading={isLoading}
+                    >
+                      Delete
+                    </LoadingButton>
+                  </Stack>
                 ) : (
                   <LoadingButton
                     variant="contained"
@@ -222,6 +245,17 @@ const WeeklyLevelReading = ({
     }
   };
 
+  const onClickUnCheck = async (checkId: string) => {
+    try {
+      await updateCheckToUnCheck(category, checkId);
+    } catch (error) {
+      if (error instanceof FirebaseError)
+        toast.error(`code: ${error.code}, message: ${error.message}`);
+    } finally {
+      refetch();
+    }
+  };
+
   const onClickDelete = async (deleteObj: ReadingHomeworkData) => {
     const delImages = deleteObj.images?.map((el) => el.imageRef);
     const delRecord = deleteObj.record?.recordRef;
@@ -244,6 +278,8 @@ const WeeklyLevelReading = ({
   };
 
   if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
+  if (data?.length === 0)
+    return <Typography variant="h4">No homework found.</Typography>;
   return (
     <Grid container spacing={2}>
       {data?.map((item) => (
@@ -258,14 +294,23 @@ const WeeklyLevelReading = ({
                 {item.name}
               </Typography>
               {item.check ? (
-                <LoadingButton
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => onClickDelete(item)}
-                  loading={isLoading}
-                >
-                  Delete
-                </LoadingButton>
+                <Stack direction="row" spacing={1}>
+                  <LoadingButton
+                    variant="outlined"
+                    onClick={() => onClickUnCheck(item.id)}
+                    loading={isLoading}
+                  >
+                    UnCheck
+                  </LoadingButton>
+                  <LoadingButton
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => onClickDelete(item)}
+                    loading={isLoading}
+                  >
+                    Delete
+                  </LoadingButton>
+                </Stack>
               ) : (
                 <LoadingButton
                   variant="contained"
@@ -317,6 +362,17 @@ const WeeklyLevelWorkbook = ({
     }
   };
 
+  const onClickUnCheck = async (checkId: string) => {
+    try {
+      await updateCheckToUnCheck(category, checkId);
+    } catch (error) {
+      if (error instanceof FirebaseError)
+        toast.error(`code: ${error.code}, message: ${error.message}`);
+    } finally {
+      refetch();
+    }
+  };
+
   const onClickDelete = async (deleteObj: WorkbookHomeworkData) => {
     const delImages = deleteObj.images?.map((el) => el.imageRef);
     const delRecord = deleteObj.record?.recordRef;
@@ -339,6 +395,8 @@ const WeeklyLevelWorkbook = ({
   };
 
   if (isLoading) return <WeeklyLevelHomeworkSkeleton />;
+  if (data?.length === 0)
+    return <Typography variant="h4">No homework found.</Typography>;
   return (
     <Grid container spacing={2}>
       {data?.map((item) => (
@@ -353,14 +411,23 @@ const WeeklyLevelWorkbook = ({
                 {item.name}
               </Typography>
               {item.check ? (
-                <LoadingButton
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => onClickDelete(item)}
-                  loading={isLoading}
-                >
-                  Delete
-                </LoadingButton>
+                <Stack direction="row" spacing={1}>
+                  <LoadingButton
+                    variant="outlined"
+                    onClick={() => onClickUnCheck(item.id)}
+                    loading={isLoading}
+                  >
+                    UnCheck
+                  </LoadingButton>
+                  <LoadingButton
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => onClickDelete(item)}
+                    loading={isLoading}
+                  >
+                    Delete
+                  </LoadingButton>
+                </Stack>
               ) : (
                 <LoadingButton
                   variant="contained"
@@ -381,5 +448,9 @@ const WeeklyLevelWorkbook = ({
     </Grid>
   );
 };
+
+WeeklyLevelHomework.Record = WeeklyLevelRecord;
+WeeklyLevelHomework.Reading = WeeklyLevelReading;
+WeeklyLevelHomework.Workbook = WeeklyLevelWorkbook;
 
 export default WeeklyLevelHomework;

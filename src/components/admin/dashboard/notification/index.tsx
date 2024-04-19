@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getNotifications } from "@/api/admin";
 import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 import { Stack, Typography } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ShadowBox from "@/components/common/box";
@@ -56,7 +57,9 @@ function AdminNotification() {
             </Stack>
           </Link>
           <Typography variant="body2">
-            {format(item.date.toDate(), "yyyy-MM-dd hh:mm:ss")}
+            {format(item.date.toDate(), "yyyy-MM-dd aa hh:mm:ss", {
+              locale: ko,
+            })}
           </Typography>
         </NotiItem>
       ))}

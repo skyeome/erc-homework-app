@@ -1,8 +1,9 @@
-export type HomeworkTypes = "record" | "reading" | "workbook" | "other";
+export const HOMEWORK_LIST = [
+  "all",
+  "record",
+  "reading",
+  "workbook",
+  "other",
+] as const;
 
-// export interface Noti {
-//   id: number;
-//   name: string;
-//   type: HomeworkTypes;
-//   date: Date;
-// }
+export type HomeworkType = (typeof HOMEWORK_LIST)[number];

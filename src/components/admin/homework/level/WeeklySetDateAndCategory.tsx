@@ -8,7 +8,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Select from "@mui/material/Select";
-import { HomeworkTypes } from "../../dashboard/notification/index.types";
+import SearchIcon from "@mui/icons-material/Search";
+import {
+  HOMEWORK_LIST,
+  HomeworkType,
+} from "../../dashboard/notification/index.types";
 import { WeeklySetDateAndCategoryProps } from "./WeeklySetDateAndCategory.types";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { format } from "date-fns";
@@ -17,12 +21,16 @@ function WeeklySetDateAndCategory({
   date,
   category,
   setCategory,
+  searchParams,
   setSearchParams,
 }: WeeklySetDateAndCategoryProps) {
+  const categoryParam = searchParams.get("category") as HomeworkType;
+  const dateParam = searchParams.get("date");
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      date,
-      category,
+      date: new Date(dateParam ?? date),
+      category: categoryParam ?? category,
     },
   });
   const {
@@ -36,7 +44,7 @@ function WeeklySetDateAndCategory({
   const dispatch = useAppDispatch();
 
   const onSubmit = handleSubmit((data) => {
-    setCategory(data.category as HomeworkTypes);
+    setCategory(data.category as HomeworkType);
     dispatch(setDate({ value: data.date }));
     setSearchParams({
       category: data.category,
@@ -57,17 +65,19 @@ function WeeklySetDateAndCategory({
               value={value}
               onChange={onChange}
             >
-              <MenuItem value="record">Record</MenuItem>
-              <MenuItem value="reading">Reading</MenuItem>
-              <MenuItem value="workbook">Workbook</MenuItem>
-              <MenuItem value="other">Other</MenuItem>
+              {HOMEWORK_LIST.map((category) => (
+                <MenuItem
+                  key={category}
+                  value={category}
+                >{`${category[0].toUpperCase()}${category.slice(1)}`}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Box>
         <DateCalendar value={dateValue} onChange={onChangeDate} />
         <Box display="flex" justifyContent="flex-end">
-          <Button type="submit" variant="outlined">
-            Search homework
+          <Button type="submit" variant="outlined" startIcon={<SearchIcon />}>
+            Search
           </Button>
         </Box>
       </Box>
