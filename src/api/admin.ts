@@ -371,7 +371,7 @@ export const getAllNotification = async ({
     collection(db, "notification"),
     orderBy("timestamp"),
     startAfter(pageParam),
-    limit(5)
+    limit(10)
   ).withConverter(notificationConverter);
   const notiSnap = await getDocs(q);
   notiSnap.forEach((el) => {

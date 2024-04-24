@@ -1,12 +1,12 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { getAllNotification } from "@/api/admin";
 import ShadowBox from "@/components/common/box";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MicIcon from "@mui/icons-material/Mic";
@@ -17,23 +17,18 @@ import * as Styled from "@/components/admin/dashboard/notification/index.styles"
 import { CircularProgress } from "@mui/material";
 
 function AdminNotis() {
-  const { ref, inView } = useInView();
+  const monthAgo = new Date();
+  monthAgo.setDate(monthAgo.getDate() - 30);
   const { data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: ["admin", "notifications", "all"],
     queryFn: getAllNotification,
-    initialPageParam: new Date("2000-01-01"),
+    initialPageParam: monthAgo,
     getNextPageParam: (lastPage) =>
-      lastPage.length < 5
+      lastPage.length < 10
         ? null
         : lastPage[lastPage.length - 1].timestamp.toDate(),
     retry: 1,
   });
-
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, inView]);
 
   return (
     <div>
@@ -84,8 +79,17 @@ function AdminNotis() {
             <CircularProgress />
           </Box>
         )}
+        <Box display="flex" justifyContent="center" p={2}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              fetchNextPage();
+            }}
+          >
+            Load more
+          </Button>
+        </Box>
       </ShadowBox>
-      <Box ref={ref} height={100} />
     </div>
   );
 }
