@@ -36,9 +36,7 @@ const useAddUserForm = (isEdit?: boolean, defaultValues?: Student) => {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const salt = process.env.SOME_CODE;
     const newUsername = data.username + "@email.com";
-    const newPassword = `${data.password}${salt}`;
 
     // 유저 생성
     try {
@@ -48,7 +46,7 @@ const useAddUserForm = (isEdit?: boolean, defaultValues?: Student) => {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           newUsername,
-          newPassword
+          data.password
         );
         // 유저 생성
         const userRef = doc(db, "user", userCredential.user.uid);

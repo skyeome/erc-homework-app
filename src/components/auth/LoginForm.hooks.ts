@@ -33,14 +33,12 @@ const useLoginForm = () => {
   };
 
   const onSubmit = handleSubmit(async (data: AddUserType) => {
-    const salt = process.env.SOME_CODE;
     const newUsername = data.username + "@email.com";
-    const newPassword = `${data.password}${salt}`;
 
     // 로그인 작업
     try {
       if (!isTeacher) {
-        await signInWithEmailAndPassword(auth, newUsername, newPassword);
+        await signInWithEmailAndPassword(auth, newUsername, data.password);
         navigate("/");
       } else {
         await signInWithEmailAndPassword(auth, data.username, data.password);
