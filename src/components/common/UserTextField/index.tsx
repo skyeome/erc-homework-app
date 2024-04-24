@@ -17,19 +17,19 @@ function UserTextField({
           required: "아이디는 필수 입니다.",
           pattern: {
             value: /^erc[0-9]{4}$/,
-            message: "erc+숫자 4자리 형식으로 입력해주세요",
+            message: "erc + 숫자 4자리 형식으로 입력해주세요",
           },
         }
       : name === "password"
       ? {
           required: "비밀번호는 필수 입니다.",
           minLength: {
-            value: 4,
-            message: "숫자 4자리 형식으로 입력해주세요",
+            value: 8,
+            message: "8자리 이상으로 입력해주세요",
           },
-          maxLength: {
-            value: 4,
-            message: "숫자 4자리 형식으로 입력해주세요",
+          pattern: {
+            value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$/,
+            message: "erc + 숫자 4자리 + ! 형식으로 입력해주세요",
           },
         }
       : {
