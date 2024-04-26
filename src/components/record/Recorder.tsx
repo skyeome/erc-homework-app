@@ -8,9 +8,9 @@ import { RecorderProps } from "./Recorder.types";
 
 function Recorder({ setChunks, onClose }: RecorderProps) {
   const [recording, setRecording] = useState(false); // 현재 녹음 중인지
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState(0); // 몇 초간 녹음했는지
   const mediaRecorderRef = useRef<MediaRecorder | null>(null); // 미디어 녹음기
-  const timerRef = useRef<number | null>(null);
+  const timerRef = useRef<number | null>(null); // 타이머
 
   const startTimer = () => {
     timerRef.current = window.setInterval(() => {
@@ -28,8 +28,8 @@ function Recorder({ setChunks, onClose }: RecorderProps) {
   // 녹음 버튼을 눌렀을 때 실행
   const handleStartRecording = async () => {
     try {
+      // 코덱을 지원하는지 확인
       const isSupport = MediaRecorder.isTypeSupported("audio/webm;codecs=opus");
-      console.log(isSupport);
       const option = {
         mimeType: isSupport ? "audio/webm;codecs=opus" : "audio/mp4",
       };
@@ -38,19 +38,16 @@ function Recorder({ setChunks, onClose }: RecorderProps) {
       mediaRecorderRef.current.ondataavailable = (e) => {
         setChunks((prev) => [...prev, e.data]);
       };
+      // 녹음 중지 버튼을 눌러서 녹음 정지를 실행했을 때
       mediaRecorderRef.current.onstop = () => {
-        // const blob = new Blob(chunks, { type: "audio/wav" });
-        // const downloadUrl = URL.createObjectURL(blob);
-        // const a = document.createElement("a");
-        // a.href = downloadUrl;
-        // a.download = `recording_${new Date().toISOString()}.wav`;
-        // a.click();
-        // URL.revokeObjectURL(downloadUrl);
-        // setChunks([]);
+        setRecording(false); // 녹음 상태를 녹음 중지로 변경
+        stopTimer(); // 몇 초 녹음 중인지 재는 타이머 중지
+        setTime(0); // 현재 녹음을 0초로 초기화
+        if (onClose) onClose();
       };
-      mediaRecorderRef.current.start();
-      setRecording(true);
-      startTimer();
+      mediaRecorderRef.current.start(); // 녹음 시작
+      setRecording(true); // 녹음 상태를 녹음중으로 변경
+      startTimer(); // 몇 초 녹음 중인지 재는 타이머 시작
     } catch (error) {
       console.error("Error starting recording:", error);
     }
@@ -63,11 +60,7 @@ function Recorder({ setChunks, onClose }: RecorderProps) {
       mediaRecorderRef.current.state === "recording"
     ) {
       mediaRecorderRef.current.stop();
-      setRecording(false);
-      stopTimer();
-      setTime(0);
     }
-    if (onClose) onClose();
   };
 
   const formatTime = (seconds: number): string => {
@@ -80,9 +73,11 @@ function Recorder({ setChunks, onClose }: RecorderProps) {
 
   return (
     <div>
+      {/* 몇 초간 녹음했는지 표시 */}
       <Typography textAlign="center">{formatTime(time)}</Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }} mt={1}>
         {recording ? (
+          // 녹음 정지 버튼
           <Styled.RecorderStopButton
             onClick={handleStopRecording}
             color="secondary"
@@ -90,6 +85,7 @@ function Recorder({ setChunks, onClose }: RecorderProps) {
             <StopIcon sx={{ fontSize: 36 }} />
           </Styled.RecorderStopButton>
         ) : (
+          // 녹음 시작 버튼
           <Styled.RecorderStartButton
             variant="contained"
             color="secondary"
