@@ -21,7 +21,7 @@ export interface BookItem {
 }
 
 export const bookSearch = axios.create({
-  baseURL: import.meta.env.PROD ? process.env.BASE_URL : "/api",
+  baseURL: import.meta.env.PROD ? process.env.NAVER_BASE_URL : "/api",
   headers: {
     "Content-type": "application/json; charset=UTF-8",
     "X-Naver-Client-Id": import.meta.env.DEV
