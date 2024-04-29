@@ -1,6 +1,6 @@
-import { Button, css, styled } from "@mui/material";
+import { Button, styled } from "@mui/material";
 
-const RecorderBtnCss = css`
+export const RecorderButton = styled(Button)`
   width: 6.625rem;
   height: 6.625rem;
   border-radius: 100%;
@@ -9,12 +9,4 @@ const RecorderBtnCss = css`
   &:focus {
     box-shadow: none;
   }
-`;
-
-export const RecorderStartButton = styled(Button)`
-  ${RecorderBtnCss};
-`;
-
-export const RecorderStopButton = styled(Button)`
-  ${RecorderBtnCss};
 `;

@@ -78,21 +78,21 @@ function Recorder({ setChunks, onClose }: RecorderProps) {
       <Box sx={{ display: "flex", justifyContent: "center" }} mt={1}>
         {recording ? (
           // 녹음 정지 버튼
-          <Styled.RecorderStopButton
+          <Styled.RecorderButton
             onClick={handleStopRecording}
             color="secondary"
           >
             <StopIcon sx={{ fontSize: 36 }} />
-          </Styled.RecorderStopButton>
+          </Styled.RecorderButton>
         ) : (
           // 녹음 시작 버튼
-          <Styled.RecorderStartButton
+          <Styled.RecorderButton
             variant="contained"
             color="secondary"
             onClick={handleStartRecording}
           >
             <MicIcon sx={{ fontSize: 36 }} />
-          </Styled.RecorderStartButton>
+          </Styled.RecorderButton>
         )}
       </Box>
       <Box sx={{ display: "flex", justifyContent: "center" }} mt={1}>
